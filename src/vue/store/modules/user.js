@@ -2,8 +2,8 @@ import Vue from "vue";
 
 const state = () => ({currentUser: null, token: null});
 const getters={};
-const action={};
-const mutation={};
+const actions={};
+const mutations={};
 
 export default {
     namespaced: 'user',
