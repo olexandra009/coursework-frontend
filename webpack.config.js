@@ -30,11 +30,15 @@ module.exports = {
                 ],
             },
             {
-                test: /\.pug$/,
-                loader: 'pug-loader',
-                options: {
-                    pretty: true
-                }
+                test: /\.vue$/,
+                loader: 'vue-loader'
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader'
+                ]
             }
         ],
     },
@@ -42,9 +46,8 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "css/[name].css",
         }),
-        new HtmlWebpackPlugin({  // Also generate a test.html
-            filename: 'test.html',
-            template: 'src/views/test.pug'
-        })
+
+        new VueLoaderPlugin(),
+        new CleanWebpackPlugin(),
     ],
 };
