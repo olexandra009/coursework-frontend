@@ -1,5 +1,5 @@
 <template>
-    
+    <span>Cabinet</span>
 </template>
 
 <script>

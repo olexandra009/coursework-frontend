@@ -1,25 +1,38 @@
 <template>
-    <b-container>
-        <nav-bar-page/>
-        <page-display/>
-        <b-row>
-            <b-col lg="2"/>
-            <b-col lg="8">
-                <news-rows/>
-            </b-col>
-            <b-col lg="2"/>
-        </b-row>
-    </b-container>
+    <b-row class="h-100">
+        <b-col class="pl-3 h-100 d-md-none d-lg-block position-fixed bg-light" md="2" lg="2" xl="2">
+            <navigation-large-tab/>
+        </b-col>
+        <b-col class="pl-3 h-100 d-md-none d-lg-block" md="2">
+            <navigation-large-tab/>
+        </b-col>
+        <b-col md="9">
+            <b-container>
+                <b-row>
+                    <b-col md="8">
+                        <router-view/>
+                    </b-col>
+                    <b-col md="4"/>
+                </b-row>
+            </b-container>
+        </b-col>
+    </b-row>
 </template>
 
 <script>
+    import ApplicationList from "../main-components-list/ApplicationList.vue";
+    import CabinetComponent from "../main-components-list/CabinetComponent.vue";
+    import EventsList  from "../main-components-list/EventsList.vue";
+    import NewsList from "../main-components-list/NewsList.vue";
+    import OrganizationList from "../main-components-list/OrganizationList.vue";
+    import PetitionList from "../main-components-list/PetitionList.vue";
+    import UserList from "../main-components-list/UserList.vue";
+    import NavigationLargeTab from "../inner-components/NavigationLargeTab.vue";
 
-
-
-    import NewsRows from "../items/NewsRows.vue";
     export default {
         name: "MainDisplay",
-        components: {NewsRows},
+        components: {ApplicationList, CabinetComponent, EventsList, NewsList,
+            OrganizationList, PetitionList, UserList, NavigationLargeTab},
     }
 </script>
 

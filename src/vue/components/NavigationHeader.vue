@@ -7,11 +7,8 @@
 
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
-                    <b-nav-item href="#">Новини</b-nav-item>
-                    <b-nav-item href="#">Події</b-nav-item>
-                    <b-nav-item href="#">Петиції</b-nav-item>
-                    <b-nav-item href="#">Звернення</b-nav-item>
-                    <b-nav-item href="#">Інформація</b-nav-item>
+                    <b-nav-item to="/">Головна</b-nav-item>
+                    <b-nav-item to="/info">Інформація</b-nav-item>
                 </b-navbar-nav>
 
                 <!-- Right aligned nav items -->
@@ -19,14 +16,12 @@
                     <b-nav-item-dropdown right v-if="login">
                         <!-- Using 'button-content' slot -->
                         <template #button-content>
-                            <em>User</em>
+                            <em>Користувач</em>
                         </template>
                         <b-dropdown-item href="#">Кабінет</b-dropdown-item>
                         <b-dropdown-item href="#">Вихід</b-dropdown-item>
                     </b-nav-item-dropdown>
-                    <b-nav-item v-else>
-                        <span>Вхід</span>
-                    </b-nav-item>
+                    <b-nav-item to="/login" v-else> Вхід </b-nav-item>
                 </b-navbar-nav>
             </b-collapse>
            </b-container>

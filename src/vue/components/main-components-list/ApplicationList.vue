@@ -1,5 +1,5 @@
 <template>
-    
+    <span>Application List</span>
 </template>
 
 <script>

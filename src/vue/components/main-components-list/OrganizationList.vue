@@ -1,5 +1,5 @@
 <template>
-    
+    <span>Organization List</span>
 </template>
 
 <script>

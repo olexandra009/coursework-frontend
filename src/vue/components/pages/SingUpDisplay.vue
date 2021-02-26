@@ -1,5 +1,5 @@
 <template>
-    
+    <span>Sing Up Here</span>
 </template>
 
 <script>

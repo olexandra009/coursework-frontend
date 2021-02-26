@@ -1,10 +1,10 @@
 <template>
-    <span>Petition List</span>
+    
 </template>
 
 <script>
     export default {
-        name: "PetitionList"
+        name: "NavigationSmallTab"
     }
 </script>
 

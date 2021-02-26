@@ -1,5 +1,5 @@
 <template>
-    
+    <span>Events List</span>
 </template>
 
 <script>
