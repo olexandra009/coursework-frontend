@@ -4,7 +4,7 @@
 
 <script>
     export default {
-        name: "ApplicationDisplay"
+        name: "PetitionList"
     }
 </script>
 

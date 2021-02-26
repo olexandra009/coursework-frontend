@@ -3,15 +3,11 @@
         <nav-bar-page/>
         <page-display/>
         <b-row>
-            <b-col lg="2" >
-             <!--navbar for admin or for profile-->
-            </b-col>
+            <b-col lg="2"/>
             <b-col lg="8">
-
+                <news-rows/>
             </b-col>
-            <b-col lg="2">
-            Right
-            </b-col>
+            <b-col lg="2"/>
         </b-row>
     </b-container>
 </template>
@@ -20,10 +16,10 @@
 
 
 
-    import PageDisplay from "./PageDisplay.vue";
+    import NewsRows from "../items/NewsRows.vue";
     export default {
         name: "MainDisplay",
-        components: {PageDisplay},
+        components: {NewsRows},
     }
 </script>
 

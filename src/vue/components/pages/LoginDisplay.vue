@@ -4,7 +4,7 @@
 
 <script>
     export default {
-        name: "NewsRows"
+        name: "LoginDisplay"
     }
 </script>
 

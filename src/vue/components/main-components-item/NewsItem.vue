@@ -4,7 +4,7 @@
 
 <script>
     export default {
-        name: "PetitionRows"
+        name: "NewsItem"
     }
 </script>
 

@@ -6,8 +6,8 @@
 </template>
 
 <script>
-    import NavigationHeader from "./navigation/NavigationHeader.vue";
-    import MainDisplay from "./layouts/MainDisplay.vue";
+    import NavigationHeader from "./NavigationHeader.vue";
+    import MainDisplay from "./pages/MainDisplay.vue";
     export default {
         name: "App",
         components: {NavigationHeader, MainDisplay},
