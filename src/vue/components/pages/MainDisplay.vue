@@ -1,5 +1,5 @@
 <template>
-    <b-row class="h-100">
+    <b-row class="w-100">
         <b-col class="pl-3 h-100 d-md-none d-lg-block position-fixed bg-light" md="2" lg="2" xl="2">
             <navigation-large-tab/>
         </b-col>
