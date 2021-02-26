@@ -1,6 +1,6 @@
 import Vue from "vue";
 
-const state = () => ({all: [], currentPage: -1, totalPages: 0});
+const state = () => ({all: [],  currentItem: -1, takeValue: 10, totalItem: 0});
 const getters={};
 const actions={};
 const mutations={};
