@@ -20,6 +20,7 @@
                     <cut-text-component :text="item.text"/>
                 </p>
                 <photo-tab/>
+                <div class="text-secondary text-right" v-if="item.edited">Редаговано</div>
             </b-card>
         </b-row>
     </div>
@@ -41,7 +42,7 @@
                         "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n" +
                         "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n" +
                         "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                    dateTimeCreation: "27.02.2021, 18:04:47", edited: false, showAuthor: false, authorId: 12, authorName: "Last First Second",
+                    dateTimeCreation: "27.02.2021, 18:04:47", edited: true, showAuthor: false, authorId: 12, authorName: "Last First Second",
                     multimedias: [], organizationId: 1, organizationName: 'First organization'},
                     {id:2, header: 'First News Header', text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n" +
                             "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n" +
@@ -49,7 +50,7 @@
                             "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n" +
                             "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n" +
                             "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                        dateTimeCreation: "27.02.2021, 18:04:47", edited: false, showAuthor: false, authorId: 12, authorName: "Last First Second",
+                        dateTimeCreation: "27.02.2021, 18:04:47", edited: false, showAuthor: true, authorId: 12, authorName: "Last First Second",
                         multimedias: [], organizationId: 1, organizationName: 'First organization'},
                     {id:3, header: 'First News Header', text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n" +
                             "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n" +
