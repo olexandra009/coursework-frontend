@@ -11,11 +11,14 @@
         <b-row v-for="item in news" :key="item.id">
             <b-card class="mt-2 bg-light">
                 <router-link  v-bind:to="`/news/${item.id}`"><h5>{{item.header}}</h5></router-link>
-                <p>{{item.dateTimeCreation}}</p>
-                <p><router-link v-bind:to="`/organization/${item.organizationId}`">{{item.organizationName}}</router-link> <span v-if="item.showAuthor"> - {{item.authorName}}</span></p>
-                <p>
+                <div class="d-flex justify-content-between">
+                    <span><router-link v-bind:to="`/organization/${item.organizationId}`">{{item.organizationName}}</router-link> <span v-if="item.showAuthor"> - {{item.authorName}}</span></span>
+                    <span>{{item.dateTimeCreation}}</span>
+                </div>
+                <p class="m-2">
                     <cut-text-component :text="item.text"/>
                 </p>
+                <photo-tab/>
             </b-card>
         </b-row>
     </div>
@@ -24,10 +27,11 @@
 
 <script>
     import CutTextComponent from "../inner-components/CutTextComponent.vue";
+    import PhotoTab from "../inner-components/PhotoTab.vue";
 
     export default {
         name: "NewsList",
-        components: {CutTextComponent},
+        components: {PhotoTab, CutTextComponent},
         data(){
             return {
                 news: [{id:1, header: 'First News Header', text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n" +

@@ -1,5 +1,5 @@
 <template>
-    <span>OrgItem</span>
+    <h2>Organization {{ $route.params.id }}</h2>
 </template>
 
 <script>
