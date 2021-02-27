@@ -1,5 +1,5 @@
 <template>
-    
+    <span>OrgItem</span>
 </template>
 
 <script>

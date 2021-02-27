@@ -9,11 +9,13 @@
             </b-input-group>
         </b-row>
         <b-row v-for="item in news" :key="item.id">
-            <b-card class="bg-light">
+            <b-card class="mt-2 bg-light">
                 <router-link  v-bind:to="`/news/${item.id}`"><h5>{{item.header}}</h5></router-link>
                 <p>{{item.dateTimeCreation}}</p>
                 <p><router-link v-bind:to="`/organization/${item.organizationId}`">{{item.organizationName}}</router-link> <span v-if="item.showAuthor"> - {{item.authorName}}</span></p>
-                <p>{{item.text}}</p>
+                <p>
+                    <cut-text-component :text="item.text"/>
+                </p>
             </b-card>
         </b-row>
     </div>
@@ -21,8 +23,11 @@
 </template>
 
 <script>
+    import CutTextComponent from "../inner-components/CutTextComponent.vue";
+
     export default {
         name: "NewsList",
+        components: {CutTextComponent},
         data(){
             return {
                 news: [{id:1, header: 'First News Header', text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n" +
