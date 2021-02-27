@@ -11,7 +11,7 @@
         </b-row>
         <b-row v-for="item in events" :key="item.id">
             <b-card class="mt-2 bg-light w-100">
-                <router-link  v-bind:to="`/news/${item.id}`"><h5>{{item.name}}</h5></router-link>
+                <router-link  v-bind:to="`/events/${item.id}`"><h5>{{item.name}}</h5></router-link>
                 <div class="">
                     <div class="mb-0">{{item.startDate}} - {{item.endDate}}</div>
                     <div class="mt-0"><router-link v-bind:to="`/organization/${item.organizationId}`">{{item.organizationName}}</router-link> <span v-if="item.showAuthor"> - {{item.authorName}}</span></div>

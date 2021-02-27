@@ -10,6 +10,7 @@
             <p v-html="`${newLinedText(text)}`"/>
         </div>
         <photo-tab/>
+        <div class="text-secondary text-right" v-if="edited">Редаговано</div>
     </b-card>
 
 </template>
