@@ -1,6 +1,7 @@
 <template>
 <div>
-    <navigation-header/>
+    <navigation-header fixed="z-index-fixed"/>
+    <navigation-header fixed=""/>
     <router-view/>
 </div>
 </template>
