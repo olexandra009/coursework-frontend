@@ -1,6 +1,6 @@
 <template>
     <div>
-        <span v-if="!readMoreActivated && text.length>200">{{text.slice(0, 200)}}</span>
+        <span v-if="!readMoreActivated && text.length>200" v-html="newLinedText(text.slice(0, 200))"/>
         <a class="card-link" v-if="!readMoreActivated" @click="activateReadMore">
            Показати більше
         </a>
@@ -18,9 +18,10 @@
             }
         },
         methods: {
-        activateReadMore(){
-            this.readMoreActivated = true;
-        }
+            newLinedText(t){return t.replaceAll('\n', '<br />')},
+            activateReadMore(){
+                this.readMoreActivated = true;
+            }
         }
     }
 </script>

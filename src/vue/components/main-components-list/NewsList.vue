@@ -1,7 +1,8 @@
 <template>
     <div class="w-100 pt-3">
         <b-row class="text-center">
-            <b-input-group class="w-75 m-auto">
+
+            <b-input-group class="w-100 m-auto">
                 <b-form-select  v-model="selectedOrganization" :options="organization"/>
                 <b-input-group-append class="pl-2">
                     <b-button variant="outline-light btn-info">Пошук</b-button>

@@ -7,7 +7,7 @@
             <span>{{dateTimeCreation}}</span>
         </div>
         <div class="mt-4">
-            <p>{{text}}</p>
+            <p v-html="`${newLinedText(text)}`"/>
         </div>
         <photo-tab/>
     </b-card>
@@ -20,6 +20,9 @@
     export default {
         name: "NewsItem",
         components: {PhotoTab},
+        methods:{
+            newLinedText: (t)=> t.replaceAll('\n', '<br />'),
+        },
         data(){
             return{
             id:1, header: 'First News Header', text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n" +
