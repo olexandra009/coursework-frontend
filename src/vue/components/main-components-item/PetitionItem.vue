@@ -37,7 +37,7 @@
                     <b-button style="width: 165px" variant="info" v-if="endDate(petition.finishDate)">Підписати петицію</b-button>
                     <b-button style="width: 165px" variant="info" disabled v-else>Збір завершено</b-button>
                     <div v-if="$route.path===`/petition/${petition.id}/votes/${petition.id}`">
-                        <router-link  :to="`/petition/${petition.id}`">Назад</router-link>
+                        <router-link  :to="`/petition/${petition.id}`">Назад до тексту</router-link>
                     </div>
                     <div v-else>
                         <router-link  :to="`${petition.id}/votes/${petition.id}`">Зібрані підписи</router-link>

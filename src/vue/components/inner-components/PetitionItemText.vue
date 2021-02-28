@@ -3,7 +3,7 @@
         <h4 class="">{{petition_header}}</h4>
         <div class="">
             <div>Автор: {{petition_authorName}}</div>
-            <div>Оприлюднено: {{petition_starDate}}</div>
+            <div>Оприлюднено: {{petition_startDate}}</div>
         </div>
         <div>
             <div class="mt-4">
@@ -16,7 +16,7 @@
 <script>
     export default {
         name: "PetitionItemText",
-        props: ['petition_text','petition_header','petition_authorName','petition_starDate'],
+        props: ['petition_text','petition_header','petition_authorName','petition_startDate'],
         methods:  {
             newLinedText: (t)=> t.replaceAll('\n', '<br />'),
         },
