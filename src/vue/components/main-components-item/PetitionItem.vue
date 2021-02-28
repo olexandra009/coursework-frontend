@@ -1,23 +1,59 @@
 <template>
-    <vue-circle
-            :progress="4.666"
-            :size="100"
-            :reverse="false"
-            line-cap="square"
-            :fill="fill"
-            empty-fill="rgba(0, 0, 0, .1)"
-            :animation-start-value="0.0"
-            :start-angle="-Math.PI"
-            insert-mode="append"
-            :thickness="5"
-            :show-percent="true"
-            @vue-circle-progress="progress"
-            @vue-circle-end="progress_end">
-    </vue-circle>
+    <b-row class="min-vh-100 pt-2">
+        <b-col md="9">
+            <h4 class="">{{petition.header}}</h4>
+            <div class="">
+                <div>Автор: {{petition.authorName}}</div>
+                <div>Оприлюднено: {{petition.starDate}}</div>
+            </div>
+            <div>
+                <div class="mt-4">
+                    <p v-html="`${newLinedText(petition.text)}`"/>
+                </div>
+            </div>
+        </b-col>
+        <b-col md="3">
+            <div style="position: fixed; width: 160px;">
+                <vue-circle
+                        :progress="calculateVotesPercent(petition.votesNumber, petition.minVotes)"
+                        :size="120"
+                        :reverse="false"
+                        line-cap="square"
+                        :fill="fill"
+                        empty-fill="rgba(0, 0, 0, .1)"
+                        :animation-start-value="0.0"
+                        :start-angle="-Math.PI"
+                        insert-mode="append"
+                        :thickness="5"
+                        :show-percent="false"
+                        @vue-circle-progress="progress"
+                        @vue-circle-end="progress_end"
+                        style="position: fixed; margin-left: 20px"/>
+                <div class="mt-3" style="z-index: 10001; width: 160px; position: absolute" >
+                    <div class="text-center">{{petition.votesNumber}}</div>
+                    <div class="text-center">{{votesString(petition.votesNumber)}} з {{petition.minVotes}}</div>
+                    <div class="text-center">необхідних</div>
+                </div>
+
+                <div class="mt-3" style="height: 120px; width: 160px;"/>
+                <div class="text-center" style="width: 160px;">
+                    <span>{{lastDate(petition.finishDate)}}</span>
+                </div>
+                <div class="mt-1 text-center">
+                    <b-button style="width: 165px" variant="info" v-if="endDate(petition.finishDate)">Підписати петицію</b-button>
+                    <b-button style="width: 165px" variant="info" disabled v-else>Збір завершено</b-button>
+                    <router-link  :to="`votes/${petition.id}`">Зібрані підписи</router-link>
+                </div>
+            </div>
+        </b-col>
+
+    </b-row>
+
 </template>
 
 <script>
     import VueCircle from 'vue2-circle-progress/src/index.vue'
+    import {convertStringToDate} from "../../../js/utility";
 
     export default {
         name: "PetitionItem",
@@ -26,17 +62,115 @@
         },
         data(){
             return{
-                fill : { color: "#2bbcfa" }
+                fill : { color: "#2bbcfa" },
+                petition:  {id: 3,
+                            header: "Header of Petition can be very very long",
+                            text: "HEre is text very-very-very-long-text"+
+                    "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod" +
+                                "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
+                                "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo" +
+                                "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse" +
+                                "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non" +
+                                "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n" +
+                                "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod" +
+                                "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
+                                "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo" +
+                                "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse" +
+                                "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non" +
+                                "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n" +
+                                "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod" +
+                                "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
+                                "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n" +
+                                "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n" +
+                                "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n" +
+                                "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n" +
+                                "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n" +
+                                "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n" +
+                                "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n" +
+                                "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n" +
+                                "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n" +
+                                "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            starDate: "27.02.2021, 18:04:47",
+                            finishDate: "27.06.2021, 18:04:47",
+                            authorName: "Last First Second",
+                            authorId: 1,
+                            votesNumber: 253,
+                            minVotes: 2500},
             }
         },
-        methods:{
-            progress(event,progress,stepValue){
+        methods: {
+            endDate: (finish)=>{
+              let date = convertStringToDate(finish);
+              console.log(date);
+              let dateNow = new Date();
+              console.log(dateNow);
+              console.log(dateNow>date);
+              return dateNow<date;
+            },
+            newLinedText: (t)=> t.replaceAll('\n', '<br />'),
+            calculateVotesPercent: (current, min) => current * 100 / min,
+
+            progress(event, progress, stepValue) {
                 console.log(stepValue);
             },
-            progress_end(event){
+            progress_end(event) {
                 console.log("Circle progress end");
-            }
+            },
+
+            votesString: (numVote) => {
+                let num = parseInt(numVote);
+                if (num === 11 || num === 12 || num === 13 || num === 14)
+                    return 'голосів';
+                let numStr = numVote.toString();
+                let numLast = parseInt(numStr.substring(numStr.length - 1));
+                switch (numLast) {
+                    case 0:
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                        return 'голосів';
+                    case 1:
+                        return "голос";
+                    case 2:
+                    case 3:
+                    case 4:
+                        return "голоси";
+                }
+            },
+            lastDate: (finishDate)=>{
+                let date = convertStringToDate(finishDate);
+                let dateNow = new Date();
+                let diff = Math.abs(date-dateNow);
+                let days = parseInt(diff/1000/60/60/24);
+                if( days === 0) return "Залишилось менше доби";
+                let dS;
+                let str = days.toString();
+                let last = parseInt(str.substring(str.length-1));
+                if (days===11||days===12||days===13||days===14)
+                    dS= 'днів';
+                else
+                    switch(last){
+                        case 0: case 5:
+                        case 6: case 7:
+                        case 8: case 9:
+                            dS= 'днів';
+                            break;
+                        case 1:
+                            dS= "день";
+                            break;
+                        case 2: case 3:
+                        case 4:
+                            dS= "дні";
+                            break;
+                    }
+                return "Залишилось "+days +" "+dS;
+            },
         }
+
+
+
     }
 </script>
 
