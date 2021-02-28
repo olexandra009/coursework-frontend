@@ -1,12 +1,12 @@
 <template>
     <b-row class="min-vh-100 pt-2">
-        <b-col order-md="1" order-sm="2"  md="9">
+        <b-col order="2" order-md="1" order-sm="2"  md="9">
             <router-view :petition_header="petition.header"
                          :petition_text="petition.text"
                          :petition_authorName="petition.authorName"
                          :petition_startDate="petition.starDate"/>
         </b-col>
-        <b-col order-md="2" order-sm="1" md="3">
+        <b-col order="1"  order-md="2" order-sm="1" md="3">
             <div class="d-block d-sm-block d-md-none">
                 <b-progress :value="petition.votesNumber" :max="petition.minVotes"/>
                 <div class="text-center">{{petition.votesNumber}} {{votesString(petition.votesNumber)}} з {{petition.minVotes}} необхідних</div>

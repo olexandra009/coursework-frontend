@@ -1,11 +1,6 @@
 <template>
     <div class="w-100 pt-3">
-        <b-row v-if="showCreatedForm">
-
-        </b-row>
-        <b-row v-else>
-           <b-button variant="info" @click="changeFormVisible()" class="w-75 m-auto">Створити нову петицію</b-button>
-        </b-row>
+        <form-petition-created/>
         <b-row class="text-center">
             <!--Here will be filtered things-->
         </b-row>
@@ -30,11 +25,12 @@
 
 <script>
     import {convertStringToDate} from "../../../js/utility";
+    import FormPetitionCreated from "../inner-components/created-forms/FormPetitionCreated.vue";
     export default {
         name: "PetitionList",
+        components: {FormPetitionCreated},
         data(){
             return {
-                showCreatedForm: false,
                 dateNow: new Date(),
                 petition:[
                     {id: 0,
@@ -78,7 +74,7 @@
             }
         },
         methods:{
-            changeFormVisible(){this.showCreatedForm = true},
+
             calculateDate: (finishDate)=> {
                 let date = convertStringToDate(finishDate);
                 let dateNow = new Date();
