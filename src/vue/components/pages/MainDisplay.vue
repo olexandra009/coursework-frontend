@@ -1,9 +1,9 @@
 <template>
     <b-row class="w-100">
-        <b-col class="pl-3 h-100 d-md-none d-lg-block z-index-fixed bg-light" md="2" lg="2" xl="2">
+        <b-col class="pl-3 h-100 d-none d-sm-none d-md-none d-lg-block z-index-fixed bg-light" md="2" lg="2" xl="2">
             <navigation-large-tab/>
         </b-col>
-        <b-col class="pl-3 h-100 d-md-none d-lg-block" md="2">
+        <b-col class="pl-3 h-100 d-none d-sm-none d-md-none d-lg-block" md="2" lg="2" xl="2">
             <navigation-large-tab/>
         </b-col>
         <b-col md="9">

@@ -1,7 +1,7 @@
 <template>
     <div class="w-100 pt-3">
+        <span>HERE</span>
         <b-row class="text-center">
-
             <b-input-group class="w-100 m-auto">
                 <b-form-select  v-model="selectedOrganization" :options="organization"/>
                 <b-input-group-append class="pl-2">

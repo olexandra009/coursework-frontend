@@ -1,5 +1,5 @@
 <template>
-    <b-col class="" md="10">
+    <b-col class="d-xs-none d-sm-none d-md-none d-lg-block" md="10">
         <b-nav class="d-xs-none d-sm-none d-md-none d-lg-block">
             <b-nav-item to="/cabinet" exact exact-active-class="active">Кабінет</b-nav-item>
             <b-nav-item to="/news" exact exact-active-class="active">Новини</b-nav-item>
