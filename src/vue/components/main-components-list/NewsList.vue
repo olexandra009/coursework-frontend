@@ -1,6 +1,5 @@
 <template>
     <div class="w-100 pt-3">
-        <span>HERE</span>
         <b-row class="text-center">
             <b-input-group class="w-100 m-auto">
                 <b-form-select  v-model="selectedOrganization" :options="organization"/>
@@ -10,7 +9,7 @@
             </b-input-group>
         </b-row>
         <b-row v-for="item in news" :key="item.id">
-            <b-card class="mt-2 bg-light">
+            <b-card class="mt-2 w-100 bg-light">
                 <router-link  v-bind:to="`/news/${item.id}`"><h5>{{item.header}}</h5></router-link>
                 <div class="d-flex justify-content-between">
                     <span><router-link v-bind:to="`/organization/${item.organizationId}`">{{item.organizationName}}</router-link> <span v-if="item.showAuthor"> - {{item.authorName}}</span></span>
