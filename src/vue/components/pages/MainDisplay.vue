@@ -6,13 +6,13 @@
         <b-col class="pl-3 h-100 d-none d-sm-none d-md-none d-lg-block" md="2" lg="2" xl="2">
             <navigation-large-tab/>
         </b-col>
-        <b-col md="9">
+        <b-col lg="9">
             <b-container>
                 <b-row>
-                    <b-col md="9">
+                    <b-col lg="9">
                         <router-view/>
                     </b-col>
-                    <b-col md="3"/>
+                    <b-col lg="3"/>
                 </b-row>
             </b-container>
         </b-col>

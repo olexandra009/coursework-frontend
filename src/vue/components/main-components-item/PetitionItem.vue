@@ -1,13 +1,31 @@
 <template>
     <b-row class="min-vh-100 pt-2">
-        <b-col md="9">
+        <b-col order-md="1" order-sm="2"  md="9">
             <router-view :petition_header="petition.header"
                          :petition_text="petition.text"
                          :petition_authorName="petition.authorName"
                          :petition_startDate="petition.starDate"/>
         </b-col>
-        <b-col md="3">
-            <div style="position: fixed; width: 160px;">
+        <b-col order-md="2" order-sm="1" md="3">
+            <div class="d-block d-sm-block d-md-none">
+                <b-progress :value="petition.votesNumber" :max="petition.minVotes"/>
+                <div class="text-center">{{petition.votesNumber}} {{votesString(petition.votesNumber)}} з {{petition.minVotes}} необхідних</div>
+                <div class="m-auto" style="width: 160px;">
+                   {{lastDate(petition.finishDate)}}
+                </div>
+                <div class="mt-1  d-flex justify-content-between">
+                    <div v-if="$route.path===`/petition/${petition.id}/votes/${petition.id}`">
+                        <router-link  :to="`/petition/${petition.id}`">Назад до тексту</router-link>
+                    </div>
+                    <div v-else>
+                        <router-link  :to="`${petition.id}/votes/${petition.id}`">Зібрані підписи</router-link>
+                    </div>
+
+                    <b-button style="width: 165px" variant="info" v-if="endDate(petition.finishDate)">Підписати петицію</b-button>
+                    <b-button style="width: 165px" variant="info" disabled v-else>Збір завершено</b-button>
+                </div>
+            </div>
+            <div class="d-none d-sm-none d-md-block" style="position: fixed; width: 160px;">
                 <vue-circle
                         :progress="calculateVotesPercent(petition.votesNumber, petition.minVotes)"
                         :size="120"

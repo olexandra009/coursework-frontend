@@ -1,5 +1,11 @@
 <template>
     <div class="w-100 pt-3">
+        <b-row v-if="showCreatedForm">
+
+        </b-row>
+        <b-row v-else>
+           <b-button variant="info" @click="changeFormVisible()" class="w-75 m-auto">Створити нову петицію</b-button>
+        </b-row>
         <b-row class="text-center">
             <!--Here will be filtered things-->
         </b-row>
@@ -8,7 +14,7 @@
                <b-row>
                    <b-col sm="12" md="8" order="2" order-sm="2" order-md="1"  order-lg="1" order-xl="1">
                        <router-link  v-bind:to="`/petition/${item.id}`"><h5>{{item.header}}</h5></router-link>
-                       <span></span>
+
                    </b-col>
                    <b-col sm="12"  md="4"  order="1" order-sm="1" order-md="2" order-lg="2" order-xl="2">
                        <span>{{item.votesNumber}} {{votesString(item.votesNumber)}}</span>
@@ -26,11 +32,56 @@
     import {convertStringToDate} from "../../../js/utility";
     export default {
         name: "PetitionList",
+        data(){
+            return {
+                showCreatedForm: false,
+                dateNow: new Date(),
+                petition:[
+                    {id: 0,
+                        header: "Header of Petition can be very very long",
+                        /*   text: "HEre is text very-very-very-long-text",*/
+                        starDate: "27.02.2021, 18:04:47",
+                        finishDate: "27.06.2021, 18:04:47",
+                        authorName: "Last First Second",
+                        authorId: 1,
+                        votesNumber: 100,
+                        minVotes: 2500},
+                    {id: 2,
+                        header: "Header of Petition can be very very long",
+                        /*   text: "HEre is text very-very-very-long-text",*/
+                        starDate: "27.02.2021, 18:04:47",
+                        finishDate: "27.06.2021, 18:04:47",
+                        authorName: "Last First Second",
+                        authorId: 1,
+                        votesNumber: 1000,
+                        minVotes: 2500},
+                    {id: 3,
+                        header: "Header of Petition can be very very long",
+                        /*   text: "HEre is text very-very-very-long-text",*/
+                        starDate: "27.02.2021, 18:04:47",
+                        finishDate: "27.06.2021, 18:04:47",
+                        authorName: "Last First Second",
+                        authorId: 1,
+                        votesNumber: 2503,
+                        minVotes: 2500},
+                    {id: 4,
+                        header: "Header of Petition can be very very long",
+                        /*   text: "HEre is text very-very-very-long-text",*/
+                        starDate: "27.02.2021, 18:04:47",
+                        finishDate: "22.02.2021, 18:04:47",
+                        authorName: "Last First Second",
+                        authorId: 1,
+                        votesNumber: 203,
+                        minVotes: 2500},
+
+                ],
+            }
+        },
         methods:{
+            changeFormVisible(){this.showCreatedForm = true},
             calculateDate: (finishDate)=> {
                 let date = convertStringToDate(finishDate);
                 let dateNow = new Date();
-              //  console.log("HERE :: "+date+" "+dateNow+" "+(date>dateNow));
                 return date>dateNow;
             },
             lastDate: (finishDate)=>{
@@ -116,50 +167,7 @@
               }
           }
         },
-        data(){
-            return {
-                dateNow: new Date(),
-                petition:[
-                    {id: 0,
-                        header: "Header of Petition can be very very long",
-                     /*   text: "HEre is text very-very-very-long-text",*/
-                        starDate: "27.02.2021, 18:04:47",
-                        finishDate: "27.06.2021, 18:04:47",
-                        authorName: "Last First Second",
-                        authorId: 1,
-                        votesNumber: 100,
-                        minVotes: 2500},
-                    {id: 2,
-                        header: "Header of Petition can be very very long",
-                        /*   text: "HEre is text very-very-very-long-text",*/
-                        starDate: "27.02.2021, 18:04:47",
-                        finishDate: "27.06.2021, 18:04:47",
-                        authorName: "Last First Second",
-                        authorId: 1,
-                        votesNumber: 1000,
-                        minVotes: 2500},
-                    {id: 3,
-                        header: "Header of Petition can be very very long",
-                        /*   text: "HEre is text very-very-very-long-text",*/
-                        starDate: "27.02.2021, 18:04:47",
-                        finishDate: "27.06.2021, 18:04:47",
-                        authorName: "Last First Second",
-                        authorId: 1,
-                        votesNumber: 2503,
-                        minVotes: 2500},
-                    {id: 4,
-                        header: "Header of Petition can be very very long",
-                        /*   text: "HEre is text very-very-very-long-text",*/
-                        starDate: "27.02.2021, 18:04:47",
-                        finishDate: "22.02.2021, 18:04:47",
-                        authorName: "Last First Second",
-                        authorId: 1,
-                        votesNumber: 203,
-                        minVotes: 2500},
 
-                ],
-            }
-        }
     }
 </script>
 
