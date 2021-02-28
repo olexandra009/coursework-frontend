@@ -1,16 +1,10 @@
 <template>
     <b-row class="min-vh-100 pt-2">
         <b-col md="9">
-            <h4 class="">{{petition.header}}</h4>
-            <div class="">
-                <div>Автор: {{petition.authorName}}</div>
-                <div>Оприлюднено: {{petition.starDate}}</div>
-            </div>
-            <div>
-                <div class="mt-4">
-                    <p v-html="`${newLinedText(petition.text)}`"/>
-                </div>
-            </div>
+            <router-view :petition_header="petition.header"
+                         :petition_text="petition.text"
+                         :petition_authorName="petition.authorName"
+                         :petition_startDate="petition.starDate"/>
         </b-col>
         <b-col md="3">
             <div style="position: fixed; width: 160px;">
@@ -42,7 +36,12 @@
                 <div class="mt-1 text-center">
                     <b-button style="width: 165px" variant="info" v-if="endDate(petition.finishDate)">Підписати петицію</b-button>
                     <b-button style="width: 165px" variant="info" disabled v-else>Збір завершено</b-button>
-                    <router-link  :to="`votes/${petition.id}`">Зібрані підписи</router-link>
+                    <div v-if="$route.path===`/petition/${petition.id}/votes/${petition.id}`">
+                        <router-link  :to="`/petition/${petition.id}`">Назад</router-link>
+                    </div>
+                    <div v-else>
+                        <router-link  :to="`${petition.id}/votes/${petition.id}`">Зібрані підписи</router-link>
+                    </div>
                 </div>
             </div>
         </b-col>
@@ -54,11 +53,12 @@
 <script>
     import VueCircle from 'vue2-circle-progress/src/index.vue'
     import {convertStringToDate} from "../../../js/utility";
-
+    import PetitionItemText from "../inner-components/PetitionItemText.vue";
+    import PetitionItemVotes from "../inner-components/PetitionItemVotes.vue";
     export default {
         name: "PetitionItem",
         components: {
-            VueCircle
+            VueCircle, PetitionItemText, PetitionItemVotes,
         },
         data(){
             return{
@@ -107,7 +107,7 @@
               console.log(dateNow>date);
               return dateNow<date;
             },
-            newLinedText: (t)=> t.replaceAll('\n', '<br />'),
+
             calculateVotesPercent: (current, min) => current * 100 / min,
 
             progress(event, progress, stepValue) {

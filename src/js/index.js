@@ -27,6 +27,8 @@ import {Application} from "vuetify/lib/services/application";
 import InfoDisplay from "../vue/components/pages/InfoDisplay.vue";
 import UserItem from "../vue/components/main-components-item/UserItem.vue";
 import ApplicationItem from "../vue/components/main-components-item/ApplicationItem.vue";
+import PetitionItemText from "../vue/components/inner-components/PetitionItemText.vue";
+import PetitionItemVotes from "../vue/components/inner-components/PetitionItemVotes.vue";
 Vue.use(BootstrapVue);
 Vue.use(Vuex);
 Vue.use(VueRouter);
@@ -45,7 +47,9 @@ const router = new VueRouter( {
                 {path: 'organization', component: OrganizationList},
                 {path: 'organization/:id', component: OrganizationItem},
                 {path: 'petition', component: PetitionList},
-                {path: 'petition/:id', component: PetitionItem},
+                {path: 'petition/:id', component: PetitionItem,
+                children: [{path: '', component: PetitionItemText},
+                    {path: 'votes/:petitionId', component: PetitionItemVotes}]},
                 {path: 'users', component: UserList},
                 {path: 'users/:id', component: UserItem},
                 {path: 'application', component: ApplicationList},
@@ -55,10 +59,6 @@ const router = new VueRouter( {
         {path: '/login', component: LoginDisplay},
         {path: '/confirm/:id/:token', component: ConfirmEmailDisplay},
         {path: '/info', component: InfoDisplay}
-        // { path: '/', component: BodyDisplay },
-        // { path: '/teacher/:teacher_id', component: BodyDisplay },
-        // { path: '/faculty/:faculty_id', component: BodyDisplay },
-        // { path: '/info', component: InformationDisplay}
     ]
 });
 
