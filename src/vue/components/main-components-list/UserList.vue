@@ -1,7 +1,6 @@
 <template>
     <div class="min-vh-100">
-        <!--Filter-->
-
+        <!--todo: add filters-->
         <b-row class="mt-1">
             <b-card class="mt-1 w-100 bg-light">
                 <b-row class="smallerText">
