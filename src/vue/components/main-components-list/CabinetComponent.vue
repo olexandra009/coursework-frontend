@@ -119,6 +119,24 @@
                 </b-input-group>
             </b-col>
         </b-row>
+        <b-button class="mt-3 ml-1 btn-block"  v-b-toggle.change-right-collapse variant="outline-info">Розширити права</b-button>
+        <b-collapse id="change-right-collapse" class="mt-2">
+            <div>
+                <label>Підтвердіть свою особистість:</label>
+                <b-form-input
+                        class="ml-1"
+                        v-model="modelRight"
+                        aria-describedby="input-live-help input-live-feedback"
+                        placeholder="Введіть ІНП:"
+                        trim/>
+                <b-form-invalid-feedback class="text-center" id="input-live-feedback">Такий логін вже зайнято</b-form-invalid-feedback>
+                <div class="mt-1 d-flex justify-content-center">
+                    <b-button class="mr-1 w-25" variant="info">Зберегти</b-button>
+                    <b-button class="w-25"  v-b-toggle.change-right-collapse variant="info">Скасувати</b-button>
+                </div>
+            </div>
+        </b-collapse>
+
             <b-button class="mt-3 ml-1 btn-block"  v-b-toggle.change-login-collapse variant="outline-info">Змінити логін</b-button>
             <b-collapse id="change-login-collapse" class="mt-2">
                 <div>
@@ -201,6 +219,7 @@
         },
         data(){
             return{
+                modelRight:'',
                 modelPassword:'',
                 modelLogin: '',
                 modelName: '',
