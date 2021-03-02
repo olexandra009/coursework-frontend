@@ -6,20 +6,21 @@
                 <b-row class="smallerText">
                     <b-col sm="3">Ім'я та прізвище</b-col>
                     <b-col sm="2" >Логін</b-col>
-                    <b-col sm="3">Електронна адреса</b-col>
+                    <b-col sm="3">Еmail</b-col>
                     <b-col sm="1"/>
-                    <b-col sm="3">Роль</b-col>
+                    <b-col sm="2">Роль</b-col>
                 </b-row>
             </b-card>
         </b-row>
         <b-row class="mt-1" v-for="item in users" :key="item.id">
-                <b-card class="w-100" @click="$router.push({path: `/users/${item.id}`})">
+                <b-card class="w-100" >
                     <b-row class="smallerText">
                         <b-col sm="3">{{item.firstName}} {{item.lastName}}</b-col>
                         <b-col sm="2" >{{item.login}}</b-col>
-                        <b-col sm="3">{{item.email}}</b-col>
+                        <b-col sm="2">{{item.email}}</b-col>
                         <b-col sm="1"> <b-form-checkbox readonly="readonly" :checked="item.emailConfirm"/></b-col>
                         <b-col sm="3">{{isAdmin(item.role)}}</b-col>
+                        <b-col sm="1" @click="$router.push({path: `/users/${item.id}`})"><b-icon icon="box-arrow-right"/></b-col>
                     </b-row>
                 </b-card>
         </b-row>
