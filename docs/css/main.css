@@ -3,3 +3,7 @@
   position: fixed;
   width: 100%;
 }
+
+.smallerText {
+  font-size: 0.85rem;
+}
