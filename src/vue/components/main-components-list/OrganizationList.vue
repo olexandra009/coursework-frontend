@@ -1,6 +1,10 @@
 <template>
     <div>
-        <!--TODO: organization create-->
+        <b-button class="mt-3 btn-block"  v-if="adminEdit" v-b-toggle.create-news-collapse variant="outline-info">Додати подію</b-button>
+        <b-collapse id="create-news-collapse" class="mt-2">
+            <form-organization-created/>
+        </b-collapse>
+
         <div class="mt-2">
             <b-row>
                 <b-card class="w-100 bg-light">
@@ -25,10 +29,13 @@
 </template>
 
 <script>
+    import FormOrganizationCreated from "../inner-components/created-forms/FormOrganizationCreated.vue";
     export default {
         name: "OrganizationList",
+        components: {FormOrganizationCreated},
         data(){
             return{
+                adminEdit: true,
                 organization: [
                     {id: 1,
                         name: 'First Organization',

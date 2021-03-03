@@ -1,6 +1,11 @@
 <template>
     <div class="w-100 pt-3">
-        <b-row class="text-center">
+        <b-button class="mt-3 btn-block"  v-if="adminEdit" v-b-toggle.create-news-collapse variant="outline-info">Додати подію</b-button>
+        <b-collapse id="create-news-collapse" class="mt-2">
+            <form-event-created/>
+        </b-collapse>
+
+        <b-row class="text-center mt-3">
 
             <b-input-group class="w-100 m-auto">
                 <b-form-select  v-model="selectedOrganization" :options="organization"/>
@@ -29,11 +34,13 @@
 <script>
     import CutTextComponent from "../inner-components/CutTextComponent.vue";
     import PhotoTab from "../inner-components/PhotoTab.vue";
+    import FormEventCreated from "../inner-components/created-forms/FormEventCreated.vue";
     export default {
         name: "EventsList",
-        components: {CutTextComponent, PhotoTab},
+        components: {FormEventCreated, CutTextComponent, PhotoTab},
         data() {
             return {
+                adminEdit: true,
                 events:[{
                     id: 0,
                     name: "Header name",

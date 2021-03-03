@@ -1,9 +1,14 @@
 <template>
    <div class="min-vh-100 mt-1">
        <!--todo: filter-->
-       <!--todo: create form -->
-        <b-row v-for="item in applications" :key="item.id" class="mt-2">
-            <b-card @click="$router.push(`/application/${item.id}`)">
+       <b-button class="mt-3 btn-block"  v-if="adminEdit" v-b-toggle.create-news-collapse variant="outline-info">Створити заявку</b-button>
+       <b-collapse id="create-news-collapse" class="mt-2">
+           <form-application-created/>
+       </b-collapse>
+
+
+       <b-row v-for="item in applications" :key="item.id" class="mt-2">
+           <b-card class="mt-2 w-100 pl-1 pr-1" @click="$router.push(`/application/${item.id}`)">
                 <b-row class="w-100">
                     <div class="d-flex smallerText justify-content-between w-100">
                        <span>{{item.authorName}}</span>
@@ -35,8 +40,10 @@
 </template>
 
 <script>
+    import FormApplicationCreated from "../inner-components/created-forms/FormApplicationCreated.vue";
     export default {
         name: "ApplicationList",
+        components: {FormApplicationCreated},
         methods:{
             getStatusLine(st){
                 var s = parseInt(st);
@@ -57,6 +64,7 @@
         },
         data(){
             return{
+                adminEdit: true,
                 applications: [
                     {id: 1, authorId: 1, answerId: null, authorName: "First Second Lastlast", subject: 'Тема заявки 1 Ла-ла-ла-ла-ла-ла- але не має бути занадто довгою',
                      text: "Текст що описує дуууууууууууууууууууууже велииику пробему ",

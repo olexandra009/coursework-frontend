@@ -1,6 +1,12 @@
 <template>
     <div class="w-100 pt-3">
-        <b-row class="text-center">
+        <b-button class="mt-3 btn-block"  v-if="adminEdit" v-b-toggle.create-news-collapse variant="outline-info">Додати новину</b-button>
+        <b-collapse id="create-news-collapse" class="mt-2">
+            <form-news-created/>
+        </b-collapse>
+
+
+        <b-row class="text-center mt-3 ">
             <b-input-group class="w-100 m-auto">
                 <b-form-select  v-model="selectedOrganization" :options="organization"/>
                 <b-input-group-append class="pl-2">
@@ -29,12 +35,14 @@
 <script>
     import CutTextComponent from "../inner-components/CutTextComponent.vue";
     import PhotoTab from "../inner-components/PhotoTab.vue";
+    import FormNewsCreated from "../inner-components/created-forms/FormNewsCreated.vue";
 
     export default {
         name: "NewsList",
-        components: {PhotoTab, CutTextComponent},
+        components: {FormNewsCreated, PhotoTab, CutTextComponent},
         data(){
             return {
+                adminEdit: true,
                 news: [{id:1, header: 'First News Header', text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n" +
                         "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n" +
                         "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n" +
