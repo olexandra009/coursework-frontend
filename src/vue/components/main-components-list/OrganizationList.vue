@@ -7,7 +7,7 @@
                     <b-row>
                         <b-col class="col-6 ">Назва організації</b-col>
                         <b-col class="col-5 ">Контактний телефон</b-col>
-                    g    <b-col class="col-1 "/>
+                        <b-col class="col-1 "/>
                     </b-row>
                 </b-card>
             </b-row>

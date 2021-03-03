@@ -4,10 +4,10 @@
             <h3 class="m-auto">Інформація про користувача</h3>
         </b-row>
         <b-row class="mt-3 ml-1">
-            <b-col sm="3">Прізвище:</b-col>
+            <b-col sm="3" class="vertical">Прізвище:</b-col>
             <b-col sm="9" v-if="!editSurname">
                 <b-row>
-                    <b-col sm="10">{{user.lastName}}</b-col>
+                    <b-col sm="10" class="vertical">{{user.lastName}}</b-col>
                     <b-col sm="2">
                         <b-button variant="outline-info" @click="editSurname=edit(editSurname)">
                             <b-icon icon="pencil"/>
@@ -27,10 +27,10 @@
         </b-row>
 
         <b-row class="mt-3 ml-1">
-            <b-col sm="3">Ім'я:</b-col>
+            <b-col sm="3" class="vertical">Ім'я:</b-col>
             <b-col sm="9" v-if="!editName">
                 <b-row>
-                    <b-col sm="10">{{user.firstName}}</b-col>
+                    <b-col sm="10" class="vertical">{{user.firstName}}</b-col>
                     <b-col sm="2">
                         <b-button variant="outline-info" @click="editName=edit(editName)">
                             <b-icon icon="pencil"/>
@@ -51,10 +51,10 @@
 
 
         <b-row class="mt-3 ml-1">
-            <b-col sm="3">По-батькові:</b-col>
+            <b-col sm="3" class="vertical">По-батькові:</b-col>
             <b-col sm="9" v-if="!editSecond">
                 <b-row>
-                    <b-col sm="10">{{user.secondName}}</b-col>
+                    <b-col sm="10" class="vertical">{{user.secondName}}</b-col>
                     <b-col sm="2">
                         <b-button variant="outline-info" @click="editSecond=edit(editSecond)">
                             <b-icon icon="pencil"/>
@@ -75,10 +75,10 @@
 
 
         <b-row class="mt-3 ml-1">
-            <b-col sm="3">Email:</b-col>
+            <b-col sm="3" class="vertical">Email:</b-col>
             <b-col sm="9" v-if="!editEmail">
                 <b-row>
-                    <b-col sm="10">{{user.email}}</b-col>
+                    <b-col sm="10" class="vertical">{{user.email}}</b-col>
                     <b-col sm="2">
                         <b-button variant="outline-info" @click="editEmail=edit(editEmail)">
                             <b-icon icon="pencil"/>
@@ -98,10 +98,10 @@
         </b-row>
 
         <b-row class="mt-3 ml-1">
-            <b-col sm="3">Телефон:</b-col>
+            <b-col sm="3" class="vertical">Телефон:</b-col>
             <b-col sm="9" v-if="!editPhone">
                 <b-row>
-                    <b-col sm="10">{{user.phoneNumber}}</b-col>
+                    <b-col sm="10" class="vertical">{{user.phoneNumber}}</b-col>
                     <b-col sm="2">
                         <b-button variant="outline-info" @click="editPhone=edit(editPhone)">
                             <b-icon icon="pencil"/>

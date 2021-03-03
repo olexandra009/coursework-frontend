@@ -4,6 +4,10 @@
   width: 100%;
 }
 
+.vertical {
+  margin: auto;
+}
+
 .smallerText {
   font-size: 0.85rem;
 }
