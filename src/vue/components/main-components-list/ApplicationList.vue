@@ -10,6 +10,11 @@
                        <span>{{item.openDate}}</span>
                     </div>
                 </b-row>
+                <b-row class="w-100">
+                    <div class="smallerText d-flex justify-content-end w-100">
+                        <span> <b-icon :icon="getIconStatus(item.status)"/> {{getStatusLine(item.status)}}</span>
+                    </div>
+                </b-row>
                 <b-row>
                     <span><b>Тема: </b>{{item.subject}}</span>
                 </b-row>
@@ -32,6 +37,24 @@
 <script>
     export default {
         name: "ApplicationList",
+        methods:{
+            getStatusLine(st){
+                var s = parseInt(st);
+                switch (s) {
+                    case 1: return 'Очікується';
+                    case 2: return "В процесі";
+                    case 3: return "Закрита";
+                }
+            },
+            getIconStatus(st){
+                var s = parseInt(st);
+                switch (s) {
+                    case 1: return 'clock';
+                    case 2: return "hourglass-split";
+                    case 3: return "check2-circle";
+                }
+            }
+        },
         data(){
             return{
                 applications: [
