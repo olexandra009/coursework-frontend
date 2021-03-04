@@ -19,7 +19,7 @@
                 <b-col sm="9">{{application.subject}}</b-col>
             </b-row>
             <b-row class="mt-2">
-                <b-col sm="12" v-html="newLinedText(application.text)"/>
+                <b-col sm="12" v-html="editHtmText(application.text)"/>
             </b-row>
             <!--TODO: MULTIMEDIA-->
         </div>
@@ -33,7 +33,7 @@
                 <b-col sm="9">{{application.closeDate}}</b-col>
             </b-row>
             <b-row class="mt-2">
-                <b-col sm="12" v-html="newLinedText(application.result)"/>
+                <b-col sm="12" v-html="editHtmText(application.result)"/>
             </b-row>
 
         </div>
@@ -45,7 +45,25 @@
     export default {
         name: "ApplicationItem",
         methods:{
-            newLinedText: (t)=> t.replaceAll('\n', '<br />'),
+            editHtmText(text){
+                let addLines = this.newLinedText(text);
+                let removeHtml = this.remove_tags(addLines);
+                return removeHtml;
+            },
+            remove_tags(html){
+                let br = html.replaceAll("<br>","||br||").replaceAll("<br/>","||br||").replaceAll("<br />","||br||");
+                let i = br.replaceAll("<i>","||is||").replaceAll("</i>","||ie||");
+                let b = i.replaceAll("<b>","||bs||").replaceAll("</b>","||be||");
+
+                let tmp = document.createElement("DIV");
+                tmp.innerHTML = b;
+                let result = tmp.textContent||tmp.innerText;
+                result = result.replaceAll("||br||","<br />")
+                    .replaceAll("||is||","<i>").replaceAll("||ie||","</i>")
+                    .replaceAll("||bs||","<b>").replaceAll("||be||","</b>");
+                return result;
+            },
+            newLinedText: (t)=> t.replaceAll('\n','<br />'),
             getStatusLine(st){
                 var s = parseInt(st);
                 switch (s) {

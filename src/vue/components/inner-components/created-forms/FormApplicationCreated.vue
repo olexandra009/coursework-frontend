@@ -45,7 +45,6 @@
                             </b-row>
                         </b-card>
                     </b-row>
-
             </b-row>
             <div class="d-flex justify-content-around mt-4">
                 <b-button type="submit" variant="info">Cтворити</b-button>
@@ -59,6 +58,25 @@
     export default {
         name: "FormApplicationCreated",
         methods: {
+            editHtmText(text){
+                let addLines = this.newLinedText(text);
+                let removeHtml = this.remove_tags(addLines);
+                return removeHtml;
+            },
+            remove_tags(html){
+                let br = html.replaceAll("<br>","||br||").replaceAll("<br/>","||br||").replaceAll("<br />","||br||");
+                let i = br.replaceAll("<i>","||is||").replaceAll("</i>","||ie||");
+                let b = i.replaceAll("<b>","||bs||").replaceAll("</b>","||be||");
+
+                let tmp = document.createElement("DIV");
+                tmp.innerHTML = b;
+                let result = tmp.textContent||tmp.innerText;
+                result = result.replaceAll("||br||","<br />")
+                                .replaceAll("||is||","<i>").replaceAll("||ie||","</i>")
+                                .replaceAll("||bs||","<b>").replaceAll("||be||","</b>");
+                return result;
+            },
+            newLinedText: (t)=> t.replaceAll('\n','<br />'),
             deleteImage(id){
                 console.log("Here");
                 let x = parseInt(id);
