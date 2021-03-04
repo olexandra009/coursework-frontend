@@ -1,6 +1,7 @@
 <template>
     <div class="min-vh-100 mt-1">
-        <!--todo: add filters-->
+        <form-user-filter/>
+
         <b-row class="mt-1">
             <b-card class="mt-1 w-100 bg-light">
                 <b-row class="smallerText">
@@ -28,8 +29,10 @@
 </template>
 
 <script>
+    import FormUserFilter from "../inner-components/filtered-form/FormUserFilter.vue";
     export default {
         name: "UserList",
+        components: {FormUserFilter},
         methods: {
               isAdmin(rights){
                   let simpleUser = "User";
