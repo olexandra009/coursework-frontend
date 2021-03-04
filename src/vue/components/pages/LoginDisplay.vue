@@ -8,7 +8,7 @@
               <div class="pt-2">
                     <label>Логін:</label>
                     <b-form-input
-                            v-model="login"
+                            v-model="loginModel"
                             :state="null"
                             required
                             aria-describedby="input-live-help input-live-feedback"
@@ -29,8 +29,8 @@
                 </div>
                 <div class="pt-3">
                     <div class="d-flex justify-content-around">
-                        <b-button class="w-25 btn-info">Вхід</b-button>
-                        <b-button>Відхилити</b-button>
+                        <b-button class="w-25 btn-info" @click="loginInto">Вхід</b-button>
+                        <b-button @click="show">Відхилити</b-button>
                     </div>
                     <div class="pt-3 text-center text-dark">
                         <router-link to="/singup">Немає аккаунту? Створити новий</router-link>
@@ -43,15 +43,30 @@
 
 <script>
     import "bootstrap-vue";
+    import Vuex from "vuex";
 
     export default {
         name: "LoginDisplay",
-        computed: {
+        computed: Vuex.mapState({
+            users: state => state.user.currentUser,
+
+        }),
+        methods:{
+            ...Vuex.mapActions(['login']),
+            show(){
+                console.log(this.loginModel);
+                console.log(this.password);
+            },
+            async loginInto(){
+                console.log(this.loginModel);
+                console.log(this.password);
+                await this.$store.dispatch("user/login", {'login': this.loginModel, 'password': this.password})
+            }
 
         },
         data() {
             return {
-                login: '',
+                loginModel: '',
                 firstName: '',
                 lastName: '',
                 secondName: '',

@@ -1,4 +1,4 @@
-const baseUrl = "https://localhost:44336";
+export const baseUrl = "https://localhost:44336";
 
 const application = {
     api: {
@@ -64,4 +64,18 @@ const petition = {
         byStatus: '/filter_by_status',
         byAuthor:'/filter_by_author'
     }
+};
+const user={
+    login: '/login',
+};
+
+export default{
+    baseUrl,
+    user,
+    application,
+    petition,
+    organization,
+    news,
+    events,
+
 }

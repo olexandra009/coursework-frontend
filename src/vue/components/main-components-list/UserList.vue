@@ -19,7 +19,7 @@
                         <b-col sm="3">{{item.firstName}} {{item.lastName}}</b-col>
                         <b-col sm="2" >{{item.login}}</b-col>
                         <b-col sm="2">{{item.email}}</b-col>
-                        <b-col sm="1"> <b-form-checkbox readonly="readonly" :checked="item.emailConfirm"/></b-col>
+                        <b-col sm="1"> <b-form-checkbox disabled="disabled" :checked="item.emailConfirm"/></b-col>
                         <b-col sm="3">{{isAdmin(item.role)}}</b-col>
                         <b-col sm="1" @click="$router.push({path: `/users/${item.id}`})"><b-icon icon="box-arrow-right"/></b-col>
                     </b-row>
