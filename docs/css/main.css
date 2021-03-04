@@ -27,3 +27,7 @@
 .switch-col {
   text-align: end;
 }
+
+.hidden {
+  opacity: 0;
+}

@@ -1,5 +1,5 @@
 <template>
-    <div class="w-100 pt-3">
+    <div class="w-100 min-vh-100 mt-1">
         <b-button class="mt-3 btn-block"  v-if="adminEdit" v-b-toggle.create-news-collapse variant="outline-info">Додати новину</b-button>
         <b-collapse id="create-news-collapse" class="mt-2">
             <form-news-created/>

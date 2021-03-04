@@ -1,5 +1,5 @@
 <template>
-    <div class="w-100 pt-3">
+    <div class="w-100 min-vh-100 mt-1">
 
         <b-button class="mt-3 btn-block"  v-b-toggle.create-petition-collapse variant="outline-info">Створити нову петицію</b-button>
         <b-collapse id="create-petition-collapse" class="mt-2">

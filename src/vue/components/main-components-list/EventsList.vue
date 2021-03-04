@@ -1,19 +1,16 @@
 <template>
-    <div class="w-100 pt-3">
+    <div class="w-100 min-vh-100 mt-1">
         <b-button class="mt-3 btn-block"  v-if="adminEdit" v-b-toggle.create-news-collapse variant="outline-info">Додати подію</b-button>
         <b-collapse id="create-news-collapse" class="mt-2">
             <form-event-created/>
         </b-collapse>
 
-        <b-row class="text-center mt-3">
+        <b-button class="mt-3 btn-block"  v-if="adminEdit" v-b-toggle.filter-collapse variant="outline-info">Фільтрація подій</b-button>
+        <b-collapse id="filter-collapse" class="mt-2">
+            <form-event-filter/>
+        </b-collapse>
 
-            <b-input-group class="w-100 m-auto">
-                <b-form-select  v-model="selectedOrganization" :options="organization"/>
-                <b-input-group-append class="pl-2">
-                    <b-button variant="outline-light btn-info">Пошук</b-button>
-                </b-input-group-append>
-            </b-input-group>
-        </b-row>
+
         <b-row v-for="item in events" :key="item.id">
             <b-card class="mt-2 bg-light w-100">
                 <router-link  v-bind:to="`/events/${item.id}`"><h5>{{item.name}}</h5></router-link>
@@ -35,9 +32,10 @@
     import CutTextComponent from "../inner-components/CutTextComponent.vue";
     import PhotoTab from "../inner-components/PhotoTab.vue";
     import FormEventCreated from "../inner-components/created-forms/FormEventCreated.vue";
+    import FormEventFilter from "../inner-components/filtered-form/FormEventFilter.vue";
     export default {
         name: "EventsList",
-        components: {FormEventCreated, CutTextComponent, PhotoTab},
+        components: {FormEventFilter, FormEventCreated, CutTextComponent, PhotoTab},
         data() {
             return {
                 adminEdit: true,
@@ -61,10 +59,7 @@
                     multimedias: []
                 },
                 ],
-                selectedOrganization: null,
-                organization: [{text: 'Оберіть організацію', value: null},
-                    {value: 1, text: 'Organization1'},
-                    {value:2, text: 'Organization2'}],
+
             }
         }
     }

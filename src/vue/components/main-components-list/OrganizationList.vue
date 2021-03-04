@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="min-vh-100 mt-1">
         <b-button class="mt-3 btn-block"  v-if="adminEdit" v-b-toggle.create-news-collapse variant="outline-info">Додати організацію</b-button>
         <b-collapse id="create-news-collapse" class="mt-2">
             <form-organization-created/>

@@ -1,5 +1,5 @@
 <template>
-    <div class="min-vh-100">
+    <div class="min-vh-100 mt-1">
         <!--todo: add filters-->
         <b-row class="mt-1">
             <b-card class="mt-1 w-100 bg-light">
