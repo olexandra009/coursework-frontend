@@ -18,11 +18,13 @@
 </template>
 
 <script>
+    import {editHtmText} from "../../../js/utility";
+
     export default {
         name: "PetitionItemText",
         props: ['petition_text','petition_header','petition_authorName','petition_startDate', 'petition_answer'],
         methods:  {
-            newLinedText: (t)=> t.replaceAll('\n', '<br />'),
+            newLinedText: (t)=> {return editHtmText(t)},
         },
     }
 </script>

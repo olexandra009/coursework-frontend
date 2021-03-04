@@ -18,11 +18,13 @@
 
 <script>
     import PhotoTab from "../inner-components/PhotoTab.vue";
+    import {editHtmText} from "../../../js/utility";
+
     export default {
         name: "NewsItem",
         components: {PhotoTab},
         methods:{
-            newLinedText: (t)=> t.replaceAll('\n', '<br />'),
+            newLinedText: (t)=> editHtmText(t),
         },
         data(){
             return{

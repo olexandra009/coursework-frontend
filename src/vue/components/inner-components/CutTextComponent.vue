@@ -9,6 +9,8 @@
 </template>
 
 <script>
+    import {editHtmText} from "../../../js/utility";
+
     export default {
         props:['text'],
         name: "CutTextComponent",
@@ -18,7 +20,7 @@
             }
         },
         methods: {
-            newLinedText(t){return t.replaceAll('\n', '<br />')},
+            newLinedText(t){return editHtmText(t)},
             activateReadMore(){
                 this.readMoreActivated = true;
             }

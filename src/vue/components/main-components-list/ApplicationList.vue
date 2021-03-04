@@ -23,7 +23,7 @@
                 <b-row>
                     <span><b>Тема: </b>{{item.subject}}</span>
                 </b-row>
-                <b-row v-if="item.status==3">
+                <b-row v-if="item.status===3">
                     <div class="w-100">
                     <span><b>Автор відповіді: </b>{{item.answererName}}</span>
                     </div>
@@ -41,26 +41,13 @@
 
 <script>
     import FormApplicationCreated from "../inner-components/created-forms/FormApplicationCreated.vue";
+    import {getIconApplicationStatus, getStatusApplicationLine} from "../../../js/utility";
     export default {
         name: "ApplicationList",
         components: {FormApplicationCreated},
         methods:{
-            getStatusLine(st){
-                var s = parseInt(st);
-                switch (s) {
-                    case 1: return 'Очікується';
-                    case 2: return "В процесі";
-                    case 3: return "Закрита";
-                }
-            },
-            getIconStatus(st){
-                var s = parseInt(st);
-                switch (s) {
-                    case 1: return 'clock';
-                    case 2: return "hourglass-split";
-                    case 3: return "check2-circle";
-                }
-            }
+            getStatusLine(st){return getStatusApplicationLine(st)},
+            getIconStatus(st){return getIconApplicationStatus(st)}
         },
         data(){
             return{

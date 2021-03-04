@@ -24,7 +24,12 @@
 </template>
 
 <script>
-    import {convertStringToDate} from "../../../js/utility";
+    import {
+        endPetitionDate,
+        lastPetitionDate,
+        statusPetitionIcon,
+        statusPetitionLine, votesPetitionString
+    } from "../../../js/utility";
     import FormPetitionCreated from "../inner-components/created-forms/FormPetitionCreated.vue";
     export default {
         name: "PetitionList",
@@ -74,97 +79,23 @@
                 ],
             }
         },
-        methods:{
-
-            calculateDate: (finishDate)=> {
-                let date = convertStringToDate(finishDate);
-                let dateNow = new Date();
-                return date>dateNow;
+        methods: {
+            calculateDate: (finishDate) => {
+                return endPetitionDate(finishDate)
             },
-            lastDate: (finishDate)=>{
-                let date = convertStringToDate(finishDate);
-                let dateNow = new Date();
-                let diff = Math.abs(date-dateNow);
-                let days = parseInt(diff/1000/60/60/24);
-                if( days === 0) return "Залишилось менше доби";
-                let dS;
-                let str = days.toString();
-                let last = parseInt(str.substring(str.length-1));
-                if (days===11||days===12||days===13||days===14)
-                    dS= 'днів';
-                else
-                    switch(last){
-                        case 0: case 5:
-                        case 6: case 7:
-                        case 8: case 9:
-                            dS= 'днів';
-                            break;
-                        case 1:
-                            dS= "день";
-                            break;
-                        case 2: case 3:
-                        case 4:
-                            dS= "дні";
-                            break;
-                    }
-                return "Залишилось "+days +" "+dS;
+            lastDate: (finishDate) => {
+                return lastPetitionDate(finishDate)
             },
-            statusIcon: (currentVotes, minVotes, finishDate, result)=>{
-                let data = convertStringToDate(finishDate);
-                let now = new Date();
-                'check-circle';
-                if (minVotes <= currentVotes){
-                    if(result&&result.length>0)
-                        return 'check-circle';
-                    return "hourglass-split";
-                } else {
-                    if(now>data){
-                        return 'x';
-                    } else {
-                        return "hourglass-split";
-                    }
-                }
+            statusIcon: (currentVotes, minVotes, finishDate, result) => {
+                return statusPetitionIcon(currentVotes, minVotes, finishDate, result)
             },
-            status: (currentVotes, minVotes, finishDate, result)=>{
-                let data =convertStringToDate(finishDate);
-                let now = new Date();
-                console.log("------------");
-                console.log(data+" "+now+" ");
-                console.log(now>data);
-                console.log(now<data);
-                console.log("------------");
-
-                if(minVotes<=currentVotes){
-                    if(result&&result.length>0)
-                        return `З відповіддю`;
-                    return `На розгляді`;
-                } else {
-                    if(now>data)
-                        return `Не підтримано`;
-                    else
-                        return `Триває збір підписів`;
-                }
+            status: (currentVotes, minVotes, finishDate, result) => {
+                return statusPetitionLine(currentVotes, minVotes, finishDate, result)
             },
-          votesString: (numVote)=>{
-              let num = parseInt(numVote);
-              if (num===11||num===12||num===13||num===14)
-                  return 'голосів';
-              let numStr= numVote.toString();
-              let numLast = parseInt(numStr.substring(numStr.length-1));
-              switch(numLast){
-                  case 0: case 5:
-                  case 6: case 7:
-                  case 8: case 9:
-                      return 'голосів';
-                  case 1:
-                      return "голос";
-                  case 2: case 3:
-                  case 4:
-                      return "голоси";
-              }
-          }
-        },
-
+            votesString: (numVote) => {
+                return votesPetitionString(numVote)
+            },
+        }
     }
 </script>
 
