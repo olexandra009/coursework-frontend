@@ -10,9 +10,7 @@
                         <b-button variant="outline-light btn-info">Скинути</b-button>
                     </b-input-group-append>
                 </b-input-group>
-
             </b-col>
-
         </b-row>
     </div>
 </template>
