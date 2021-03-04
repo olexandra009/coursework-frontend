@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-row v-if="showCreatedForm">
+        <b-row>
             <b-form v-on:submit.prevent="SubmitReview" v-on:reset.prevent="ResetReview" class="w-75 m-auto">
                 <div class="pt-2">
                     <b-form-group  label="Заголовок:" >
@@ -26,9 +26,7 @@
                 </div>
             </b-form>
         </b-row>
-        <b-row v-else>
-            <b-button variant="info" @click="changeFormVisible()" class="w-75 m-auto">Створити нову петицію</b-button>
-        </b-row>
+
     </div>
 </template>
 
