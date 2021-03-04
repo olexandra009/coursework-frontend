@@ -1,11 +1,13 @@
 <template>
    <div class="min-vh-100 mt-1">
-       <!--todo: filter-->
-       <b-button class="mt-3 btn-block"  v-if="adminEdit" v-b-toggle.create-news-collapse variant="outline-info">Створити заявку</b-button>
+
+       <b-button class="mt-3 btn-block"  v-if="adminEdit" v-b-toggle.create-news-collapse variant="outline-info">Створити звернення</b-button>
        <b-collapse id="create-news-collapse" class="mt-2">
            <form-application-created/>
        </b-collapse>
-
+       <b-row class="mt-2">
+           <form-application-filter/>
+       </b-row>
 
        <b-row v-for="item in applications" :key="item.id" class="mt-2">
            <b-card class="mt-2 w-100 pl-1 pr-1" @click="$router.push(`/application/${item.id}`)">
@@ -42,9 +44,10 @@
 <script>
     import FormApplicationCreated from "../inner-components/created-forms/FormApplicationCreated.vue";
     import {getIconApplicationStatus, getStatusApplicationLine} from "../../../js/utility";
+    import FormApplicationFilter from "../inner-components/filtered-form/FormApplicationFilter.vue";
     export default {
         name: "ApplicationList",
-        components: {FormApplicationCreated},
+        components: {FormApplicationFilter, FormApplicationCreated},
         methods:{
             getStatusLine(st){return getStatusApplicationLine(st)},
             getIconStatus(st){return getIconApplicationStatus(st)}
