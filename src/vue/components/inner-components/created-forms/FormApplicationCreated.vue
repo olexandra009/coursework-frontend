@@ -32,7 +32,7 @@
                     <label>Оберіть зображення: </label>
                 </b-col>
                 <b-col sm="9" class="file-upload-form">
-                    <b-form-file multiple v-model="files"  @change="previewImages" accept="image/*"/>
+                    <b-form-file multiple  @change="previewImages" accept="image/*"/>
                     <div class="w-100 smallerText text-secondary">Ви можете прикріпити 5 зображень</div>
                 </b-col>
                     <b-row class="ml-1">

@@ -58,9 +58,16 @@
                 console.log(this.password);
             },
             async loginInto(){
-                console.log(this.loginModel);
-                console.log(this.password);
-                await this.$store.dispatch("user/login", {'login': this.loginModel, 'password': this.password})
+                let result = await this.$store.dispatch("user/login", {'login': this.loginModel, 'password': this.password});
+                if(result.error===true){
+                    this.$bvToast.toast(result.errorText, {
+                        title: `Помилка`,
+                        variant: 'danger',
+                        solid: true
+                    });
+                } else {
+                    this.$router.push('/');
+                }
             }
 
         },

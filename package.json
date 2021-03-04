@@ -21,6 +21,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/preset-env": "^7.12.16",
+    "axios": "^0.21.1",
     "babel-loader": "^8.2.2",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.6.0",
