@@ -9,6 +9,10 @@
             <div class="mt-4">
                 <p v-html="`${newLinedText(petition_text)}`"/>
             </div>
+            <div class="text-center">Відповідь:</div>
+            <div>
+                <p v-html="`${newLinedText(petition_answer)}`"/>
+            </div>
         </div>
     </div>
 </template>
@@ -16,7 +20,7 @@
 <script>
     export default {
         name: "PetitionItemText",
-        props: ['petition_text','petition_header','petition_authorName','petition_startDate'],
+        props: ['petition_text','petition_header','petition_authorName','petition_startDate', 'petition_answer'],
         methods:  {
             newLinedText: (t)=> t.replaceAll('\n', '<br />'),
         },

@@ -15,7 +15,7 @@
                        <span>{{item.votesNumber}} {{votesString(item.votesNumber)}}</span>
                        <b-progress :value="item.votesNumber" height="5px" :max="item.minVotes" class="mb-3"/>
                        <p v-if="calculateDate(item.finishDate)">{{lastDate(item.finishDate)}}</p>
-                       <span><b-icon :icon="statusIcon(item.votesNumber, item.minVotes, item.finishDate)"/> {{status(item.votesNumber, item.minVotes, item.finishDate)}}</span>
+                       <span><b-icon :icon="statusIcon(item.votesNumber, item.minVotes, item.finishDate, item.answer)"/> {{status(item.votesNumber, item.minVotes, item.finishDate, item.answer)}}</span>
                    </b-col>
                </b-row>
             </b-card>
@@ -59,6 +59,7 @@
                         authorName: "Last First Second",
                         authorId: 1,
                         votesNumber: 2503,
+                        answer: "HE IS ANSWER",
                         minVotes: 2500},
                     {id: 4,
                         header: "Header of Petition can be very very long",
@@ -108,23 +109,23 @@
                     }
                 return "Залишилось "+days +" "+dS;
             },
-            statusIcon: (currentVotes, minVotes, finishDate)=>{
+            statusIcon: (currentVotes, minVotes, finishDate, result)=>{
                 let data = convertStringToDate(finishDate);
                 let now = new Date();
-                if(now>data) {
-                    if (minVotes > currentVotes)
+                'check-circle';
+                if (minVotes <= currentVotes){
+                    if(result&&result.length>0)
+                        return 'check-circle';
+                    return "hourglass-split";
+                } else {
+                    if(now>data){
                         return 'x';
-                    else
-                        return 'clock';
-                }else {
-                    if (minVotes <= currentVotes)
-                        return 'clock';
-                    else
+                    } else {
                         return "hourglass-split";
+                    }
                 }
-
             },
-            status: (currentVotes, minVotes, finishDate)=>{
+            status: (currentVotes, minVotes, finishDate, result)=>{
                 let data =convertStringToDate(finishDate);
                 let now = new Date();
                 console.log("------------");
@@ -132,14 +133,14 @@
                 console.log(now>data);
                 console.log(now<data);
                 console.log("------------");
-                if(now>data){
-                    if(minVotes>currentVotes)
-                        return `Не підтримано`;
-                    else
-                        return `На розгляді`;
+
+                if(minVotes<=currentVotes){
+                    if(result&&result.length>0)
+                        return `З відповіддю`;
+                    return `На розгляді`;
                 } else {
-                    if(minVotes<=currentVotes)
-                        return `На розгляді`;
+                    if(now>data)
+                        return `Не підтримано`;
                     else
                         return `Триває збір підписів`;
                 }

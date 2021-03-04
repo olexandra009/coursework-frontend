@@ -4,7 +4,8 @@
             <router-view :petition_header="petition.header"
                          :petition_text="petition.text"
                          :petition_authorName="petition.authorName"
-                         :petition_startDate="petition.starDate"/>
+                         :petition_startDate="petition.starDate"
+                         :petition_answer="petition.answer"/>
         </b-col>
         <b-col order="1"  order-md="2" order-sm="1" md="3">
             <div class="d-block d-sm-block d-md-none">
@@ -20,7 +21,6 @@
                     <div v-else>
                         <router-link  :to="`${petition.id}/votes/${petition.id}`">Зібрані підписи</router-link>
                     </div>
-
                     <b-button style="width: 165px" variant="info" v-if="endDate(petition.finishDate)">Підписати петицію</b-button>
                     <b-button style="width: 165px" variant="info" disabled v-else>Збір завершено</b-button>
                 </div>
@@ -60,6 +60,8 @@
                     <div v-else>
                         <router-link  :to="`${petition.id}/votes/${petition.id}`">Зібрані підписи</router-link>
                     </div>
+                </div>
+                <div class="mt-1 text-center"> <span><b-icon :icon="statusIcon(petition.votesNumber, petition.minVotes, petition.finishDate, petition.answer)"/> {{status(petition.votesNumber, petition.minVotes, petition.finishDate, petition.answer)}}</span>
                 </div>
             </div>
         </b-col>
@@ -108,11 +110,23 @@
                                 "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n" +
                                 "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n" +
                                 "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            answer: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod" +
+                                "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
+                                "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo" +
+                                "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse" +
+                                "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non" +
+                                "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n" +
+                                "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod" +
+                                "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
+                                "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo" +
+                                "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse" +
+                                "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non" +
+                                "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
                             starDate: "27.02.2021, 18:04:47",
                             finishDate: "27.06.2021, 18:04:47",
                             authorName: "Last First Second",
                             authorId: 1,
-                            votesNumber: 253,
+                            votesNumber: 2503,
                             minVotes: 2500},
             }
         },
@@ -155,6 +169,42 @@
                     case 3:
                     case 4:
                         return "голоси";
+                }
+            },
+            statusIcon: (currentVotes, minVotes, finishDate, result)=>{
+                let data = convertStringToDate(finishDate);
+                let now = new Date();
+                'check-circle';
+                if (minVotes <= currentVotes){
+                    if(result&&result.length>0)
+                        return 'check-circle';
+                    return "hourglass-split";
+                } else {
+                    if(now>data){
+                        return 'x';
+                    } else {
+                        return "hourglass-split";
+                    }
+                }
+            },
+            status: (currentVotes, minVotes, finishDate, result)=>{
+                let data =convertStringToDate(finishDate);
+                let now = new Date();
+                console.log("------------");
+                console.log(data+" "+now+" ");
+                console.log(now>data);
+                console.log(now<data);
+                console.log("------------");
+
+                if(minVotes<=currentVotes){
+                    if(result&&result.length>0)
+                        return `З відповіддю`;
+                    return `На розгляді`;
+                } else {
+                    if(now>data)
+                        return `Не підтримано`;
+                    else
+                        return `Триває збір підписів`;
                 }
             },
             lastDate: (finishDate)=>{
