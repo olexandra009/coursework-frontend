@@ -5,15 +5,8 @@
             <form-news-created/>
         </b-collapse>
 
+        <form-news-filter/>
 
-        <b-row class="text-center mt-3 ">
-            <b-input-group class="w-100 m-auto">
-                <b-form-select  v-model="selectedOrganization" :options="organization"/>
-                <b-input-group-append class="pl-2">
-                    <b-button variant="outline-light btn-info">Пошук</b-button>
-                </b-input-group-append>
-            </b-input-group>
-        </b-row>
         <b-row v-for="item in news" :key="item.id">
             <b-card class="mt-2 w-100 bg-light">
                 <router-link  v-bind:to="`/news/${item.id}`"><h5>{{item.header}}</h5></router-link>
@@ -36,10 +29,11 @@
     import CutTextComponent from "../inner-components/CutTextComponent.vue";
     import PhotoTab from "../inner-components/PhotoTab.vue";
     import FormNewsCreated from "../inner-components/created-forms/FormNewsCreated.vue";
+    import FormNewsFilter from "../inner-components/filtered-form/FormNewsFilter.vue";
 
     export default {
         name: "NewsList",
-        components: {FormNewsCreated, PhotoTab, CutTextComponent},
+        components: {FormNewsFilter, FormNewsCreated, PhotoTab, CutTextComponent},
         data(){
             return {
                 adminEdit: true,
@@ -84,10 +78,7 @@
                         dateTimeCreation: "27.02.2021, 18:04:47", edited: false, showAuthor: false, authorId: 12, authorName: "Last First Second",
                         multimedias: [], organizationId: 1, organizationName: 'First organization'},
                     ],
-                selectedOrganization: null,
-                organization: [{text: 'Оберіть організацію', value: null},
-                                {value: 1, text: 'Organization1'},
-                                {value:2, text: 'Organization2'}]
+
         }}
     }
 
