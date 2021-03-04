@@ -11,3 +11,15 @@
 .smallerText {
   font-size: 0.85rem;
 }
+
+.image-preview-div {
+  height: 130px;
+}
+
+.image-preview-image {
+  max-height: 100%;
+}
+
+.image-preview-card .card-body {
+  padding-top: 0.1rem !important;
+}
