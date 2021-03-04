@@ -68,25 +68,24 @@
 
         <b-button class="mt-3 ml-1 btn-block"  v-b-toggle.change-right variant="outline-info">Змінити ролі</b-button>
         <b-collapse id="change-right" class="mt-2">
-            <div>
-               <p>Ролі</p>
-            </div>
+            <change-user-role/>
         </b-collapse>
 
         <b-button class="mt-3 ml-1 btn-block"  v-b-toggle.change-organization variant="outline-info">Змінити організацію</b-button>
         <b-collapse id="change-organization" class="mt-2">
-            <div>
-                <p>ORGANIZATIONs</p>
-            </div>
+            <change-user-organization :user_id="user.id"/>
         </b-collapse>
-
+        <div class="min-vh-20"/>
 
     </div>
 </template>
 
 <script>
+    import ChangeUserOrganization from "../inner-components/change-forms/ChangeUserOrganization.vue";
+    import ChangeUserRole from "../inner-components/change-forms/ChangeUserRole.vue";
     export default {
         name: "UserItem",
+        components: {ChangeUserRole, ChangeUserOrganization},
         data(){
             return{
                 user: {
