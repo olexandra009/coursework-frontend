@@ -5,8 +5,8 @@
             <b-nav-item to="/news" exact exact-active-class="active">Новини</b-nav-item>
             <b-nav-item to="/events" exact exact-active-class="active">Події</b-nav-item>
             <div>
-            <b-nav-item to="/petition" exact exact-active-class="active">
-                <span> Петиції </span>
+            <b-nav-item  exact exact-active-class="active">
+                <span><router-link to="/petition">Петиції </router-link> </span>
                 <span v-b-toggle.petition-inner>
                     <b-icon icon="chevron-down" class="when-closed"/>
                     <b-icon icon="chevron-up" class="when-open"/>

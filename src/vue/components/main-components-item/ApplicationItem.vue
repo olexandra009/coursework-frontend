@@ -19,7 +19,7 @@
                 <b-col sm="9">{{application.subject}}</b-col>
             </b-row>
             <b-row class="mt-2">
-                <b-col sm="12" v-html="editHtmText(application.text)"/>
+                <b-col sm="12" v-html="formatText(application.text)"/>
             </b-row>
             <!--TODO: MULTIMEDIA-->
         </div>
@@ -35,16 +35,24 @@
             <b-row class="mt-2">
                 <b-col sm="12" v-html="formatText(application.result)"/>
             </b-row>
-
         </div>
-
+        <div class="mt-3 mb-3">
+            <b-row>
+                <b-col>
+                     <b-button class="btn-block" variant="info">Взяти в розробку</b-button>
+                </b-col>
+            </b-row>
+        </div>
+        <form-application-answer-created :answer="application.result" :appid="application.id"/>
     </div>
 </template>
 
 <script>
     import {editHtmText, getIconApplicationStatus, getStatusApplicationLine} from "../../../js/utility";
+    import FormApplicationAnswerCreated from "../inner-components/created-forms/FormApplicationAnswerCreated.vue";
     export default {
         name: "ApplicationItem",
+        components: {FormApplicationAnswerCreated},
         methods:{
             formatText(text){return editHtmText(text)},
             getStatusLine(t){return getStatusApplicationLine(t)},
