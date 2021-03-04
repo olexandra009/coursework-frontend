@@ -18,13 +18,16 @@
 </template>
 
 <script>
-    import {editHtmText} from "../../../js/utility";
+    import {editHtmText} from "../../../js/utility.js";
 
     export default {
         name: "PetitionItemText",
         props: ['petition_text','petition_header','petition_authorName','petition_startDate', 'petition_answer'],
         methods:  {
-            newLinedText: (t)=> {return editHtmText(t)},
+            newLinedText: (t)=>{
+                console.log("HERE");
+                return editHtmText(t)
+            },
         },
     }
 </script>

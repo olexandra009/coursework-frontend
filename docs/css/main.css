@@ -12,6 +12,10 @@
   font-size: 0.85rem;
 }
 
+.smallText {
+  font-size: 0.9rem;
+}
+
 .image-preview-div {
   height: 130px;
 }
@@ -30,4 +34,9 @@
 
 .hidden {
   opacity: 0;
+}
+
+.collapsed > .when-open,
+.not-collapsed > .when-closed {
+  display: none;
 }

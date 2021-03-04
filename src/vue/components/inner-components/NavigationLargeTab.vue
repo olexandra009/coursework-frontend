@@ -1,10 +1,24 @@
 <template>
     <b-col class="d-xs-none d-sm-none d-md-none d-lg-block" md="10">
-        <b-nav class="d-xs-none d-sm-none d-md-none d-lg-block">
+        <b-nav class="d-xs-none d-sm-none d-md-none d-lg-block smallText">
             <b-nav-item to="/cabinet" exact exact-active-class="active">Кабінет</b-nav-item>
             <b-nav-item to="/news" exact exact-active-class="active">Новини</b-nav-item>
             <b-nav-item to="/events" exact exact-active-class="active">Події</b-nav-item>
-            <b-nav-item to="/petition" exact exact-active-class="active">Петиції</b-nav-item>
+            <div>
+            <b-nav-item to="/petition" exact exact-active-class="active">
+                <span> Петиції </span>
+                <span v-b-toggle.petition-inner>
+                    <b-icon icon="chevron-down" class="when-closed"/>
+                    <b-icon icon="chevron-up" class="when-open"/>
+                </span>
+            </b-nav-item>
+
+
+            </div>
+            <b-collapse id="petition-inner">
+                <b-nav-item to="/petition/my" exact exact-active-class="active">Мої петиції</b-nav-item>
+                <b-nav-item to="/petition/voted" exact exact-active-class="active">Проголосовані</b-nav-item>
+            </b-collapse>
             <b-nav-item to="/application" exact exact-active-class="active">Заявки</b-nav-item>
             <b-nav-item to="/organization" exact exact-active-class="active">Організації</b-nav-item>
             <b-nav-item to="/users" exact exact-active-class="active">Користувачі</b-nav-item>

@@ -12,8 +12,8 @@ function convertStringToDate(str){
 }
 
 function editHtmText(text){
-    let addLines = this.newLinedText(text);
-    return this.remove_tags(addLines);
+    let addLines = newLinedText(text);
+    return remove_tags(addLines);
 }
 
 function remove_tags(html){
