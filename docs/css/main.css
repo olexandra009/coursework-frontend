@@ -23,3 +23,7 @@
 .image-preview-card .card-body {
   padding-top: 0.1rem !important;
 }
+
+.switch-col {
+  text-align: end;
+}

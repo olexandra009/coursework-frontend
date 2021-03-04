@@ -58,33 +58,10 @@
     export default {
         name: "FormApplicationCreated",
         methods: {
-            editHtmText(text){
-                let addLines = this.newLinedText(text);
-                let removeHtml = this.remove_tags(addLines);
-                return removeHtml;
-            },
-            remove_tags(html){
-                let br = html.replaceAll("<br>","||br||").replaceAll("<br/>","||br||").replaceAll("<br />","||br||");
-                let i = br.replaceAll("<i>","||is||").replaceAll("</i>","||ie||");
-                let b = i.replaceAll("<b>","||bs||").replaceAll("</b>","||be||");
-
-                let tmp = document.createElement("DIV");
-                tmp.innerHTML = b;
-                let result = tmp.textContent||tmp.innerText;
-                result = result.replaceAll("||br||","<br />")
-                                .replaceAll("||is||","<i>").replaceAll("||ie||","</i>")
-                                .replaceAll("||bs||","<b>").replaceAll("||be||","</b>");
-                return result;
-            },
-            newLinedText: (t)=> t.replaceAll('\n','<br />'),
             deleteImage(id){
-                console.log("Here");
                 let x = parseInt(id);
-                console.log(x);
                 let deleted =this.imageDataArray.find(f=> f.id===x);
-                console.log(deleted);
                 const index = this.imageDataArray.indexOf(deleted);
-                console.log(index);
                 if (index > -1) {
                     this.imageDataArray.splice(index, 1);
                 }
@@ -93,6 +70,7 @@
             previewImages: function (event) {
                 if(this.imageDataArray.length >= 5)
                 {
+                    //todo alert or toast
                     return;
                 }
                 let fileList = event.target.files;
@@ -101,10 +79,10 @@
                     let count = fileList.length;
                     if(this.imageDataArray.length + count>= 5){
                         count = 5-this.imageDataArray.length;
+                        //todo alert or toast
                     }
                     for(let i = 0; i<count; i++ ) {
                         if (fileList[i]) {
-                            console.log(fileList[i]);
                             let reader = new FileReader();
                             reader.onload = (e) => {
                                 this.imageDataArray.push({id: this.imageDataId, image: e.target.result});
