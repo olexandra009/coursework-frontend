@@ -61,10 +61,29 @@
                         <router-link  :to="`${petition.id}/votes/${petition.id}`">Зібрані підписи</router-link>
                     </div>
                 </div>
-                <div class="mt-1 text-center"> <span><b-icon :icon="statusIcon(petition.votesNumber, petition.minVotes, petition.finishDate, petition.answer)"/> {{status(petition.votesNumber, petition.minVotes, petition.finishDate, petition.answer)}}</span>
+                <div class="mt-1 text-center">
+                    <span>
+                        <b-icon :icon="statusIcon(petition.votesNumber, petition.minVotes, petition.finishDate, petition.answer)"/> {{status(petition.votesNumber, petition.minVotes, petition.finishDate, petition.answer)}}
+                    </span>
+                </div>
+                <div class="mt-1 text-center">
+                   <b-button style="width: 165px" v-b-modal.answer-add variant="info">Додати відповідь</b-button>
                 </div>
             </div>
         </b-col>
+
+        <b-modal id="answer-add" hide-footer>
+            <template #modal-title>
+               Відповідь на петицію
+            </template>
+            <b-form-textarea
+                row="3"
+                required/>
+            <div class="d-flex justify-content-end">
+                <b-button variant="outline-danger" class="mr-1" @click="$bvModal.hide('answer-add')">Підтвердити</b-button>
+                <b-button variant="outline-info" @click="$bvModal.hide('answer-add')">Скасувати</b-button>
+            </div>
+        </b-modal>
 
     </b-row>
 
