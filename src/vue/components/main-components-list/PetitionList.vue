@@ -6,9 +6,8 @@
             <form-petition-created/>
         </b-collapse>
 
-        <b-row class="text-center">
-            <!--Here will be filtered things-->
-        </b-row>
+        <form-petition-filter/>
+
         <b-row v-for="item in petition" :key="item.id">
             <b-card class="mt-2 w-100  bg-light">
                <b-row>
@@ -36,9 +35,10 @@
         statusPetitionLine, votesPetitionString
     } from "../../../js/utility";
     import FormPetitionCreated from "../inner-components/created-forms/FormPetitionCreated.vue";
+    import FormPetitionFilter from "../inner-components/filtered-form/FormPetitionFilter.vue";
     export default {
         name: "PetitionList",
-        components: {FormPetitionCreated},
+        components: {FormPetitionFilter, FormPetitionCreated},
         data(){
             return {
                 dateNow: new Date(),
