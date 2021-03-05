@@ -14,6 +14,8 @@ function headers(token) {
 
 
 export default {
+
+// --------------------Cabinet user Api--------------------------//
     async updateUser(userId, user, token){
         let link = baseUrl+"/update?userId="+userId;
         try {
@@ -66,7 +68,9 @@ export default {
             return true;
         }
     },
+//-----------------------------------------------------------------------//
 
+//--------------------------Log in user Api-------------------------------//
     async check(token){
         let link = baseUrl+"/user/check";
         try {
@@ -95,5 +99,35 @@ export default {
                 errorText: error.body.errorText
             }
         }
+    },
+//-------------------------------------------------------------//
+
+//------------------Admin Users Item/List user Api-------------//
+
+    async getUserList(token, role=null, take=null, skip=null){
+        let link = baseUrl + '/api/User';
+        if(role!=null) link = baseUrl + '/filtered_by_role';
+        let options = {headers: headers(token)};
+        if(take!=null||skip!=null||role!=null){
+            link+='?'
+        }
+        if(take!=null)
+            link+='Take='+take+'&';
+        if(skip!=null)
+            link+='Skip='+skip+'&';
+        if(role!=null)
+        {
+            link+='role='+role;
+        }
+
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            return response.body;
+        } catch(error){
+            console.log(error);
+        }
     }
+
+//-------------------------------------------------------------//
 }

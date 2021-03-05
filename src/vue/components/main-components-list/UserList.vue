@@ -30,10 +30,18 @@
 
 <script>
     import FormUserFilter from "../inner-components/filtered-form/FormUserFilter.vue";
+    import Vuex from "vuex";
     export default {
         name: "UserList",
+        computed: Vuex.mapState({
+            users: (state)=>state.user.userList,
+        }),
+        mounted() {
+            this.$store.dispatch("user/getListOfUsers", {'role':null, 'skip':null, 'take':null});
+        },
         components: {FormUserFilter},
         methods: {
+            ...Vuex.mapActions(['getListOfUsers']),
               isAdmin(rights){
                   let simpleUser = "User";
                   let superUser = "SuperUser";
@@ -57,59 +65,9 @@
         },
         data(){
             return {
-                users: [
-                {
-                    id: 0,
-                    firstName: 'Admin',
-                    secondName: "Admin",
-                    lastName: "Admin",
-                    phoneNumber: "",
-                    email: "admin.com",
-                    emailConfirm: true,
-                    role: "User, SuperUser, ApplicationAdmin, Moderator, NewsAndEvents, UserManger",
-                    login: "floor",
-                },
-                {
-                    id: 1,
-                    firstName: 'Firstly',
-                    secondName: "Secondly",
-                    lastName: "Lastly",
-                    phoneNumber: "",
-                    email: "a.rfkkkf@flfl.com",
-                    emailConfirm: true,
-                    role: "ApplicationAdmin",
-                    login: "floor",
-                }, {
-                    id: 2,
-                    firstName: 'Firstly',
-                    secondName: "Secondly",
-                    lastName: "Lastly",
-                    phoneNumber: "+38097404322",
-                    email: "a.rfkkkf@flfl.com",
-                    emailConfirm: true,
-                    role: "SuperUser, User",
-                    login: "floor",
-                },{
-                    id: 3,
-                    firstName: 'Firstly',
-                    secondName: "Secondly",
-                    lastName: "Lastly",
-                    phoneNumber: "",
-                    email: "a.rfkkkf@flfl.com",
-                    emailConfirm: true,
-                    role: "UserManger, NewsAndEvents",
-                    login: "floor",
-                },{
-                    id: 4,
-                    firstName: 'Firstly',
-                    secondName: "Secondly",
-                    lastName: "Lastly",
-                    phoneNumber: "",
-                    email: "a.rfkkkf@flfl.com",
-                    emailConfirm: false,
-                    role: "User",
-                    login: "floor",
-                }]
+
+
+
             }
         }
     }

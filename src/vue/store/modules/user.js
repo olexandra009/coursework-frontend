@@ -1,9 +1,18 @@
 import Vue from "vue";
 import  apiMethod from '../../../api/api-methods';
 
-const state = () => ({currentUser: null, token: null, roles: []});
+const state = () => ({currentUser: null, token: null, roles: [], userList:[], openedUser: null, current:0, total:0});
 const getters={};
 const actions={
+
+    async getListOfUsers({commit, state}, {role, skip, take}){
+        let result = await apiMethod.getUserList(state.token, role, skip, take);
+        if(result){
+            commit('userListMutation', result);
+        }
+    },
+
+
     changeUser({commit, state}, {user}){
         console.log(user);
         commit('changeUserMutation', user);
@@ -29,6 +38,13 @@ const actions={
     }
 };
 const mutations={
+
+    userListMutation(state, data){
+      state.total = data.total;
+      state.userList = data.result;
+      state.current = data.result.length;
+    },
+
     changeUserMutation(state, data){
         //console.log(data);
         state.currentUser = data;
