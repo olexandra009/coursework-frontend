@@ -155,4 +155,28 @@ export default {
         }
     },
 //-------------------------------------------------------------//
+
+//-------------Organization List/Item/Filter-------------------//
+
+    async getOrganizationList(token, take, skip){
+        let link = baseUrl +'/api/Organization';
+        let options = {headers: headers(token)};
+        if(take!=null||skip!=null){
+            link+='?'
+        }
+        if(take!=null)
+            link+='Take='+take+'&';
+        if(skip!=null)
+            link+='Skip='+skip;
+
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            return response.body;
+        } catch(error){
+            console.log(error);
+        }
+    }
+
+//-------------------------------------------------------------//
 }

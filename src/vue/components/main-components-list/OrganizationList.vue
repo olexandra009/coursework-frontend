@@ -15,7 +15,7 @@
                     </b-row>
                 </b-card>
             </b-row>
-            <b-row v-for="org in organization" :key="org.id" class="mt-1">
+            <b-row v-for="org in organizationList" :key="org.id" class="mt-1">
                 <b-card class="w-100">
                     <b-row>
                         <b-col class="col-6">{{org.name}}</b-col>
@@ -29,27 +29,23 @@
 </template>
 
 <script>
+    import Vuex from 'vuex';
     import FormOrganizationCreated from "../inner-components/created-forms/FormOrganizationCreated.vue";
     export default {
         name: "OrganizationList",
         components: {FormOrganizationCreated},
+        computed: Vuex.mapState({
+                organizationList: state=>state.organization.organizationList,
+        }),
+        methods: {
+          ...Vuex.mapActions(['getListOfOrganization']),
+        },
+        mounted() {
+          this.$store.dispatch('organization/getListOfOrganization');
+        },
         data(){
             return{
                 adminEdit: true,
-                organization: [
-                    {id: 1,
-                        name: 'First Organization',
-                        address: 'Address of organization',
-                        phoneNumber: '092-12-12'},
-                    {id: 2,
-                        name: 'First Organization',
-                        address: 'Address of organization',
-                        phoneNumber: '092-12-12'},
-                    {id: 3,
-                        name: 'First Organization',
-                        address: 'Address of organization',
-                        phoneNumber: '092-12-12'}
-                ]
             }
         }
 
