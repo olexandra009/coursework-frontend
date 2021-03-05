@@ -18,8 +18,8 @@
                     <template #button-content>
                         <em>Користувач</em>
                     </template>
-                    <b-dropdown-item href="#">Кабінет</b-dropdown-item>
-                    <b-dropdown-item href="#">Вихід</b-dropdown-item>
+                    <b-dropdown-item to="/cabinet">Кабінет</b-dropdown-item>
+                    <b-dropdown-item href="#" @click="logout">Вихід</b-dropdown-item>
                 </b-nav-item-dropdown>
                 <b-nav-item to="/login" v-else> Вхід </b-nav-item>
             </b-navbar-nav>
@@ -36,7 +36,14 @@
         computed: Vuex.mapState({
             login: state => (state.user.currentUser !== null),
         }),
-
+        methods:{
+            ...Vuex.mapActions(['logout']),
+            logout(){
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                this.$store.dispatch('user/logout');
+            }
+        }
     }
 </script>
 

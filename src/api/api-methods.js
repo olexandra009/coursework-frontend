@@ -5,7 +5,25 @@ const axios = require('axios');
 import apiLinks from "./api-links";
 Vue.use(VueResource);
 
+function headers(token) {
+    return {
+    "Accept": "application/json",
+    "Authorization": "Bearer " + token  // передача токена в заголовке
+    }
+}
+
+
 export default {
+    async check(token){
+        let link = baseUrl+"/user/check";
+        try {
+            let response = await Vue.http.put(link, {}, {headers: headers(token)});
+            return true;
+        }catch(error){
+            return false;
+        }
+    },
+
     async login(login, password){
         let message = {'login': login, 'password': password};
         let link = baseUrl+apiLinks.user.login;
