@@ -4,6 +4,10 @@ import  apiMethod from '../../../api/api-methods';
 const state = () => ({currentUser: null, token: null, roles: []});
 const getters={};
 const actions={
+    changeUser({commit, state}, {user}){
+        console.log(user);
+        commit('changeUserMutation', user);
+    },
     logout({commit, state}){
       commit('logoutUser');
     },
@@ -25,6 +29,11 @@ const actions={
     }
 };
 const mutations={
+    changeUserMutation(state, data){
+        //console.log(data);
+        state.currentUser = data;
+        localStorage.setItem('user', JSON.stringify(state.currentUser));
+    },
     logoutUser(state){
       state.currentUser = null;
       state.token = null;
@@ -33,14 +42,14 @@ const mutations={
     loginUser(state, data){
         state.token = data.access_token;
         state.currentUser = data.user;
-        state.rules = state.currentUser.role.split(', ');
+        state.roles = state.currentUser.role.split(', ');
         localStorage.setItem('token', state.token);
         localStorage.setItem('user', JSON.stringify(state.currentUser));
     },
     fromLocale(state, data){
         state.token = data.t;
         state.currentUser = data.u;
-        state.rules = state.currentUser.role.split(', ');
+        state.roles = state.currentUser.role.split(', ');
     }
 };
 

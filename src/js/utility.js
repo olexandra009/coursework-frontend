@@ -127,6 +127,15 @@ function lastPetitionDate(finishDate) {
     return "Залишилось "+days +" "+dS;
 }
 
+/***Rights checks**/
+function isAdminUserManagerRight(roles) {
+    if(roles===undefined||roles===null) return false;
+    if(roles.length === 0) return false;
+    if(roles.includes('UserManager'))
+        return true;
+
+}
+
 export{
     convertStringToDate,
     editHtmText,

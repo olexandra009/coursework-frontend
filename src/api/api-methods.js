@@ -14,6 +14,59 @@ function headers(token) {
 
 
 export default {
+    async updateUser(userId, user, token){
+        let link = baseUrl+"/update?userId="+userId;
+        try {
+            let options = {headers: headers(token) };
+            let response = await Vue.http.put(link, user, options);
+            console.log(response);
+            return response;
+        }catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+
+    async changePassword(userId, password, token){
+        let link = baseUrl +"/change_password?userId="+userId;
+        try {
+            let message = {'password': password};
+            let options = { emulateJSON: true, headers: headers(token) };
+            let response = await Vue.http.put(link, message, options);
+            console.log(response);
+            return true;
+        }catch(error){
+            console.log(error);
+            return false;
+        }
+    },
+
+    async changeLogin(userId, login, token){
+        let link = baseUrl+"/change_login?userId="+userId;
+        try {
+            let message = {'login': login};
+            let options = { emulateJSON: true, headers: headers(token) };
+            let response = await Vue.http.put(link, message, options);
+            console.log(response);
+            return true;
+        }catch(error){
+            console.log(error);
+            return false;
+        }
+    },
+
+    async isLoginExists(login){
+        let link = baseUrl+"/loginExists?login="+login;
+        try {
+            let response = await Vue.http.post(link);
+            console.log(response);
+            return false;
+        }catch(error){
+            console.log(error);
+            return true;
+        }
+    },
+
     async check(token){
         let link = baseUrl+"/user/check";
         try {
@@ -42,20 +95,5 @@ export default {
                 errorText: error.body.errorText
             }
         }
-
-
-
-            // .then(response=> {
-            //           console.log('succsess');
-            //           console.log(response);
-            //           return response.body;
-            //     }, response=> {
-            //            if(response.status===404)
-            //            {
-            //
-            //            }
-            //            return {errorType: 'unexpected',
-            //                    errorText: response.body.errorText}
-            // });
     }
 }

@@ -31,7 +31,11 @@
         name: "NavigationTab",
         computed: Vuex.mapState({
             login: state => (state.user.currentUser !== null),
+            user: state=>(state.user.currentUser),
         }),
+        methods:{
+
+        },
         data(){
             return{
                 admin: true,
