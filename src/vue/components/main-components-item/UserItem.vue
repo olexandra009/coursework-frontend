@@ -1,5 +1,5 @@
 <template>
-    <div class="min-vh-100">
+    <div class="min-vh-100" @mouseover="loginCheck">
         <b-row class="mt-4">
             <h3 class="m-auto">Інформація про користувача</h3>
         </b-row>
@@ -81,26 +81,37 @@
 </template>
 
 <script>
+    import Vuex from "vuex";
+    import apiMethods from '/src/api/api-methods'
     import ChangeUserOrganization from "../inner-components/change-forms/ChangeUserOrganization.vue";
     import ChangeUserRole from "../inner-components/change-forms/ChangeUserRole.vue";
     export default {
         name: "UserItem",
         components: {ChangeUserRole, ChangeUserOrganization},
+        computed: Vuex.mapState({
+            currentUser: state=>state.user.currentUser,
+            currentUserRoles: state=>state.user.roles,
+            token: state=>state.user.token,
+            loginCheck: function(){
+                if(this.currentUser == null)
+                    this.$router.push('/login');
+            }
+        }),
+        created: async function() {
+            if(!this.isUserHasRight())
+                this.$router.push('/news');
+            let userId = this.$route.params.id;
+            this.user = await apiMethods.getUserItem(this.token, userId);
+
+        },
+        methods: {
+            isUserHasRight(){
+                return this.currentUserRoles.includes('UserManger');
+            },
+        },
         data(){
             return{
-                user: {
-                id: 0,
-                firstName: 'Admin',
-                secondName: "Admin",
-                lastName: "Admin",
-                phoneNumber: "",
-                email: "admin.com",
-                emailConfirm: true,
-                role: "User, SuperUser, ApplicationAdmin, Moderator, NewsAndEvents, UserManger",
-                login: "floor",
-                userOrganizationName: "NameOfOrganization",
-                userOrganizationId: "1",
-            },
+                user: null,
             }
         }
     }

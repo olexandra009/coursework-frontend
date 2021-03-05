@@ -127,7 +127,19 @@ export default {
         } catch(error){
             console.log(error);
         }
-    }
+    },
 
+    async getUserItem(token, userId){
+        let link = baseUrl+'/api/User/'+userId;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            return response.body;
+        } catch (exception){
+            console.log(exception);
+            return null;
+        }
+    }
 //-------------------------------------------------------------//
 }
