@@ -140,6 +140,19 @@ export default {
             console.log(exception);
             return null;
         }
-    }
+    },
+
+    async changeUserRight(token, role, userId){
+        let link = baseUrl +'/change_role?userId='+userId+'&role='+role;
+        let options = {headers: headers(token) };
+
+        try {
+            let response = await Vue.http.put(link, options);
+            return response.body;
+        } catch (e) {
+            console.log(e);
+            return e;
+        }
+    },
 //-------------------------------------------------------------//
 }

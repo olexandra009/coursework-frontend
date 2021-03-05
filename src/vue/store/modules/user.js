@@ -1,7 +1,7 @@
 import Vue from "vue";
 import  apiMethod from '../../../api/api-methods';
 
-const state = () => ({currentUser: null, token: null, roles: [], userList:[], openedUser: null, current:0, total:0, filterRole: null});
+const state = () => ({currentUser: null, token: null, roles: [], userList:[], openedUser: null, selectedUser: null, current:0, total:0, filterRole: null});
 const getters={};
 const actions={
 
@@ -14,6 +14,9 @@ const actions={
         }
     },
 
+    changeSelectedUser({commit, state}, {user}){
+        commit('changeSelectedUserMutation', user);
+    },
 
     changeUser({commit, state}, {user}){
         console.log(user);
@@ -40,7 +43,9 @@ const actions={
     }
 };
 const mutations={
-
+    changeSelectedUserMutation(state, data){
+         state.selectedUser= data;
+    },
     userListMutation(state, data){
       state.total = data.total;
       state.userList = data.result;

@@ -1,5 +1,5 @@
 <template>
-    <div class="min-vh-100" @mouseover="loginCheck">
+    <div class="min-vh-100">
         <b-row class="mt-4">
             <h3 class="m-auto">Інформація про користувача</h3>
         </b-row>
@@ -91,27 +91,25 @@
         computed: Vuex.mapState({
             currentUser: state=>state.user.currentUser,
             currentUserRoles: state=>state.user.roles,
+            user: state=>state.user.selectedUser,
             token: state=>state.user.token,
-            loginCheck: function(){
-                if(this.currentUser == null)
-                    this.$router.push('/login');
-            }
         }),
         created: async function() {
             if(!this.isUserHasRight())
                 this.$router.push('/news');
             let userId = this.$route.params.id;
-            this.user = await apiMethods.getUserItem(this.token, userId);
-
+            let _user = await apiMethods.getUserItem(this.token, userId);
+            await this.$store.dispatch('user/changeSelectedUser', {'user':_user});
         },
         methods: {
+            ...Vuex.mapState(['changeSelectedUser']),
             isUserHasRight(){
                 return this.currentUserRoles.includes('UserManger');
             },
         },
         data(){
             return{
-                user: null,
+
             }
         }
     }
