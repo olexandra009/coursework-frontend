@@ -35,9 +35,10 @@
         name: "UserList",
         computed: Vuex.mapState({
             users: (state)=>state.user.userList,
+            selectedRole: (state)=>state.user.filterRole,
         }),
         mounted() {
-            this.$store.dispatch("user/getListOfUsers", {'role':null, 'skip':null, 'take':null});
+            this.$store.dispatch("user/getListOfUsers", {'role': this.selectedRole});
         },
         components: {FormUserFilter},
         methods: {

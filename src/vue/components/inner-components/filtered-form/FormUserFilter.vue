@@ -3,15 +3,23 @@
         <b-input-group class="w-100 m-auto">
             <b-form-select  v-model="selected" :options="options"/>
             <b-input-group-append class="pl-2">
-                <b-button variant="outline-light btn-info">Пошук</b-button>
+                <b-button variant="outline-light btn-info" @click="updateUsers">Пошук</b-button>
             </b-input-group-append>
         </b-input-group>
     </b-row>
 </template>
 
 <script>
+    import Vuex from "vuex";
+
     export default {
         name: "FormUserFilter",
+        methods:{
+            ...Vuex.mapActions(['getListOfUsers']),
+            updateUsers(){
+                this.$store.dispatch("user/getListOfUsers", {'role': this.selected});
+            }
+        },
         data(){
             return {
                 selected: null,

@@ -1,12 +1,14 @@
 import Vue from "vue";
 import  apiMethod from '../../../api/api-methods';
 
-const state = () => ({currentUser: null, token: null, roles: [], userList:[], openedUser: null, current:0, total:0});
+const state = () => ({currentUser: null, token: null, roles: [], userList:[], openedUser: null, current:0, total:0, filterRole: null});
 const getters={};
 const actions={
 
-    async getListOfUsers({commit, state}, {role, skip, take}){
-        let result = await apiMethod.getUserList(state.token, role, skip, take);
+    async getListOfUsers({commit, state}, {role}){
+        if(role)
+            state.filterRole = role;
+        let result = await apiMethod.getUserList(state.token, state.filterRole, null, null);
         if(result){
             commit('userListMutation', result);
         }
