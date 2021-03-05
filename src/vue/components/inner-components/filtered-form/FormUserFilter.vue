@@ -24,13 +24,13 @@
             return {
                 selected: null,
                 options: [
-                    {text:'Оберіть роль', value: null},
-                    {text:'Не підтверджений користувач', value: 'User'},
-                    {text:'Підтверджений', value: 'SuperUser'},
-                    {text:'Модератор новин та подій', value: 'Moderator'},
-                    {text:'Адміністратор новини та події', value: 'NewsAndEvents'},
-                    {text:'Адміністратор заяв та петицій', value: 'ApplicationAdmin'},
-                    {text:'Адміністратор користувачів', value: 'UserManger'},
+                    {text:'Оберіть рівень доступу', value: null},
+                    {text:'Перегляд інформації та створення звернень', value: 'User'},
+                    {text:'Створення петицій', value: 'SuperUser'},
+                    {text:'Модерація новин та подій', value: 'Moderator'},
+                    {text:'Створення новини та події', value: 'NewsAndEvents'},
+                    {text:'Обробка звернень та петицій', value: 'ApplicationAdmin'},
+                    {text:'Управління користувачами', value: 'UserManger'},
                 ]
             }
         }
