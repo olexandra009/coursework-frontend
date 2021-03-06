@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-form v-on:submit.prevent="SubmitApplication" v-on:reset.prevent="ResetApplication" class="w-75 m-auto">
+        <b-form v-on:submit.prevent="submitApplication" v-on:reset.prevent="ResetApplication" class="w-75 m-auto">
             <b-row class="pt-2">
                 <b-col sm="3" class="vertical">
                     <label>Заголовок: </label>
@@ -65,9 +65,36 @@
 </template>
 
 <script>
+    import {editHtmText} from "../../../../js/utility";
+    import Vuex from "vuex";
+
     export default {
         name: "FormNewsCreated",
         methods: {
+            ...Vuex.mapActions(['addNewNews']),
+            submitApplication(){
+                let dateCreation = new Date().toISOString();
+                let author = JSON.parse(localStorage.getItem('user'));
+                let authorId = author.id;
+                let multimedias = [];
+                this.imageDataArray.forEach(image=>
+                {
+                    multimedias.unshift({'url': image.image, "isImage": true})
+                });
+                let header = this.newsHeader;
+                let text = editHtmText(this.newsText);
+                let newNews = {
+                    "header": header,
+                    "text": text,
+                    "dateTimeCreation": dateCreation,
+                    "edited": false,
+                    "showAuthor": this.showAuthor,
+                    "authorId" : authorId,
+                    "multimedias": multimedias
+                };
+                this.$store.dispatch('news/addNewNews', {'news': newNews})
+
+            },
             deleteImage(id){
                 let x = parseInt(id);
                 let deleted =this.imageDataArray.find(f=> f.id===x);

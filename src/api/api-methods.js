@@ -249,7 +249,20 @@ export default {
             console.log(error);
             return null;
         }
-    }
-
+    },
 //-------------------------------------------------------------//
+//--------------------- News api -----------------------------//
+   async createNewsItem(token, news){
+        let link = baseUrl+'/api/News';
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.post(link, news, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
 }
