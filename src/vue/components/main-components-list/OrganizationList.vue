@@ -38,7 +38,12 @@
                 organizationList: state=>state.organization.organizationList,
         }),
         methods: {
-          ...Vuex.mapActions(['getListOfOrganization']),
+          ...Vuex.mapActions(['getListOfOrganization', 'getOrganizationItem']),
+            async getOrganization(id){
+              await this.$store.dispatch('organization/getOrganizationItem',{'orgId': id} );
+              this.$router.push({path: `/organization/${id}`});
+            }
+
         },
         mounted() {
           this.$store.dispatch('organization/getListOfOrganization');

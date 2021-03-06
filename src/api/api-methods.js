@@ -176,6 +176,46 @@ export default {
         } catch(error){
             console.log(error);
         }
+    },
+
+    async getOrganizationItem(token, orgId) {
+        let link = baseUrl+'/api/Organization/'+orgId;
+        let options = {headers: headers(token)};
+        try{
+            console.log("HERE GET ORGANIZATION ITEM");
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            return response.body;
+        } catch(error){
+            console.log(error);
+        }
+    },
+
+    async getOrganizationItemUsers(token, orgId) {
+        let link = baseUrl+'/api/get_user_by_organization?id='+orgId;
+        let options = {headers: headers(token)};
+        try{
+            console.log("HERE GET ITEM USERS");
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            return response.body;
+        } catch(error){
+            console.log(error);
+        }
+    },
+
+    async deleteOrganizationItem(token, orgId){
+        let link = baseUrl+'/api/Organization/'+orgId;
+        let options = {headers: headers(token)};
+        try{
+            console.log("HERE GET ORGANIZATION ITEM");
+            let response = await Vue.http.delete(link, options);
+            console.log(response);
+            return true;
+        } catch(error){
+            console.log(error);
+            return false;
+        }
     }
 
 //-------------------------------------------------------------//

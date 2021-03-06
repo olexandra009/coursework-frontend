@@ -92,7 +92,7 @@
             </template>
             <p>Ви дійсно бажаєте видалити організацію?</p>
             <div class="d-flex justify-content-end">
-                <b-button variant="outline-danger" class="mr-1" @click="$bvModal.hide('delete-organization')">Підтвердити</b-button>
+                <b-button variant="outline-danger" class="mr-1" @click="deleteOrganization()">Підтвердити</b-button>
                 <b-button variant="outline-info" @click="$bvModal.hide('delete-organization')">Скасувати</b-button>
             </div>
         </b-modal>
@@ -114,10 +114,40 @@
 </template>
 
 <script>
+    import Vuex from "vuex";
     export default {
         name: "OrganizationItem",
+        computed: Vuex.mapState({
+            organization: state=>state.organization.selectedOrganization,
+        }),
+        methods:{
+          ...Vuex.mapActions(['getOrganizationItem', 'deleteOrganizationItem']),
+            deleteOrganization(){
+                this.$bvModal.hide('delete-organization');
+                let orgId = this.$route.params.id;
+                let i = this.$store.dispatch('organization/deleteOrganizationItem', {'orgId': orgId});
+                if(i)
+                    this.$bvToast.toast('Успішне видалення', {
+                        title: `Ви видалили організацію`,
+                        variant: 'success',
+                        solid: true
+                    });
+                else
+                    this.$bvToast.toast('Помилка', {
+                        title: `При видаленні сталась помилка`,
+                        variant: 'danger',
+                        solid: true
+                    });
+                history.back();
+            }
+        },
+        created:  function() {
+            let orgId = this.$route.params.id;
+            this.$store.dispatch('organization/getOrganizationItem', {'orgId': orgId})
+        },
         data(){
             return {
+
                 modalUserId: "",
                 editName: false,
                 editPhone: false,
@@ -128,44 +158,7 @@
                 modelAddress: "",
 
                 adminEdit: true,
-                organization: {
-                    id: 0,
-                    name: 'First Organization',
-                    address: 'Address of organization',
-                    phoneNumber: '092-12-12',
-                    users: [
-                        {
-                            id: 0,
-                            firstName: 'Admin',
-                            secondName: "Admin",
-                            lastName: "Admin",
-                            phoneNumber: "",
-                            email: "admin.com",
-                            login: "floor",
-                        },
-                        {
-                            id: 1,
-                            firstName: 'Firstly',
-                            secondName: "Secondly",
-                            lastName: "Lastly",
-                            phoneNumber: "",
-                            email: "a.rfkkkf@flfl.com",
-                            emailConfirm: true,
-                            role: "ApplicationAdmin",
-                            login: "floor",
-                        }, {
-                            id: 2,
-                            firstName: 'Firstly',
-                            secondName: "Secondly",
-                            lastName: "Lastly",
-                            phoneNumber: "+38097404322",
-                            email: "a.rfkkkf@flfl.com",
-                            emailConfirm: true,
-                            role: "SuperUser, User",
-                            login: "floor",
-                        }
-                    ]
-                }
+
             };
         }
 
