@@ -4,6 +4,15 @@ import  apiMethod from '../../../api/api-methods';
 const state = () => ({organizationList: [], selectedOrganization: null, current:0, total:0});
 const getters={};
 const actions={
+    async addOrganizationItem({commit, state}, {name, phone, address}){
+        let token = localStorage.getItem('token');
+        let response = await apiMethod.addOrganizationItem(token, name, phone, address);
+        if(response===null)
+            return false;
+        commit('addOrganizationMutation', response);
+        return true;
+        
+    },
     async  deleteOrganizationItem({commit, state}, {orgId}){
         let token = localStorage.getItem('token');
         let response = await apiMethod.deleteOrganizationItem(token, orgId);
@@ -30,8 +39,13 @@ const actions={
     }
 };
 const mutations={
-    deleteOrganizationMutation(state, date){
-        let i = state.organizationList.findIndex(org => org.id===date.id);
+    addOrganizationMutation(state, date){
+      state.organizationList.unshift(date);
+      state.total+=1
+    },
+    deleteOrganizationMutation(state, data){
+        let id = parseInt(data);
+        let i = state.organizationList.findIndex(org => org.id===id);
         state.organizationList.splice(i, 1);
         state.selectedOrganization = null;
     },

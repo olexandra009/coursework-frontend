@@ -159,10 +159,10 @@ export default {
 //-------------Organization List/Item/Filter-------------------//
 
     async getOrganizationList(token, take, skip){
-        let link = baseUrl +'/api/Organization';
+        let link = baseUrl +'/api/Organization?SortProp=id&SorOrder=desc';
         let options = {headers: headers(token)};
         if(take!=null||skip!=null){
-            link+='?'
+            link+='&'
         }
         if(take!=null)
             link+='Take='+take+'&';
@@ -208,7 +208,6 @@ export default {
         let link = baseUrl+'/api/Organization/'+orgId;
         let options = {headers: headers(token)};
         try{
-            console.log("HERE GET ORGANIZATION ITEM");
             let response = await Vue.http.delete(link, options);
             console.log(response);
             return true;
@@ -216,7 +215,27 @@ export default {
             console.log(error);
             return false;
         }
-    }
+    },
+
+    async addOrganizationItem(token, name, phone, address){
+        let link = baseUrl+'/api/Organization';
+        let options = {headers: headers(token)};
+        let message = {'name': name};
+        if(phone!==undefined)
+            message.phoneNumber = phone;
+        if(address!==undefined)
+            message.address = address;
+        console.log(message);
+        
+        try{
+            let response = await Vue.http.post(link, message, options);
+            console.log(response);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
 
 //-------------------------------------------------------------//
 }
