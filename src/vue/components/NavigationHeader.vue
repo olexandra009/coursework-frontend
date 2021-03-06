@@ -42,6 +42,7 @@
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
                 this.$store.dispatch('user/logout');
+                this.$router.push('/news');
             }
         }
     }

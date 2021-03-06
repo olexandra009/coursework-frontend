@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-2 min-vh-100" @mouseover="loginCheck">
+    <div class="mt-2 min-vh-100">
         <b-row class="mt-4">
             <h3 class="m-auto">Інформація про користувача</h3>
         </b-row>
