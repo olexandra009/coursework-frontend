@@ -1,8 +1,9 @@
 <template>
 
-    <b-card class="min-vh-60 pt-2 bg-light">
+    <b-card class="min-vh-100 pt-2 bg-light">
         <div class="d-flex justify-content-end" v-if="adminEdit">
             <b-button type="submit" @click="editNews=!editNews" variant="info" v-if="!editNews">Редагувати</b-button>
+            <b-button type="submit" @click="deleteItem" variant="info" v-if="!editNews">Видалити</b-button>
         </div>
         <b-form-input v-model="newsHeader" v-if="editNews"/>
         <h4 class="text-center" v-else>{{news.header}}</h4>
@@ -45,7 +46,7 @@
             this.newsText= this.news.text;
         },
         methods:{
-            ...Vuex.mapActions(['getNewsItem', 'updateNewsItem']),
+            ...Vuex.mapActions(['getNewsItem', 'updateNewsItem', 'deleteNewsItem']),
             newLinedText: (t)=> editHtmText(t),
             getDateTime(str){
                 let date = new Date(str);
@@ -85,6 +86,23 @@
             },
             cancelEdition(){
                 this.editNews=!this.editNews;
+            },
+            async deleteItem(){
+                let id = this.$route.params.id;
+                let i = await this.$store.dispatch('news/deleteNewsItem', {'id': id,});
+                if(i)
+                    this.$bvToast.toast('Новину успішно видалено', {
+                        title: `Успіх`,
+                        variant: 'success',
+                        solid: true
+                    });
+                else
+                    this.$bvToast.toast('Сталась помилка', {
+                        title: `Помилка`,
+                        variant: 'danger',
+                        solid: true
+                    });
+                history.back();
             }
         },
         data(){

@@ -37,6 +37,15 @@ const actions={
             commit('updateNewsItemMutation', result);
             return true;
         },
+
+        async deleteNewsItem({commit, state}, {id}){
+            let token = localStorage.getItem('token');
+            let result = await apiMethods.deleteNewsItem(token, id);
+            if(!result)
+                return false;
+            commit('deleteNewsItemMutation', id);
+            return true;
+        }
 };
 const mutations={
     addNewsItemMutation(state, data){
@@ -51,6 +60,12 @@ const mutations={
     },
     updateNewsItemMutation(state, data){
         state.selectedNews = data;
+    },
+    deleteNewsItemMutation(state, data){
+        let id = parseInt(data);
+        let i = state.all.findIndex(news => news.id===id);
+        state.all.splice(i, 1);
+        state.selectedNews = null;
     }
 };
 

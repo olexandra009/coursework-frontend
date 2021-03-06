@@ -304,7 +304,18 @@ export default {
            console.log(error);
            return null;
        }
-   }
+   },
+   async deleteNewsItem(token, id) {
+       let link = baseUrl+'/api/News/'+id;
+       let options = {headers: headers(token)};
+       try{
+           await Vue.http.delete(link, options);
+           return true;
+       } catch(error){
+           console.log(error);
+           return false;
+       }
+   },
 
 
 //-------------------------------------------------------------//
