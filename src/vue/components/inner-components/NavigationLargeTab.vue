@@ -15,7 +15,7 @@
             </div>
             <b-collapse id="petition-inner">
                 <b-nav-item to="/petition/my" exact exact-active-class="active">Мої петиції</b-nav-item>
-                <b-nav-item to="/petition/voted" exact exact-active-class="active">Проголосовані</b-nav-item>
+                <!--<b-nav-item to="/petition/voted" exact exact-active-class="active">Проголосовані</b-nav-item>-->
             </b-collapse>
             <b-nav-item to="/application" exact exact-active-class="active">Звернення</b-nav-item>
             <b-nav-item to="/organization" exact exact-active-class="active">Організації</b-nav-item>

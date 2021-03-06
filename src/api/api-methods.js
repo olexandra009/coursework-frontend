@@ -384,7 +384,53 @@ export default {
             console.log(error);
             return null;
         }
-    }
+    },
+
+//-------------------------------------------------------------//
+//--------------------- Petition api -----------------------------//
+    async getListOfPetition(token){
+        let link = baseUrl+'/api/Petition?SortProp=id&SortOrder=desc';
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+    
+    async getListOfPetitionByStatus(token, timeStatus, voteStatus, take, skip){
+        let link = baseUrl+'/filter_by_status';
+        if(timeStatus || voteStatus)
+            link+="?";
+        if(timeStatus) link+="timeStatus="+timeStatus+"&";
+        if(voteStatus) link+="voteStatus="+voteStatus;
+        let options = {headers: headers(token)};
+        let message = {
+            "sortProp": "id",
+            "sortOrder": "desc"
+        };
+        if(take) message.take = take;
+        if(skip) message.skip = skip;
+        try{
+            let response = await Vue.http.get(link, message, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+
+
+
+
+
+//-------------------------------------------------------------//
 }
 
 
