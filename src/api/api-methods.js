@@ -237,5 +237,19 @@ export default {
         }
     },
 
+
+    async editOrganizationItem(token, organization){
+        let link = baseUrl+'/api/Organization/'+organization.id;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.put(link, organization, options);
+            console.log(response);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    }
+
 //-------------------------------------------------------------//
 }

@@ -16,9 +16,11 @@
             </b-col>
             <b-col sm="9" v-else>
                 <b-input-group >
-                    <b-form-input v-model="modelName" :disabled="!editName"/>
+                    <b-form-input v-model="modelName"
+                                  :state="stateName"
+                                  :disabled="!editName"/>
                     <b-input-group-append>
-                        <b-button variant="outline-success"> <b-icon icon="check2"/> </b-button>
+                        <b-button variant="outline-success" @click="editOrganization(1)"> <b-icon icon="check2"/> </b-button>
                         <b-button variant="outline-info" @click="editName= !(editName)"> <b-icon icon="x"/> </b-button>
                     </b-input-group-append>
                 </b-input-group>
@@ -41,7 +43,7 @@
                 <b-input-group >
                     <b-form-input v-model="modelPhone" :disabled="!editPhone"/>
                     <b-input-group-append>
-                        <b-button variant="outline-success"> <b-icon icon="check2"/> </b-button>
+                        <b-button variant="outline-success" @click="editOrganization(2)"> <b-icon icon="check2"/> </b-button>
                         <b-button variant="outline-info" @click="editPhone= !(editPhone)"> <b-icon icon="x"/> </b-button>
                     </b-input-group-append>
                 </b-input-group>
@@ -64,7 +66,7 @@
                 <b-input-group >
                     <b-form-input v-model="modelAddress" :disabled="!editAddress"/>
                     <b-input-group-append>
-                        <b-button variant="outline-success"> <b-icon icon="check2"/> </b-button>
+                        <b-button variant="outline-success" @click="editOrganization(3)"> <b-icon icon="check2"/> </b-button>
                         <b-button variant="outline-info" @click="editAddress= !(editAddress)"> <b-icon icon="x"/> </b-button>
                     </b-input-group-append>
                 </b-input-group>
@@ -115,13 +117,43 @@
 
 <script>
     import Vuex from "vuex";
+    import organization from "../../store/modules/organization";
     export default {
         name: "OrganizationItem",
         computed: Vuex.mapState({
             organization: state=>state.organization.selectedOrganization,
+            stateName: null,
         }),
         methods:{
-          ...Vuex.mapActions(['getOrganizationItem', 'deleteOrganizationItem']),
+          ...Vuex.mapActions(['getOrganizationItem', 'deleteOrganizationItem', 'updateOrganizationItem']),
+            async editOrganization(click){
+                let organizationUpdate = this.organization;
+                if(click===1){
+                    if(this.modelName.trim().length === 0) return;
+                    organizationUpdate.name = this.modelName;
+                }
+                if(click===2)
+                    organizationUpdate.phoneNumber = this.modelPhone;
+                if(click===3)
+                    organizationUpdate.address = this.modelAddress;
+
+                let response = await this.$store.dispatch('organization/updateOrganizationItem', {'organization': organizationUpdate});
+                if(response)
+                    this.$bvToast.toast('Зміни збережено', {
+                        variant: 'success',
+                        solid: true
+                    });
+                else
+                    this.$bvToast.toast('Помилка', {
+                        title: `При редагуванні сталась помилка`,
+                        variant: 'danger',
+                        solid: true
+                    });
+
+                this.editName = false; this.editPhone = false; this.editAddress = false;
+                this.modelName = ''; this.modelPhone='';this.modelAddress = '';
+
+            },
             deleteOrganization(){
                 this.$bvModal.hide('delete-organization');
                 let orgId = this.$route.params.id;

@@ -4,6 +4,14 @@ import  apiMethod from '../../../api/api-methods';
 const state = () => ({organizationList: [], selectedOrganization: null, current:0, total:0});
 const getters={};
 const actions={
+    async updateOrganizationItem({commit, state}, {organization}){
+        let token = localStorage.getItem('token');
+        let response = await apiMethod.editOrganizationItem(token, organization);
+        if(response==null)
+            return false;
+        commit('updateOrganizationItemMutation', response);
+        return true;
+    },
     async addOrganizationItem({commit, state}, {name, phone, address}){
         let token = localStorage.getItem('token');
         let response = await apiMethod.addOrganizationItem(token, name, phone, address);
@@ -39,6 +47,9 @@ const actions={
     }
 };
 const mutations={
+    updateOrganizationItemMutation(state, data){
+      state.selectedOrganization = data;
+    },
     addOrganizationMutation(state, date){
       state.organizationList.unshift(date);
       state.total+=1
