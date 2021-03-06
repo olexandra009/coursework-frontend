@@ -13,6 +13,13 @@ const actions={
         commit('createEventMutation', result);
         return true;
     },
+    async getListOfEvents({commit, state}){
+        let token = localStorage.getItem('token');
+        let result = await apiMethods.getEventsList(token);
+        if(result===null)
+            return false;
+        commit('getListEventsMutation', result);
+    },
 };
 const mutations={
     createEventMutation(state, data){

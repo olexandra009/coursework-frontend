@@ -15,8 +15,8 @@
             <b-card class="mt-2 bg-light w-100">
                 <router-link  v-bind:to="`/events/${item.id}`"><h5>{{item.name}}</h5></router-link>
                 <div class="">
-                    <div class="mb-0">{{item.startDate}} - {{item.endDate}}</div>
-                    <div class="mt-0"><router-link v-bind:to="`/organization/${item.organizationId}`">{{item.organizationName}}</router-link> <span v-if="item.showAuthor"> - {{item.authorName}}</span></div>
+                    <div class="mb-0">{{getDateTime(item.startDate)}} - {{getDateTime(item.endDate)}}</div>
+                    <div class="mt-0"><router-link v-bind:to="`/organization/${item.author.userOrganizationId}`">{{item.author.userOrganizationName}}</router-link> <span v-if="item.showAuthor"> - {{getAuthorName(item.author)}}</span></div>
                 </div>
                 <p class="m-2">
                     <cut-text-component :text="item.description"/>
@@ -33,33 +33,30 @@
     import PhotoTab from "../inner-components/PhotoTab.vue";
     import FormEventCreated from "../inner-components/created-forms/FormEventCreated.vue";
     import FormEventFilter from "../inner-components/filtered-form/FormEventFilter.vue";
+    import Vuex from "vuex";
     export default {
         name: "EventsList",
         components: {FormEventFilter, FormEventCreated, CutTextComponent, PhotoTab},
+        computed: Vuex.mapState({
+            events: state=>state.events.all,
+        }),
+        mounted: function(){
+            this.$store.dispatch('events/getListOfEvents');
+            console.log(this.news);
+        },
+        methods:{
+          ...Vuex.mapActions(['getListOfEvents']),
+          getDateTime(str){
+                let date = new Date(str);
+                return date.toLocaleString();
+          },
+          getAuthorName(author){
+                return author.firstName+' '+author.lastName;
+          },
+        },
         data() {
             return {
                 adminEdit: true,
-                events:[{
-                    id: 0,
-                    name: "Header name",
-                    description: "Event Event Event Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n" +
-                        "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n" +
-                        "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n" +
-                        "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n" +
-                        "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n" +
-                        "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                    startDate: "2021-02-27, 17:50",
-                    endDate: "2021-02-27, 17:50",
-                    edited: true,
-                    showAuthor: true,
-                    authorId: 12,
-                    organizationId: 1,
-                    organizationName: 'Organization',
-                    authorName: 'Last First Last',
-                    multimedias: []
-                },
-                ],
-
             }
         }
     }
