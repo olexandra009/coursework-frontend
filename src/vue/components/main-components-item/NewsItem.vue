@@ -49,7 +49,10 @@
             ...Vuex.mapActions(['getNewsItem', 'updateNewsItem', 'deleteNewsItem']),
             newLinedText: (t)=> editHtmText(t),
             getDateTime(str){
+                console.log('NEWS');
+                console.log(str);
                 let date = new Date(str);
+                console.log(date);
                 return date.toLocaleString();
             },
             getAuthorName(author){
@@ -82,10 +85,12 @@
                         variant: 'danger',
                         solid: true
                     });
-                this.editNews=!this.editNews;
+                this.cancelEdition();
             },
             cancelEdition(){
                 this.editNews=!this.editNews;
+                this.newsHeader = '';
+                this.newsText= '';
             },
             async deleteItem(){
                 let id = this.$route.params.id;

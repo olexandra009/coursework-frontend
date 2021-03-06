@@ -109,6 +109,7 @@
 
 <script>
     import Vuex from "vuex";
+    import {editHtmText} from "../../../../js/utility";
 
     export default {
         name: "FormEventCreated",
@@ -124,7 +125,7 @@
                    multimedias.unshift({'url': image.image, "isImage": true})
                });
                let header = this.eventHeader;
-               let description = this.eventDescription;
+               let description = editHtmText(this.eventDescription);
 
                let createEvent = {
                    'name': header,

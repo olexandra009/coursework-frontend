@@ -347,6 +347,44 @@ export default {
             return null;
         }
     },
+
+    async getEventsItem(token, id){
+        let link = baseUrl+'/api/Event/'+id;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+    async deleteEventsItem(token, id){
+        let link = baseUrl+'/api/Event/'+id;
+        let options = {headers: headers(token)};
+        try{
+            await Vue.http.delete(link, options);
+            return true;
+        } catch(error){
+            return false;
+        }
+    },
+
+    async updateEventsItem(token, id, even){
+        let link = baseUrl+'/api/Event/'+id;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.put(link, even, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    }
 }
 
 
