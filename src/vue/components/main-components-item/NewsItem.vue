@@ -1,8 +1,8 @@
 <template>
 
     <b-card class="min-vh-100 pt-2 bg-light">
-        <div class="d-flex justify-content-end" v-if="adminEdit">
-            <b-button type="submit" @click="editNews=!editNews" variant="info" v-if="!editNews">Редагувати</b-button>
+        <div class="d-flex justify-content-end mb-1" v-if="adminEdit">
+            <b-button type="submit" class="mr-1" @click="editNews=!editNews" variant="info" v-if="!editNews">Редагувати</b-button>
             <b-button type="submit" @click="deleteItem" variant="info" v-if="!editNews">Видалити</b-button>
         </div>
         <b-form-input v-model="newsHeader" v-if="editNews"/>

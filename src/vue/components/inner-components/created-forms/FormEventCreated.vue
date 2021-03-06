@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-form v-on:submit.prevent="SubmitApplication" v-on:reset.prevent="ResetApplication" class="w-75 m-auto">
+        <b-form v-on:submit.prevent="submitEvent" v-on:reset.prevent="resetEvent" class="w-75 m-auto">
             <b-row class="pt-2">
                 <b-col sm="3" class="vertical">
                     <label>Заголовок: </label>
@@ -108,13 +108,64 @@
 </template>
 
 <script>
+    import Vuex from "vuex";
+
     export default {
         name: "FormEventCreated",
         methods: {
-            show(){
-                console.log(this.dateModel);
-                console.log(this.timeModel);
-            },
+            ...Vuex.mapActions(['addNewEvent']),
+           async submitEvent() {
+               let dateTimeStart = new Date(this.dateModel + ', ' + this.timeModel).toISOString();
+               let dateTimeEnd = new Date(this.dateEndModel + ', ' + this.timeEndModel).toISOString();
+               let author = JSON.parse(localStorage.getItem('user'));
+               let authorId = author.id;
+               let multimedias = [];
+               this.imageDataArray.forEach(image => {
+                   multimedias.unshift({'url': image.image, "isImage": true})
+               });
+               let header = this.eventHeader;
+               let description = this.eventDescription;
+
+               let createEvent = {
+                   'name': header,
+                   "description": description,
+                   "startDate": dateTimeStart,
+                   "endDate": dateTimeEnd,
+                   "edited": false,
+                   "showAuthor": this.showAuthor,
+                   "emailNotification": this.emailNotification,
+                   "authorId": authorId,
+                   "multimedias": multimedias
+               };
+               let result = await this.$store.dispatch('events/addNewEvent', {'events': createEvent});
+               if (result)
+                   this.$bvToast.toast('Подію успішно додано', {
+                       title: `Успіх`,
+                       variant: 'success',
+                       solid: true
+                   });
+               else
+                   this.$bvToast.toast('Сталася помилка, спробуйте пізніше', {
+                       title: `Помилка`,
+                       variant: 'danger',
+                       solid: true
+                   });
+               this.resetEvent();
+           },
+
+           resetEvent() {
+                this.sendEmail = false;
+                this.showAuthor = true;
+                this.dateModel = '';
+                this.timeModel = '12:00:00';
+                this.dateEndModel = '';
+                this.timeEndModel = '12:00:00';
+                this.imageDataId = 0;
+                this.imageDataArray = [];
+                this.eventDescription = "";
+                this.eventHeader = "";
+           },
+
             deleteImage(id){
                 let x = parseInt(id);
                 let deleted =this.imageDataArray.find(f=> f.id===x);
@@ -125,8 +176,7 @@
 
             },
             previewImages: function (event) {
-                if(this.imageDataArray.length >= 5)
-                {
+                if (this.imageDataArray.length >= 5) {
                     //todo alert or toast
                     return;
                 }
@@ -134,11 +184,11 @@
 
                 if (fileList) {
                     let count = fileList.length;
-                    if(this.imageDataArray.length + count>= 5){
-                        count = 5-this.imageDataArray.length;
+                    if (this.imageDataArray.length + count >= 5) {
+                        count = 5 - this.imageDataArray.length;
                         //todo alert or toast
                     }
-                    for(let i = 0; i<count; i++ ) {
+                    for (let i = 0; i < count; i++) {
                         if (fileList[i]) {
                             let reader = new FileReader();
                             reader.onload = (e) => {

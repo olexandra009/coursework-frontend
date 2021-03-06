@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-form v-on:submit.prevent="submitApplication" v-on:reset.prevent="ResetApplication" class="w-75 m-auto">
+        <b-form v-on:submit.prevent="submitNews" v-on:reset.prevent="resetNews" class="w-75 m-auto">
             <b-row class="pt-2">
                 <b-col sm="3" class="vertical">
                     <label>Заголовок: </label>
@@ -72,13 +72,12 @@
         name: "FormNewsCreated",
         methods: {
             ...Vuex.mapActions(['addNewNews']),
-            async submitApplication(){
+            async submitNews() {
                 let dateCreation = new Date().toISOString();
                 let author = JSON.parse(localStorage.getItem('user'));
                 let authorId = author.id;
                 let multimedias = [];
-                this.imageDataArray.forEach(image=>
-                {
+                this.imageDataArray.forEach(image => {
                     multimedias.unshift({'url': image.image, "isImage": true})
                 });
                 let header = this.newsHeader;
@@ -89,11 +88,11 @@
                     "dateTimeCreation": dateCreation,
                     "edited": false,
                     "showAuthor": this.showAuthor,
-                    "authorId" : authorId,
+                    "authorId": authorId,
                     "multimedias": multimedias
                 };
                 let result = await this.$store.dispatch('news/addNewNews', {'news': newNews})
-                if(result)
+                if (result)
                     this.$bvToast.toast('Новина успішно додана', {
                         title: `Успіх`,
                         variant: 'success',
@@ -105,9 +104,18 @@
                         variant: 'danger',
                         solid: true
                     });
-                this.newsText ="";
-                this.newsHeader="";
+
+                this.resetNews();
             },
+
+            resetNews() {
+                this.newsText = "";
+                this.newsHeader = "";
+                this.showAuthor = true;
+                this.imageDataId = 0;
+                this.imageDataArray = [];
+            },
+
             deleteImage(id){
                 let x = parseInt(id);
                 let deleted =this.imageDataArray.find(f=> f.id===x);
