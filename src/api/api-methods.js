@@ -278,7 +278,34 @@ export default {
            console.log(error);
            return null;
        }
-    }
+    },
+   async getNewsItem(token, id){
+        let link = baseUrl+'/api/News/'+id;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+   },
+   async updateNewsItem(token, id, news){
+       let link = baseUrl+'/api/News/'+id;
+       let options = {headers: headers(token)};
+       try{
+           let response = await Vue.http.put(link, news, options);
+           console.log(response);
+           console.log(response.body);
+           return response.body;
+       } catch(error){
+           console.log(error);
+           return null;
+       }
+   }
+
 
 //-------------------------------------------------------------//
 }

@@ -44,3 +44,7 @@
 .min-vh-20 {
   min-height: 20vh;
 }
+
+.min-vh-60 {
+  min-height: 60vh;
+}
