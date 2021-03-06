@@ -72,7 +72,7 @@
         name: "FormNewsCreated",
         methods: {
             ...Vuex.mapActions(['addNewNews']),
-            submitApplication(){
+            async submitApplication(){
                 let dateCreation = new Date().toISOString();
                 let author = JSON.parse(localStorage.getItem('user'));
                 let authorId = author.id;
@@ -92,8 +92,21 @@
                     "authorId" : authorId,
                     "multimedias": multimedias
                 };
-                this.$store.dispatch('news/addNewNews', {'news': newNews})
-
+                let result = await this.$store.dispatch('news/addNewNews', {'news': newNews})
+                if(result)
+                    this.$bvToast.toast('Новина успішно додана', {
+                        title: `Успіх`,
+                        variant: 'success',
+                        solid: true
+                    });
+                else
+                    this.$bvToast.toast('Сталася помилка, спробуйте пізніше', {
+                        title: `Помилка`,
+                        variant: 'danger',
+                        solid: true
+                    });
+                this.newsText ="";
+                this.newsHeader="";
             },
             deleteImage(id){
                 let x = parseInt(id);
