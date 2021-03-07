@@ -106,6 +106,7 @@
                     });
 
                 this.resetNews();
+
             },
 
             resetNews() {

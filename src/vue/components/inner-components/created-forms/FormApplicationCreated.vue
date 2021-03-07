@@ -75,9 +75,27 @@
                     'multimedias':this.imageDataArray,
                 };
                 let result = this.$store.dispatch('application/createApplicationItem', {'application':application});
+                if (result)
+                    this.$bvToast.toast('Звернення успішно додане', {
+                        title: `Успіх`,
+                        variant: 'success',
+                        solid: true
+                    });
+                else
+                    this.$bvToast.toast('Сталася помилка, спробуйте пізніше', {
+                        title: `Помилка`,
+                        variant: 'danger',
+                        solid: true
+                    });
+
+                this.resetApplication();
+                location.reload();
             },
             resetApplication(){
-
+                this.imageDataId= 0;
+                this.imageDataArray= [];
+                this.applicationSubject= "";
+                this.applicationText="";
             },
             deleteImage(id){
                 let x = parseInt(id);

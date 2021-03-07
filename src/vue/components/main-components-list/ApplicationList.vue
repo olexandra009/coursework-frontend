@@ -52,9 +52,9 @@
         computed: Vuex.mapState({
             applications: state=>state.application.all,
         }),
-        mounted: async function(){
+        mounted:  function(){
             console.log("HERE");
-            await this.$store.dispatch('application/getListOFApplication');
+            this.$store.dispatch('application/getListOFApplication');
             console.log(this.applications);
             console.log("HERE");
         },
