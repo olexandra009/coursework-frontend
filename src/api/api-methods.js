@@ -352,8 +352,8 @@ export default {
         }
     },
 
-    async getEventsList(token){
-        let link = baseUrl+'/api/Event?SortProp=id&SortOrder=desc';
+    async getEventsList(token, take, skip){
+        let link = baseUrl+'/api/Event?SortProp=id&SortOrder=desc&Take='+take+"&Skip="+skip;
         let options = {headers: headers(token)};
         try{
             let response = await Vue.http.get(link, options);

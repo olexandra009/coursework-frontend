@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import apiMethods from "../../../api/api-methods";
 
-const state = () => ({all: [], selectedEvent: null, currentItem: -1, takeValue: 10, totalItem: 0});
+const state = () => ({all: [], selectedEvent: null, currentItem: -1, skip:0, takeValue: 4, totalItem: 0});
 const getters={};
 const actions={
     async addNewEvent({commit, state},{events}){
@@ -15,7 +15,7 @@ const actions={
     },
     async getListOfEvents({commit, state}){
         let token = localStorage.getItem('token');
-        let result = await apiMethods.getEventsList(token);
+        let result = await apiMethods.getEventsList(token, state.takeValue, state.skip);
         if(result===null)
             return false;
         commit('getListEventsMutation', result);
@@ -52,8 +52,19 @@ const mutations={
       state.selectedEvent = data;
     },
     getListEventsMutation(state, data){
-      state.totalItem = data.total;
-      state.all = data.result;
+        const  targetNews = state.all.concat(data.result);
+        state.all = [];
+        let pushed = {};
+        for(let r of targetNews) {
+            if (!(r.id in pushed)) {
+                state.all.push(r);
+                pushed[r.id] = 1
+            }
+        }
+        state.totalItem = data.total;
+        if(state.skip>state.total)
+            state.skip = state.total-state.takeValue;
+        state.skip+=state.takeValue;
     },
     updateEventItemMutation(state,data){
         state.selectedEvent = data;

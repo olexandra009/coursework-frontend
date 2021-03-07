@@ -25,6 +25,7 @@
                 <div class="text-secondary text-right" v-if="item.edited">Редаговано</div>
             </b-card>
         </b-row>
+        <event-loader/>
     </div>
 </template>
 
@@ -34,9 +35,10 @@
     import FormEventCreated from "../inner-components/created-forms/FormEventCreated.vue";
     import FormEventFilter from "../inner-components/filtered-form/FormEventFilter.vue";
     import Vuex from "vuex";
+    import EventLoader from "../loading-components/EventLoader.vue";
     export default {
         name: "EventsList",
-        components: {FormEventFilter, FormEventCreated, CutTextComponent, PhotoTab},
+        components: {EventLoader, FormEventFilter, FormEventCreated, CutTextComponent, PhotoTab},
         computed: Vuex.mapState({
             events: state=>state.events.all,
         }),
