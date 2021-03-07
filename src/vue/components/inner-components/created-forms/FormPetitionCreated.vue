@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-row>
-            <b-form v-on:submit.prevent="SubmitReview" v-on:reset.prevent="ResetReview" class="w-75 m-auto">
+            <b-form v-on:submit.prevent="submitPetition" v-on:reset.prevent="resetPetition" class="w-75 m-auto">
                 <div class="pt-2">
                     <b-form-group  label="Заголовок:" >
                         <b-form-textarea
@@ -31,8 +31,31 @@
 </template>
 
 <script>
+    import Vuex from "vuex";
+
+    import {editHtmText} from "../../../../js/utility";
+
     export default {
         name: "FormPetitionCreated",
+        methods: {
+            ...Vuex.mapActions(['addPetitionItem']),
+             submitPetition: async function(){
+                let author = JSON.parse(localStorage.getItem('user'));
+                let startDate = new Date();
+                let finishDate = new Date(Date.parse(startDate)+7776000000);
+                let petition = {
+                    "header": this.petitionHeader,
+                    "text": editHtmText(this.petitionText),
+                    "authorId": author.id,
+                    "starDate": startDate.toISOString(),
+                    "finishDate": finishDate.toISOString()
+                };
+                let y = await this.$store.dispatch('petition/addPetitionItem', {'petition':petition});
+                console.log(y);
+                this.resetPetition();
+             },
+            resetPetition(){this.petitionHeader=""; this.petitionText=""; this.showCreatedForm=false},
+        },
         data(){
             return{
                 showCreatedForm: false,
@@ -40,11 +63,6 @@
                 petitionText: ""
             }
         },
-        methods:{
-            changeFormVisible(){this.showCreatedForm = true},
-            SubmitReview(){this.petitionHeader=""; this.petitionText=""; this.showCreatedForm=false},
-            ResetReview(){this.petitionHeader=""; this.petitionText=""; this.showCreatedForm=false}
-        }
     }
 </script>
 

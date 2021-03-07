@@ -401,22 +401,60 @@ export default {
             return null;
         }
     },
-    
+
+    async getPetitionItem(token, id){
+        let link = baseUrl+'/api/Petition/'+id;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+
+    async addPetitionItem(token, petition){
+        let link = baseUrl+'/api/Petition';
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.post(link, petition, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+
+    async addAnswerToPetition(token, petitionId, petition){
+        let link = baseUrl+'/api/Petition/addAnswer?id='+petitionId;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.put(link, petition, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+
     async getListOfPetitionByStatus(token, timeStatus, voteStatus, take, skip){
-        let link = baseUrl+'/filter_by_status';
+        let link = baseUrl+'/filter_by_status?sortProp=id&sortOrder=desc';
         if(timeStatus || voteStatus)
             link+="?";
-        if(timeStatus) link+="timeStatus="+timeStatus+"&";
-        if(voteStatus) link+="voteStatus="+voteStatus;
+        if(timeStatus) link+="&timeStatus="+timeStatus;
+        if(voteStatus) link+="&voteStatus="+voteStatus;
         let options = {headers: headers(token)};
-        let message = {
-            "sortProp": "id",
-            "sortOrder": "desc"
-        };
-        if(take) message.take = take;
-        if(skip) message.skip = skip;
+        if(take) link+= "&Take="+take;
+        if(skip) link +="&Skip="+skip;
         try{
-            let response = await Vue.http.get(link, message, options);
+            let response = await Vue.http.get(link, options);
             console.log(response);
             console.log(response.body);
             return response.body;
@@ -428,6 +466,20 @@ export default {
 
 
 
+
+
+//-------------------------------------------------------------//
+//--------------------- Votes api -----------------------------//
+    async getVotesCount(token, petitionId){
+        let link = baseUrl+'/votes_number?petitionId='+petitionId;
+        try{
+            let response = await Vue.http.get(link, options);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return 0;
+        }
+    },
 
 
 //-------------------------------------------------------------//

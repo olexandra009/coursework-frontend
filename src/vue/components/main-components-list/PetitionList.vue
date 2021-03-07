@@ -16,11 +16,11 @@
 
                    </b-col>
                    <b-col sm="12"  md="4"  order="1" order-sm="1" order-md="2" order-lg="2" order-xl="2">
-                       <span>{{item.votesNumber}} {{votesString(item.votesNumber)}}</span>
-                       <b-progress :value="item.votesNumber" height="5px" :max="item.minVotes" class="mb-3"/>
-                       <p v-if="calculateDate(item.finishDate)">{{lastDate(item.finishDate)}}</p>
-                       <span><b-icon :icon="statusIcon(item.votesNumber, item.minVotes, item.finishDate, item.answer)"/> {{status(item.votesNumber, item.minVotes, item.finishDate, item.answer)}}</span>
-                   </b-col>
+                        <span>{{item.votesNumber}} {{votesString(item.votesNumber)}}</span>
+                        <b-progress :value="item.votesNumber" height="5px" :max="minVotes" class="mb-3"/>
+                        <p v-if="calculateDate(item.finishDate)">{{lastDate(item.finishDate)}}</p>
+                       <span><b-icon :icon="statusIcon(item.votesNumber, minVotes, item.finishDate, item.answer)"/> {{status(item.votesNumber, minVotes, item.finishDate, item.answer)}}</span>
+                 </b-col>
                </b-row>
             </b-card>
         </b-row>
@@ -36,66 +36,35 @@
     } from "../../../js/utility";
     import FormPetitionCreated from "../inner-components/created-forms/FormPetitionCreated.vue";
     import FormPetitionFilter from "../inner-components/filtered-form/FormPetitionFilter.vue";
+    import Vuex from 'vuex';
     export default {
         name: "PetitionList",
         components: {FormPetitionFilter, FormPetitionCreated},
+        computed: Vuex.mapState({
+            petition: state=>state.petition.all,
+            minVotes: state=>state.petition.minVotes,
+        }),
+        mounted: async function() {
+           await this.$store.dispatch('petition/getPetitionList');
+        },
         data(){
             return {
                 dateNow: new Date(),
-                petition:[
-                    {id: 0,
-                        header: "Header of Petition can be very very long",
-                        /*   text: "HEre is text very-very-very-long-text",*/
-                        starDate: "27.02.2021, 18:04:47",
-                        finishDate: "27.06.2021, 18:04:47",
-                        authorName: "Last First Second",
-                        authorId: 1,
-                        votesNumber: 100,
-                        minVotes: 2500},
-                    {id: 2,
-                        header: "Header of Petition can be very very long",
-                        /*   text: "HEre is text very-very-very-long-text",*/
-                        starDate: "27.02.2021, 18:04:47",
-                        finishDate: "27.06.2021, 18:04:47",
-                        authorName: "Last First Second",
-                        authorId: 1,
-                        votesNumber: 1000,
-                        minVotes: 2500},
-                    {id: 3,
-                        header: "Header of Petition can be very very long",
-                        /*   text: "HEre is text very-very-very-long-text",*/
-                        starDate: "27.02.2021, 18:04:47",
-                        finishDate: "27.06.2021, 18:04:47",
-                        authorName: "Last First Second",
-                        authorId: 1,
-                        votesNumber: 2503,
-                        answer: "HE IS ANSWER",
-                        minVotes: 2500},
-                    {id: 4,
-                        header: "Header of Petition can be very very long",
-                        /*   text: "HEre is text very-very-very-long-text",*/
-                        starDate: "27.02.2021, 18:04:47",
-                        finishDate: "22.02.2021, 18:04:47",
-                        authorName: "Last First Second",
-                        authorId: 1,
-                        votesNumber: 203,
-                        minVotes: 2500},
-
-                ],
             }
         },
         methods: {
+            ...Vuex.mapActions(['getPetitionList']),
             calculateDate: (finishDate) => {
-                return endPetitionDate(finishDate)
+                return endPetitionDate(new Date(finishDate).toLocaleString())
             },
             lastDate: (finishDate) => {
-                return lastPetitionDate(finishDate)
+                return lastPetitionDate(new Date(finishDate).toLocaleString())
             },
             statusIcon: (currentVotes, minVotes, finishDate, result) => {
-                return statusPetitionIcon(currentVotes, minVotes, finishDate, result)
+                return statusPetitionIcon(currentVotes, minVotes, new Date(finishDate).toLocaleString(), result)
             },
             status: (currentVotes, minVotes, finishDate, result) => {
-                return statusPetitionLine(currentVotes, minVotes, finishDate, result)
+                return statusPetitionLine(currentVotes, minVotes, new Date(finishDate).toLocaleString(), result)
             },
             votesString: (numVote) => {
                 return votesPetitionString(numVote)

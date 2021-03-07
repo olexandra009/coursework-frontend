@@ -1,11 +1,7 @@
 <template>
     <b-row class="min-vh-100 pt-2">
         <b-col order="2" order-md="1" order-sm="2"  md="9">
-            <router-view :petition_header="petition.header"
-                         :petition_text="petition.text"
-                         :petition_authorName="petition.authorName"
-                         :petition_startDate="petition.starDate"
-                         :petition_answer="petition.answer"/>
+            <router-view/>
         </b-col>
         <b-col order="1"  order-md="2" order-sm="1" md="3">
             <div class="d-block d-sm-block d-md-none">
@@ -27,7 +23,7 @@
             </div>
             <div class="d-none d-sm-none d-md-block" style="position: fixed; width: 160px;">
                 <vue-circle
-                        :progress="calculateVotesPercent(petition.votesNumber, petition.minVotes)"
+                        :progress="calculateVotesPercent(petition.votesNumber, minVotes)"
                         :size="120"
                         :reverse="false"
                         line-cap="square"
@@ -43,7 +39,7 @@
                         style="position: fixed; margin-left: 20px"/>
                 <div class="mt-3" style="z-index: 10001; width: 160px; position: absolute" >
                     <div class="text-center">{{petition.votesNumber}}</div>
-                    <div class="text-center">{{votesString(petition.votesNumber)}} з {{petition.minVotes}}</div>
+                    <div class="text-center">{{votesString(petition.votesNumber)}} з {{minVotes}}</div>
                     <div class="text-center">необхідних</div>
                 </div>
 
@@ -63,12 +59,13 @@
                 </div>
                 <div class="mt-1 text-center">
                     <span>
-                        <b-icon :icon="statusIcon(petition.votesNumber, petition.minVotes, petition.finishDate, petition.answer)"/> {{status(petition.votesNumber, petition.minVotes, petition.finishDate, petition.answer)}}
+                        <b-icon :icon="statusIcon(petition.votesNumber, minVotes, petition.finishDate, petition.answer)"/> {{status(petition.votesNumber, minVotes, petition.finishDate, petition.answer)}}
                     </span>
                 </div>
                 <div class="mt-1 text-center">
                    <b-button style="width: 165px" v-b-modal.answer-add variant="info">Додати відповідь</b-button>
                 </div>
+
             </div>
         </b-col>
 
@@ -99,64 +96,30 @@
     } from "../../../js/utility";
     import PetitionItemText from "../inner-components/PetitionItemText.vue";
     import PetitionItemVotes from "../inner-components/PetitionItemVotes.vue";
+    import Vuex from "vuex";
     export default {
         name: "PetitionItem",
         components: {
             VueCircle, PetitionItemText, PetitionItemVotes,
         },
+        computed: Vuex.mapState({
+            petition: state=> state.petition.selectedPetition,
+            minVotes: state=>state.petition.minVotes,
+        }),
+        mounted(){
+             let id =this.$route.params.id;
+             this.$store.dispatch('petition/getPetitionItem', {'petitionId':id});
+        },
         data(){
             return{
                 fill : { color: "#2bbcfa" },
-                petition:  {id: 3,
-                            header: "Header of Petition can be very very long",
-                            text: "HEre is text very-very-very-long-text"+
-                    "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod" +
-                                "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
-                                "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo" +
-                                "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse" +
-                                "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non" +
-                                "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n" +
-                                "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod" +
-                                "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
-                                "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo" +
-                                "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse" +
-                                "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non" +
-                                "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n" +
-                                "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod" +
-                                "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
-                                "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n" +
-                                "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n" +
-                                "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n" +
-                                "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n" +
-                                "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n" +
-                                "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n" +
-                                "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n" +
-                                "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n" +
-                                "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n" +
-                                "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                            answer: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod" +
-                                "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
-                                "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo" +
-                                "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse" +
-                                "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non" +
-                                "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n" +
-                                "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod" +
-                                "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
-                                "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo" +
-                                "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse" +
-                                "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non" +
-                                "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                            starDate: "27.02.2021, 18:04:47",
-                            finishDate: "27.06.2021, 18:04:47",
-                            authorName: "Last First Second",
-                            authorId: 1,
-                            votesNumber: 2503,
-                            minVotes: 2500},
             }
         },
         methods: {
+            ...Vuex.mapActions(['getPetitionItem', 'addAnswerToPetition']),
+
             endDate: (finish) => {
-                return endPetitionDate(finish)
+                return endPetitionDate(new Date(finish).toLocaleString())
             },
             calculateVotesPercent: (current, min) => current * 100 / min,
 
@@ -171,13 +134,13 @@
                 return votesPetitionString(numVote)
             },
             statusIcon: (currentVotes, minVotes, finishDate, result) => {
-                return statusPetitionIcon(currentVotes, minVotes, finishDate, result)
+                return statusPetitionIcon(currentVotes, minVotes, new Date(finishDate).toLocaleString(), result)
             },
             status: (currentVotes, minVotes, finishDate, result) => {
-                return statusPetitionLine(currentVotes, minVotes, finishDate, result)
+                return statusPetitionLine(currentVotes, minVotes, new Date(finishDate).toLocaleString(), result)
             },
             lastDate: (finishDate) => {
-                return lastPetitionDate(finishDate)
+                return lastPetitionDate(new Date(finishDate).toLocaleString())
             },
         },
     }
