@@ -1,12 +1,29 @@
-import Vue from "vue";
 import apiMethods from '/src/api/api-methods';
 
-const state = () => ({all: [], selectedPetition: null, minVotes: 100, currentItem: -1, takeValue: 10, totalItem: 0});
+const state = () => ({all: [], selectedPetition: null, status: null, minVotes: 100, skip:0, takeValue: 4, totalItem: 0});
 const getters={};
 const actions={
-    async getPetitionList({commit, state}){
+    resetFilter({commit}){
+      commit('resetFilterMutation');
+    },
+    async getPetitionList({commit, state}, {mine, status}){
         let token = localStorage.getItem('token');
-        let result = await apiMethods.getListOfPetition(token);
+        let result;
+        let userId;
+        if(mine)
+            userId = (JSON.parse(localStorage.getItem('user'))).id;
+
+        if(mine&&status)
+            result = await apiMethods.getListOfPetitionByStatusAndAuthor(token, userId, status, state.takeValue, state.skip);
+        else if (status)
+            result = await apiMethods.getListOfPetitionByStatus(token, status, state.takeValue, state.skip);
+        else if (mine)
+            result = await apiMethods.getListOfPetitionByAuthor(token, userId, state.takeValue, state.skip);
+        else
+            result = await apiMethods.getListOfPetition(token, state.takeValue, state.skip);
+
+        state.status = status;
+
         if(result == null) return;
         for (const r of result.result) {
             let count = await apiMethods.getVotesCount(token, r.id);
@@ -38,7 +55,7 @@ const actions={
     async vote({commit, state}, {id}){
         let token = localStorage.getItem('token');
         let user = JSON.parse(localStorage.getItem('user'));
-        let voteResult =  await apiMethods.votePetition(token, id, user.id)
+        let voteResult =  await apiMethods.votePetition(token, id, user.id);
         if(voteResult==null)
             return false;
         commit('votePetitionMutation', voteResult);
@@ -65,8 +82,25 @@ const mutations={
         state.selectedPetition = data;
     },
     listPetitionMutation(state, data){
-        state.all = data.result;
-        state.total = data.total;
+        let target = state.all.concat(data.result);
+        state.all = [];
+        let pushed = {};
+        for(let r of target) {
+            if (!(r.id in pushed)){
+                state.all.push(r);
+                pushed[r.id] = 1
+            }
+        }
+        state.totalItem = data.total;
+        if(state.skip>=state.totalItem) {
+            state.skip = state.totalItem - state.takeValue;
+        }
+        state.skip+=state.takeValue;
+    },
+    resetFilterMutation(state){
+        state.all=[];
+        state.skip= 0;
+        state.total= 0;
     },
     votePetitionMutation(state, data){
         state.selectedPetition.userVotes.unshift(data);

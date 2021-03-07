@@ -24,6 +24,8 @@
                </b-row>
             </b-card>
         </b-row>
+        <petition-loader/>
+        <div class="min-vh-5"/>
     </div>
 </template>
 
@@ -37,16 +39,15 @@
     import FormPetitionCreated from "../inner-components/created-forms/FormPetitionCreated.vue";
     import FormPetitionFilter from "../inner-components/filtered-form/FormPetitionFilter.vue";
     import Vuex from 'vuex';
+    import PetitionLoader from "../loading-components/PetitionLoader.vue";
     export default {
         name: "PetitionList",
-        components: {FormPetitionFilter, FormPetitionCreated},
+        components: {PetitionLoader, FormPetitionFilter, FormPetitionCreated},
         computed: Vuex.mapState({
             petition: state=>state.petition.all,
             minVotes: state=>state.petition.minVotes,
         }),
-        mounted: async function() {
-           await this.$store.dispatch('petition/getPetitionList');
-        },
+
         data(){
             return {
                 dateNow: new Date(),

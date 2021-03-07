@@ -12,14 +12,15 @@
             selected: state=> state.news.selOrgId,
             total: state=>state.news.total,
             skip: state=>state.news.skip,
+            showEnd(){return this.total <= this.skip;},
         }),
         methods:{
-            ...Vuex.mapActions(['getListOfNews'])
+            ...Vuex.mapActions(['getListOfNews']),
+
         },
         data(){
             return{
                 canLoad: true,
-                showEnd: false,
             }
         },
         created() {
@@ -34,8 +35,7 @@
                     await this.$store.dispatch("news/getListOfNews",{"organization": this.selected});
                     this.canLoad = true;
                 }
-                if(this.total<= this.skip)
-                    this.showEnd = true;
+
             }
         },
         beforeDestroy() {

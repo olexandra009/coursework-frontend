@@ -15,14 +15,15 @@
             selTime:state=> state.events.selectedTime,
             total: state=>state.events.totalItem,
             skip: state=>state.events.skip,
+            showEnd(){return this.total <= this.skip;}
         }),
         methods:{
-            ...Vuex.mapActions(['getListOfEvents'])
+            ...Vuex.mapActions(['getListOfEvents']),
+
         },
         data(){
             return{
                 canLoad: true,
-                showEnd: false,
             }
         },
         mounted: function(){
@@ -34,8 +35,6 @@
                     await this.$store.dispatch("events/getListOfEvents", {'time': this.selTime, 'orgId': this.selOrg});
                     this.canLoad = true;
                 }
-                if(this.total<=this.skip)
-                    this.showEnd = true;
             }
         },
         created() {

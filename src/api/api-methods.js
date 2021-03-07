@@ -448,8 +448,54 @@ export default {
 
 //-------------------------------------------------------------//
 //--------------------- Petition api -----------------------------//
-    async getListOfPetition(token){
-        let link = baseUrl+'/api/Petition?SortProp=id&SortOrder=desc';
+    async getListOfPetition(token, take,skip){
+        let link = baseUrl+`/api/Petition?SortProp=id&SortOrder=desc&Take=${take}&Skip=${skip}`;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+
+    async getListOfPetitionByStatus(token, status, take, skip){
+        let link = baseUrl+`/filter_by_status?sortProp=id&sortOrder=desc&Take=${take}&Skip=${skip}`;
+        if(status.timeStatus) link+="&timeStatus="+status.timeStatus;
+        if(status.votesStatus) link+="&voteStatus="+status.votesStatus;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+
+    async getListOfPetitionByStatusAndAuthor(token, userId, status, take, skip){
+        let link = baseUrl+`/filter_author_status?sortProp=id&sortOrder=desc&Take=${take}&Skip=${skip}&userId=${userId}`;
+        if(status.timeStatus) link+="&timeStatus="+status.timeStatus;
+        if(status.votesStatus) link+="&voteStatus="+status.votesStatus;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+
+    async getListOfPetitionByAuthor(token, userId, take, skip){
+        let link = baseUrl+`/filter_by_author?sortProp=id&sortOrder=desc&Take=${take}&Skip=${skip}&userId=${userId}`;
         let options = {headers: headers(token)};
         try{
             let response = await Vue.http.get(link, options);
@@ -504,25 +550,7 @@ export default {
         }
     },
 
-    async getListOfPetitionByStatus(token, timeStatus, voteStatus, take, skip){
-        let link = baseUrl+'/filter_by_status?sortProp=id&sortOrder=desc';
-        if(timeStatus || voteStatus)
-            link+="?";
-        if(timeStatus) link+="&timeStatus="+timeStatus;
-        if(voteStatus) link+="&voteStatus="+voteStatus;
-        let options = {headers: headers(token)};
-        if(take) link+= "&Take="+take;
-        if(skip) link +="&Skip="+skip;
-        try{
-            let response = await Vue.http.get(link, options);
-            console.log(response);
-            console.log(response.body);
-            return response.body;
-        } catch(error){
-            console.log(error);
-            return null;
-        }
-    },
+
 
 
 

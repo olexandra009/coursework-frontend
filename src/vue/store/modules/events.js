@@ -84,7 +84,7 @@ const mutations={
     resetEventStoreMutation(state){
         state.all=[];
         state.skip= 0;
-        state.total= 0;
+        state.totalItem= 0;
     },
     updateEventItemMutation(state,data){
         state.selectedEvent = data;
