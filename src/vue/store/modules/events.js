@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import apiMethods from "../../../api/api-methods";
 
-const state = () => ({all: [], selectedEvent: null, currentItem: -1, skip:0, takeValue: 4, totalItem: 0});
+const state = () => ({all: [], selectedEvent: null, currentItem: -1, skip:0, takeValue: 4, totalItem: 0, selectedTime:null, selectedOrg:null});
 const getters={};
 const actions={
     async addNewEvent({commit, state},{events}){
@@ -13,9 +13,22 @@ const actions={
         commit('createEventMutation', result);
         return true;
     },
-    async getListOfEvents({commit, state}){
+    async getListOfEvents({commit, state},{time, orgId}){
         let token = localStorage.getItem('token');
-        let result = await apiMethods.getEventsList(token, state.takeValue, state.skip);
+
+        let result;
+        if(time && orgId)
+            result = await apiMethods.getEventsListByOrgIdAndTime(token, state.takeValue, state.skip, orgId, time);
+        else if (time)
+            result = await apiMethods.getEventsListByTime(token, state.takeValue, state.skip, time);
+        else if (orgId)
+            result = await apiMethods.getEventsListByOrgId(token, state.takeValue, state.skip, orgId);
+        else
+            result = await apiMethods.getEventsList(token, state.takeValue, state.skip);
+
+        state.selectedTime = time;
+        state.selectedOrg = orgId;
+        console.log("IN END OF ACTION");
         if(result===null)
             return false;
         commit('getListEventsMutation', result);
@@ -43,6 +56,9 @@ const actions={
         commit('deleteEventItemMutation', id);
         return true;
     },
+    async resetEventStore({commit}){
+      commit('resetEventStoreMutation');
+    },
 };
 const mutations={
     createEventMutation(state, data){
@@ -52,7 +68,13 @@ const mutations={
       state.selectedEvent = data;
     },
     getListEventsMutation(state, data){
-        const  targetNews = state.all.concat(data.result);
+        console.log("IN Start OF Mutation");
+       const  targetNews =  state.all.concat(data.result);
+        // data.result.forEach(
+        //     n=> state.all.push(n)
+        // );
+        console.log("targetNews");
+        console.log(targetNews);
         state.all = [];
         let pushed = {};
         for(let r of targetNews) {
@@ -61,10 +83,28 @@ const mutations={
                 pushed[r.id] = 1
             }
         }
+        console.log("stateAfterPush");
+        console.log(state.all);
         state.totalItem = data.total;
-        if(state.skip>state.total)
-            state.skip = state.total-state.takeValue;
+        console.log("Total");
+        console.log(state.totalItem);
+        console.log(typeof state.totalItem);
+        console.log("Skip");
+        console.log(state.skip);
+        console.log(state.skip>=state.totalItem);
+        if(state.skip>=state.totalItem) {
+            state.skip = state.totalItem - state.takeValue;
+        }
         state.skip+=state.takeValue;
+        console.log("Skip after IF");
+        console.log(state.skip);
+        console.log("End mutation");
+
+    },
+    resetEventStoreMutation(state){
+        state.all=[];
+        state.skip= 0;
+        state.total= 0;
     },
     updateEventItemMutation(state,data){
         state.selectedEvent = data;

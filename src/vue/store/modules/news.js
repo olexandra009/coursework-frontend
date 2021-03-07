@@ -1,7 +1,7 @@
 import Vue from "vue";
 import apiMethods from '/src/api/api-methods';
 
-const state = () => ({all: [], selectedNews: null, currentItem: -1, skip: 0, takeValue: 6, total: 0, selOrgId: null});
+const state = () => ({all: [], selectedNews: null, currentItem: -1, skip: 0, takeValue: 4, total: 0, selOrgId: null});
 const getters={};
 const actions={
         resetNewsStore({commit}){

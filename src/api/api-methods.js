@@ -366,6 +366,48 @@ export default {
         }
     },
 
+    async getEventsListByTime(token, take, skip,time){
+        let link = baseUrl+'/filter_by_time?SortProp=id&SortOrder=desc&Take='+take+"&Skip="+skip+"&filter="+time;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+
+    async getEventsListByOrgId(token, take, skip, orgId){
+        let link = baseUrl+'/filter_by_organization?SortProp=id&SortOrder=desc&Take='+take+"&Skip="+skip+"&organizationId="+orgId;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+
+    async getEventsListByOrgIdAndTime(token, take, skip, orgId, time){
+        let link = baseUrl+'/filter_by_organization?SortProp=id&SortOrder=desc&Take='+take+"&Skip="+skip
+            +"&organizationId="+orgId+"&filter="+time;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
     async getEventsItem(token, id){
         let link = baseUrl+'/api/Event/'+id;
         let options = {headers: headers(token)};

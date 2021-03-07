@@ -26,6 +26,7 @@
             </b-card>
         </b-row>
         <event-loader/>
+        <div class="min-vh-5"/>
     </div>
 </template>
 
@@ -41,11 +42,13 @@
         components: {EventLoader, FormEventFilter, FormEventCreated, CutTextComponent, PhotoTab},
         computed: Vuex.mapState({
             events: state=>state.events.all,
+            selOrg: state=> state.events.selectedOrg,
+            selTime:state=> state.events.selectedTime,
         }),
-        mounted: function(){
-            this.$store.dispatch('events/getListOfEvents');
-            console.log(this.news);
-        },
+        // mounted: function(){
+        //     this.$store.dispatch('events/getListOfEvents', {'time': this.selTime,'orgId':this.selOrg});
+        //     console.log(this.news);
+        // },
         methods:{
           ...Vuex.mapActions(['getListOfEvents']),
           getDateTime(str){
