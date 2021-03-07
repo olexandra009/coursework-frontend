@@ -507,6 +507,96 @@ export default {
         }
     },
 
+//-------------------------------------------------------------//
+//----------------------Application API------------------------//
+    async createApplication(token, application){
+        let link = baseUrl+'/api/Application';
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.post(link, application, options);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+    async updateStatusApplication(token, id, status){
+        let link = baseUrl+`/changeStatus/${id}?statusDto=${status}`;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.put(link, options);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+    async updateAnswerApplication(token, id, userId){
+        let link = baseUrl+`/changeAnswerer?applicationId=${id}&answererId=${userId}`;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.put(link, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+    async updateResultApplication(token, id, result){
+        console.log("In appi");
+        let link = baseUrl+`/addResult/${id}`
+        let message = {'result': result};
+        let options = { emulateJSON: true, headers: headers(token) };
+        try{
+            console.log("SEND");
+            let response = await Vue.http.put(link, message, options);
+            console.log("GET");
+            console.log();
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+    async deleteApplication(token, id){
+        let link = baseUrl+'/api/Application/'+id;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.delete(link, options);
+            return true;
+        } catch(error){
+            console.log(error);
+            return false;
+        }
+    },
+    async getListOfApplication(token, skip, take){
+        let link = baseUrl+'/api/Application?SortProp=id&SortOrder=desc';
+        if(skip) link+='&Skip='+skip;
+        if(take) link+='&Take='+take;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+    async getApplicationItem(token, id){
+        let link = baseUrl+'/api/Application/'+id;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
 
 //-------------------------------------------------------------//
 }

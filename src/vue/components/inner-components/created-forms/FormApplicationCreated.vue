@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-form v-on:submit.prevent="SubmitApplication" v-on:reset.prevent="ResetApplication" class="w-75 m-auto">
+        <b-form v-on:submit.prevent="submitApplication" v-on:reset.prevent="resetApplication" class="w-75 m-auto">
             <b-row class="pt-2">
                 <b-col sm="3" class="vertical">
                     <label>Тема: </label>
@@ -55,9 +55,30 @@
 </template>
 
 <script>
+
+    import Vuex from "vuex";
+    import {editHtmText} from "../../../../js/utility";
     export default {
         name: "FormApplicationCreated",
         methods: {
+            ...Vuex.mapActions(['createApplicationItem']),
+            submitApplication(){
+                let author = JSON.parse(localStorage.getItem('user'));
+                let subject = editHtmText(this.applicationSubject);
+                let text = editHtmText(this.applicationText);
+                let application= {
+                    'authorId': author.id,
+                    'subject': subject,
+                    'text': text,
+                    'status': 1,
+                    'openDate': new Date().toISOString(),
+                    'multimedias':this.imageDataArray,
+                };
+                let result = this.$store.dispatch('application/createApplicationItem', {'application':application});
+            },
+            resetApplication(){
+
+            },
             deleteImage(id){
                 let x = parseInt(id);
                 let deleted =this.imageDataArray.find(f=> f.id===x);
