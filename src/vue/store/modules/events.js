@@ -15,7 +15,6 @@ const actions={
     },
     async getListOfEvents({commit, state},{time, orgId}){
         let token = localStorage.getItem('token');
-
         let result;
         if(time && orgId)
             result = await apiMethods.getEventsListByOrgIdAndTime(token, state.takeValue, state.skip, orgId, time);

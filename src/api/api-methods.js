@@ -395,7 +395,7 @@ export default {
     },
 
     async getEventsListByOrgIdAndTime(token, take, skip, orgId, time){
-        let link = baseUrl+'/filter_by_organization?SortProp=id&SortOrder=desc&Take='+take+"&Skip="+skip
+        let link = baseUrl+'/filterOrganizationTime?SortProp=id&SortOrder=desc&Take='+take+"&Skip="+skip
             +"&organizationId="+orgId+"&filter="+time;
         let options = {headers: headers(token)};
         try{
