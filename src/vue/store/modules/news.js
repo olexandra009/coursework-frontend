@@ -77,7 +77,7 @@ const mutations={
              }
          }
         state.total = data.total;
-        if(state.skip>state.total)
+        if(state.skip>=state.total)
             state.skip = state.total-state.takeValue;
         state.skip+=state.takeValue;
     },
@@ -91,6 +91,7 @@ const mutations={
     deleteNewsItemMutation(state, data){
         let id = parseInt(data);
         let i = state.all.findIndex(news => news.id===id);
+        state.skip-=1;
         state.all.splice(i, 1);
         state.selectedNews = null;
     }

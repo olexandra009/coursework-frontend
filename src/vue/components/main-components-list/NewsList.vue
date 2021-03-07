@@ -22,6 +22,7 @@
             </b-card>
         </b-row>
         <news-loader/>
+        <div class="min-vh-5"/>
     </div>
 
 </template>
@@ -52,10 +53,7 @@
                 return author.firstName+' '+author.lastName;
             },
         },
-        mounted: function (){
-            this.$store.dispatch('news/getListOfNews', {'organization': this.selected});
-            console.log(this.news);
-        },
+
         data(){
             return {
                 adminEdit: true,

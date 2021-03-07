@@ -24,7 +24,6 @@
                 canLoad: true,
                 showEnd: false,
             }
-
         },
         mounted: function(){
             window.onscroll = async () => {
@@ -35,7 +34,7 @@
                     await this.$store.dispatch("events/getListOfEvents", {'time': this.selTime, 'orgId': this.selOrg});
                     this.canLoad = true;
                 }
-                if(this.total>this.skip)
+                if(this.total<=this.skip)
                     this.showEnd = true;
             }
         },

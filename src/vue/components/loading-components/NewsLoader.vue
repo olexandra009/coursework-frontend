@@ -1,5 +1,7 @@
 <template>
-    <span/>
+    <div class="w-100 mt-3">
+        <div v-if="showEnd" class="text-secondary smallerText text-center">Ви переглянули всі новини</div>
+    </div>
 </template>
 
 <script>
@@ -8,17 +10,32 @@
         name: "NewsLoader",
         computed:Vuex.mapState({
             selected: state=> state.news.selOrgId,
+            total: state=>state.news.total,
+            skip: state=>state.news.skip,
         }),
         methods:{
             ...Vuex.mapActions(['getListOfNews'])
         },
+        data(){
+            return{
+                canLoad: true,
+                showEnd: false,
+            }
+        },
+        created() {
+            this.$store.dispatch("news/getListOfNews",{"organization": this.selected});
+        },
         mounted() {
-            window.onscroll = () => {
-                const el = document.documentElement
-                const isBottomOfScreen = el.scrollTop + window.innerHeight  >  el.offsetHeight - 10;
-                if (isBottomOfScreen) {
-                    this.$store.dispatch("news/getListOfNews",{"organization": this.selected});
+            window.onscroll = async ()  => {
+                const el = document.documentElement;
+                const isBottomOfScreen = el.scrollTop + window.innerHeight > el.offsetHeight - 10;
+                if (isBottomOfScreen && this.canLoad&&this.total>this.skip) {
+                    this.canLoad = false;
+                    await this.$store.dispatch("news/getListOfNews",{"organization": this.selected});
+                    this.canLoad = true;
                 }
+                if(this.total<= this.skip)
+                    this.showEnd = true;
             }
         },
         beforeDestroy() {

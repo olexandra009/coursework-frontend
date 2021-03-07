@@ -24,10 +24,8 @@ const actions={
             result = await apiMethods.getEventsListByOrgId(token, state.takeValue, state.skip, orgId);
         else
             result = await apiMethods.getEventsList(token, state.takeValue, state.skip);
-
         state.selectedTime = time;
         state.selectedOrg = orgId;
-        console.log("IN END OF ACTION");
         if(result===null)
             return false;
         commit('getListEventsMutation', result);
@@ -67,38 +65,21 @@ const mutations={
       state.selectedEvent = data;
     },
     getListEventsMutation(state, data){
-        console.log("IN Start OF Mutation");
-       const  targetNews =  state.all.concat(data.result);
-        // data.result.forEach(
-        //     n=> state.all.push(n)
-        // );
-        console.log("targetNews");
-        console.log(targetNews);
+        const targetEvents =  state.all.concat(data.result);
         state.all = [];
         let pushed = {};
-        for(let r of targetNews) {
+        for(let r of targetEvents) {
             if (!(r.id in pushed)) {
                 state.all.push(r);
                 pushed[r.id] = 1
             }
         }
-        console.log("stateAfterPush");
-        console.log(state.all);
+
         state.totalItem = data.total;
-        console.log("Total");
-        console.log(state.totalItem);
-        console.log(typeof state.totalItem);
-        console.log("Skip");
-        console.log(state.skip);
-        console.log(state.skip>=state.totalItem);
         if(state.skip>=state.totalItem) {
             state.skip = state.totalItem - state.takeValue;
         }
         state.skip+=state.takeValue;
-        console.log("Skip after IF");
-        console.log(state.skip);
-        console.log("End mutation");
-
     },
     resetEventStoreMutation(state){
         state.all=[];

@@ -45,10 +45,6 @@
             selOrg: state=> state.events.selectedOrg,
             selTime:state=> state.events.selectedTime,
         }),
-        // mounted: function(){
-        //     this.$store.dispatch('events/getListOfEvents', {'time': this.selTime,'orgId':this.selOrg});
-        //     console.log(this.news);
-        // },
         methods:{
           ...Vuex.mapActions(['getListOfEvents']),
           getDateTime(str){
