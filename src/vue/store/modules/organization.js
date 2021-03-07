@@ -2,7 +2,9 @@ import Vue from "vue";
 import  apiMethod from '../../../api/api-methods';
 
 const state = () => ({organizationList: [], selectedOrganization: null, current:0, total:0});
-const getters={};
+const getters={
+    getOrganizationFilter: (state)=>state.organizationList.reduce((tail, x) => [...tail,{text: x.name, value: x.id}] , [{text: 'Оберіть організацію', value:null}]),
+};
 const actions={
     async updateOrganizationItem({commit, state}, {organization}){
         let token = localStorage.getItem('token');

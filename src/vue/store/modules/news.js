@@ -1,20 +1,27 @@
 import Vue from "vue";
 import apiMethods from '/src/api/api-methods';
 
-const state = () => ({all: [], selectedNews: null, currentItem: -1, takeValue: 10, totalItem: 0});
+const state = () => ({all: [], selectedNews: null, currentItem: -1, skip: 0, takeValue: 6, total: 0, selOrgId: null});
 const getters={};
 const actions={
+        resetNewsStore({commit}){
+            commit('resetNewsStoreMutation');
+        },
         async getNewsItem({commit, state},{id}){
             let token = localStorage.getItem('token');
             let result = await apiMethods.getNewsItem(token, id);
             if(result===null)
                 return false;
-
             commit('itemNewsMutation', result);
         },
-        async getListOfNews({commit, state}){
+        async getListOfNews({commit, state},{organization}){
             let token = localStorage.getItem('token');
-            let result = await apiMethods.getNewsList(token);
+            let result;
+            if(organization)
+                result = await apiMethods.getNewsListFiltered(token, state.takeValue, state.skip, organization);
+            else
+                result = await apiMethods.getNewsList(token, state.takeValue, state.skip);
+            state.selOrgId = organization;
             if(result===null)
                 return false;
             commit('listNewsMutation', result);
@@ -48,14 +55,34 @@ const actions={
         }
 };
 const mutations={
+    resetNewsStoreMutation(state){
+        state.all= [];
+        state.skip= 0;
+        state. takeValue= 4;
+        state.total= 0;
+    },
     addNewsItemMutation(state, data){
         state.all.unshift(data);
+        state.total+=1;
+        state.skip+=1;
     },
     listNewsMutation(state, data){
-        state.all = data.result;
+        const  targetNews = state.all.concat(data.result);
+        state.all = [];
+        let pushed = {};
+         for(let r of targetNews) {
+            if (!(r.id in pushed)) {
+                state.all.push(r);
+                pushed[r.id] = 1
+             }
+         }
         state.total = data.total;
+        if(state.skip>state.total)
+            state.skip = state.total-state.takeValue;
+        state.skip+=state.takeValue;
     },
     itemNewsMutation(state, data){
+
         state.selectedNews = data;
     },
     updateNewsItemMutation(state, data){

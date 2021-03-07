@@ -26,6 +26,7 @@
         created: async function () {
            let token =  localStorage.getItem('token');
            let user = localStorage.getItem('user');
+
            let u = await apiMethod.check(token);
            if(u) {
                user = JSON.parse(user);
@@ -34,6 +35,8 @@
                localStorage.removeItem('token');
                localStorage.removeItem('user');
            }
+            await this.$store.dispatch('organization/getListOfOrganization');
+
         },
     }
 </script>

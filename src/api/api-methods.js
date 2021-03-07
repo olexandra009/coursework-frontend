@@ -267,8 +267,25 @@ export default {
         }
     },
 
-   async getNewsList(token){
+    async getNewsListFiltered(token, take, skip, orgId){
+        let link = baseUrl+'/news_by_organization?SortProp=dateTimeCreation&SortOrder=desc&organizationId='+orgId;
+        if(skip) link+="&Skip="+skip;
+        if(take) link+="&Take="+take;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+
+   async getNewsList(token, take, skip){
         let link = baseUrl+'/api/News?SortProp=dateTimeCreation&SortOrder=desc';
+        if(take) link+="&Take="+take;
+        if(skip) link+="&Skip="+skip;
+
         let options = {headers: headers(token)};
        try{
            let response = await Vue.http.get(link, options);

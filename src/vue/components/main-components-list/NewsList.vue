@@ -21,6 +21,7 @@
                 <div class="text-secondary text-right" v-if="item.edited">Редаговано</div>
             </b-card>
         </b-row>
+        <news-loader/>
     </div>
 
 </template>
@@ -31,14 +32,15 @@
     import FormNewsCreated from "../inner-components/created-forms/FormNewsCreated.vue";
     import FormNewsFilter from "../inner-components/filtered-form/FormNewsFilter.vue";
     import Vuex from "vuex";
+    import NewsLoader from "../loading-components/NewsLoader.vue";
 
     export default {
 
         name: "NewsList",
-        components: {FormNewsFilter, FormNewsCreated, PhotoTab, CutTextComponent},
+        components: {NewsLoader, FormNewsFilter, FormNewsCreated, PhotoTab, CutTextComponent},
         computed:Vuex.mapState({
             news: state=>state.news.all,
-
+            selected: state=>state.news.selOrgId,
         }),
         methods: {
             ...Vuex.mapActions['getListOfNews'],
@@ -51,7 +53,7 @@
             },
         },
         mounted: function (){
-            this.$store.dispatch('news/getListOfNews');
+            this.$store.dispatch('news/getListOfNews', {'organization': this.selected});
             console.log(this.news);
         },
         data(){
