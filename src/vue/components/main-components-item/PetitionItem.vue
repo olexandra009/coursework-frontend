@@ -48,8 +48,9 @@
                     <span>{{lastDate(petition.finishDate)}}</span>
                 </div>
                 <div class="mt-1 text-center">
-                    <b-button style="width: 165px" variant="info" v-if="endDate(petition.finishDate)">Підписати петицію</b-button>
-                    <b-button style="width: 165px" variant="info" disabled v-else>Збір завершено</b-button>
+                    <b-button style="width: 165px" variant="info" @click="votePetition" v-if="canVotedPetition()">Підписати петицію</b-button>
+                    <b-button style="width: 165px" variant="info" disabled v-else-if="votedStopped()">Збір завершено</b-button>
+                    <b-button style="width: 165px" variant="info" @click="deleteVotePetition" v-else>Забрати голос</b-button>
                     <div v-if="$route.path===`/petition/${petition.id}/votes/${petition.id}`">
                         <router-link  :to="`/petition/${petition.id}`">Назад до тексту</router-link>
                     </div>
@@ -73,13 +74,16 @@
             <template #modal-title>
                Відповідь на петицію
             </template>
-            <b-form-textarea
-                row="3"
-                required/>
-            <div class="d-flex justify-content-end">
-                <b-button variant="outline-danger" class="mr-1" @click="$bvModal.hide('answer-add')">Підтвердити</b-button>
-                <b-button variant="outline-info" @click="$bvModal.hide('answer-add')">Скасувати</b-button>
-            </div>
+            <b-form  v-on:submit.prevent="addAnswer" v-on:reset.prevent="resetAnswer">
+                <b-form-textarea
+                    row="3"
+                    v-model="answerModel"
+                    required/>
+                <div class="d-flex justify-content-end">
+                    <b-button variant="outline-danger" type="submit" class="mr-1">Підтвердити</b-button>
+                    <b-button variant="outline-info" type="reset">Скасувати</b-button>
+                </div>
+            </b-form>
         </b-modal>
 
     </b-row>
@@ -92,32 +96,71 @@
         endPetitionDate, lastPetitionDate,
         statusPetitionIcon,
         statusPetitionLine,
-        votesPetitionString
+        votesPetitionString, editHtmText
     } from "../../../js/utility";
     import PetitionItemText from "../inner-components/PetitionItemText.vue";
     import PetitionItemVotes from "../inner-components/PetitionItemVotes.vue";
     import Vuex from "vuex";
+    import petition from "../../store/modules/petition";
     export default {
         name: "PetitionItem",
         components: {
             VueCircle, PetitionItemText, PetitionItemVotes,
         },
+
         computed: Vuex.mapState({
             petition: state=> state.petition.selectedPetition,
             minVotes: state=>state.petition.minVotes,
         }),
-        mounted(){
+        mounted: async function(){
              let id =this.$route.params.id;
-             this.$store.dispatch('petition/getPetitionItem', {'petitionId':id});
+             await this.$store.dispatch('petition/getPetitionItem', {'petitionId':id});
+
+             console.log(this.petition);
+             console.log(this.petition.userVotes);
         },
         data(){
             return{
                 fill : { color: "#2bbcfa" },
+                answerModel: '',
             }
         },
         methods: {
-            ...Vuex.mapActions(['getPetitionItem', 'addAnswerToPetition']),
+            ...Vuex.mapActions(['getPetitionItem', 'addAnswerToPetition', 'vote','deleteVote']),
+            votedStopped(){
+                return !this.endDate(this.petition.finishDate);
+            },
+            canVotedPetition(){
+              if(this.votedStopped()) return false;
+              let userId = (JSON.parse(localStorage.getItem('user'))).id;
+              let userVote = this.petition.userVotes.find(vote=>vote.userId===userId);
+              console.log(userVote);
+              if(userVote) return false;
+              return true;
+            },
 
+            async votePetition(){
+                let id =this.$route.params.id;
+                let i = await this.$store.dispatch('petition/vote', {'id':id});
+                location.reload();
+            },
+            async deleteVotePetition(){
+                let i = await this.$store.dispatch('petition/deleteVote');
+                location.reload();
+            },
+
+            async addAnswer(){
+                let id =this.$route.params.id;
+                let answer = editHtmText(this.answerModel);
+                let petition = {'answer': answer};
+                let i = await this.$store.dispatch('petition/addAnswerToPetition', {'id':id, 'petition':petition});
+                this.resetAnswer();
+                location.reload();
+            },
+            resetAnswer(){
+                this.answerModel = "";
+                this.$bvModal.hide('answer-add');
+            },
             endDate: (finish) => {
                 return endPetitionDate(new Date(finish).toLocaleString())
             },

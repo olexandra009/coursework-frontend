@@ -16,7 +16,7 @@
 
                    </b-col>
                    <b-col sm="12"  md="4"  order="1" order-sm="1" order-md="2" order-lg="2" order-xl="2">
-                        <span>{{item.votesNumber}} {{votesString(item.votesNumber)}}</span>
+                        <span>{{item.votesNumber}}  {{votesString(item.votesNumber)}}</span>
                         <b-progress :value="item.votesNumber" height="5px" :max="minVotes" class="mb-3"/>
                         <p v-if="calculateDate(item.finishDate)">{{lastDate(item.finishDate)}}</p>
                        <span><b-icon :icon="statusIcon(item.votesNumber, minVotes, item.finishDate, item.answer)"/> {{status(item.votesNumber, minVotes, item.finishDate, item.answer)}}</span>

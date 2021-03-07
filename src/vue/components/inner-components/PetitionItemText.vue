@@ -3,7 +3,7 @@
         <h4 class="">{{petition.header}}</h4>
         <div class="">
             <div>Автор: {{getAuthorName(petition.author)}}</div>
-            <div>Оприлюднено: {{petition.startDate}}</div>
+            <div>Оприлюднено: {{getDateTime(petition.starDate)}}</div>
         </div>
         <div>
             <div class="mt-4">
@@ -25,6 +25,12 @@
         name: "PetitionItemText",
         props: ['petition_text','petition_header','petition_authorName','petition_startDate', 'petition_answer'],
         methods:  {
+            getDateTime(str){
+                console.log(str);
+                let date = new Date(str);
+                console.log(date);
+                return date.toLocaleString();
+            },
             newLinedText: (t)=>{
                 if(t==null) return ;
                 return editHtmText(t)

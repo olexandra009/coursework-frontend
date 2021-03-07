@@ -10,7 +10,7 @@ const actions={
         if(result == null) return;
         for (const r of result.result) {
             let count = await apiMethods.getVotesCount(token, r.id);
-            r.votesNumber = count;
+            r.votesNumber = count.count;
         }
         commit('listPetitionMutation', result);
     },
@@ -35,6 +35,23 @@ const actions={
         commit('addItemPetitionAddAnswerMutation', result);
         return true;
     },
+    async vote({commit, state}, {id}){
+        let token = localStorage.getItem('token');
+        let user = JSON.parse(localStorage.getItem('user'));
+        let voteResult =  await apiMethods.votePetition(token, id, user.id)
+        if(voteResult==null)
+            return false;
+        commit('votePetitionMutation', voteResult);
+        return true;
+    },
+    async deleteVote({commit, state}){
+        let token = localStorage.getItem('token');
+        let userId= (JSON.parse(localStorage.getItem('user'))).id;
+        let vote = state.selectedPetition.userVotes.find(vote=> vote.userId===userId);
+        let result = await apiMethods.deleteVote(token, vote.id);
+        if(!result) return false;
+        commit('deleteVoteMutation', vote.id);
+    },
 };
 const mutations={
     addItemPetitionMutation(state, data){
@@ -50,6 +67,16 @@ const mutations={
     listPetitionMutation(state, data){
         state.all = data.result;
         state.total = data.total;
+    },
+    votePetitionMutation(state, data){
+        state.selectedPetition.userVotes.unshift(data);
+        state.selectedPetition.votesNumber+=1;
+    },
+    deleteVoteMutation(state, data){
+        let id = parseInt(data);
+        let i = state.selectedPetition.userVotes.findIndex(v => v.id===id);
+        state.selectedPetition.userVotes.splice(i, 1);
+        state.selectedPetition.votesNumber-=1;
     }
 };
 

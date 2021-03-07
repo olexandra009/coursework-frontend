@@ -3,6 +3,7 @@ import Vue from "vue";
 import VueResource from 'vue-resource';
 const axios = require('axios');
 import apiLinks from "./api-links";
+import user from "../vue/store/modules/user";
 Vue.use(VueResource);
 
 function headers(token) {
@@ -472,12 +473,37 @@ export default {
 //--------------------- Votes api -----------------------------//
     async getVotesCount(token, petitionId){
         let link = baseUrl+'/votes_number?petitionId='+petitionId;
+        let options = {headers: headers(token)};
         try{
             let response = await Vue.http.get(link, options);
             return response.body;
         } catch(error){
             console.log(error);
             return 0;
+        }
+    },
+
+    async votePetition(token, petitionId, userId){
+        let link = baseUrl+'/api/Votes?userId='+userId+'&petitionId='+petitionId;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.post(link, {}, options);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+
+    async deleteVote(token, voteId){
+        let link = baseUrl+'/api/Votes/'+voteId;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.delete(link, options);
+            return true;
+        } catch(error){
+            console.log(error);
+            return false;
         }
     },
 
