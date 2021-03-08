@@ -1,9 +1,7 @@
 import {baseUrl} from './api-links';
 import Vue from "vue";
 import VueResource from 'vue-resource';
-const axios = require('axios');
 import apiLinks from "./api-links";
-import user from "../vue/store/modules/user";
 Vue.use(VueResource);
 
 function headers(token) {
@@ -70,12 +68,23 @@ export default {
         }
     },
 //-----------------------------------------------------------------------//
+//--------------------------Registration---------------------------------//
+    async registration(user){
+        let link = baseUrl+"/registration";
+        try {
+            let result = await Vue.http.post(link, user);
+            return result;
+        }catch(error){
 
+            return null;
+        }
+    },
+//-----------------------------------------------------------------------//
 //--------------------------Log in user Api-------------------------------//
     async check(token){
         let link = baseUrl+"/user/check";
         try {
-            let response = await Vue.http.put(link, {}, {headers: headers(token)});
+            await Vue.http.put(link, {}, {headers: headers(token)});
             return true;
         }catch(error){
             return false;

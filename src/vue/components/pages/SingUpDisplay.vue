@@ -4,7 +4,7 @@
             <div class="text-center">
                  <h4>Реєстрація</h4>
             </div>
-                <b-form class="mt-2">
+                <b-form class="mt-2" v-on:submit.prevent="registerUser" v-on:reset.prevent="resetRegister">
                     <div class="pt-2">
                         <label>Ім'я:</label>
                         <b-form-input
@@ -49,11 +49,14 @@
                         <label>Логін:</label>
                         <b-form-input
                                 v-model="login"
-                                :state="null"
-                                aria-describedby="input-live-help input-live-feedback"
-                                placeholder="Enter your name"
+                                :state="loginCheck"
+                                aria-describedby="input-live-help input-live-feedback-3"
+                                placeholder="Введіть логін"
                                 trim
                         />
+                        <b-form-invalid-feedback id="input-live-feedback-3">
+                            Такий логін вже існує
+                        </b-form-invalid-feedback>
                     </div>
                     <div class="pt-2">
                         <label>Пароль:</label>
@@ -71,8 +74,8 @@
                     </div>
                     <div class="pt-3">
                         <div class="d-flex justify-content-around">
-                            <b-button class="btn-info">Зареєструватись</b-button>
-                            <b-button>Відхилити</b-button>
+                            <b-button type="submit" class="btn-info">Зареєструватись</b-button>
+                            <b-button type="reset">Відхилити</b-button>
                         </div>
                     </div>
                 </b-form>
@@ -81,7 +84,7 @@
 </template>
 
 <script>
-
+    import apiMethods from "/src/api/api-methods";
     import "bootstrap-vue";
 
     export default {
@@ -99,13 +102,63 @@
                 else if (!this.password.match(numbers))
                     return false;
                 else return this.password.length >= 8;
+            },
+        },
+        methods: {
+            resetRegister(){
+                this.loginCheck= null;
+                this.login= '';
+                this.firstName= '';
+                this.lastName= '';
+                this.secondName=  '';
+                this.email=  '';
+                this.password= '';
+            },
+            sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+            },
+            async registerUser(){
+                //todo show loader
+                let exist = await apiMethods.isLoginExists(this.login);
+                if(!exist) {
+                    this.loginCheck = false;
+                    return;
+                }
+                this.loginCheck = true;
+                let user= {
+                    "firstName": this.firstName,
+                    "lastName": this.lastName,
+                    "email": this.email,
+                    "login": this.login,
+                    "password": this.password,
+                };
+                if(this.secondName) user.secondName = this.secondName;
+                if(this.phoneNumber) user.phoneNumber = this.phoneNumber;
 
-
+                let result = await apiMethods.registration(user);
+                if(result==null)
+                {
+                    this.$bvToast.toast("Під час реєстрації сталась помилка", {
+                        title: `Помилка`,
+                        variant: 'danger',
+                        solid: true
+                    });
+                } else {
+                    this.resetRegister();
+                    this.$bvToast.toast("Ви успішно зареєструвались, перевірте пошту (лист може потрапити у спам) для підтвердження", {
+                        title: `Успіх`,
+                        variant: 'success',
+                        solid: true
+                    });
+                    await this.sleep(3000);
+                    this.$router.push('/');
+                }
 
             },
         },
         data() {
             return {
+                loginCheck: null,
                 login: '',
                 firstName: '',
                 lastName: '',
