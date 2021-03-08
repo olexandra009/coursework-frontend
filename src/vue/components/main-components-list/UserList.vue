@@ -25,22 +25,21 @@
                     </b-row>
                 </b-card>
         </b-row>
+        <user-loader/>
     </div>
 </template>
 
 <script>
     import FormUserFilter from "../inner-components/filtered-form/FormUserFilter.vue";
     import Vuex from "vuex";
+    import UserLoader from "../loading-components/UserLoader.vue";
     export default {
         name: "UserList",
         computed: Vuex.mapState({
             users: (state)=>state.user.userList,
             selectedRole: (state)=>state.user.filterRole,
         }),
-        mounted() {
-            this.$store.dispatch("user/getListOfUsers", {'role': this.selectedRole});
-        },
-        components: {FormUserFilter},
+        components: {UserLoader, FormUserFilter},
         methods: {
             ...Vuex.mapActions(['getListOfUsers']),
               isAdmin(rights){

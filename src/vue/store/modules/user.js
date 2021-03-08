@@ -1,17 +1,21 @@
 import Vue from "vue";
 import  apiMethod from '../../../api/api-methods';
 
-const state = () => ({currentUser: null, token: null, roles: [], userList:[], openedUser: null, selectedUser: null, current:0, total:0, filterRole: null});
+const state = () => ({currentUser: null, token: null, roles: [], userList:[], openedUser: null, selectedUser: null, current:0, total:0, skip:0, takeValue: 4, filterRole: null});
 const getters={};
 const actions={
 
     async getListOfUsers({commit, state}, {role}){
         if(role)
             state.filterRole = role;
-        let result = await apiMethod.getUserList(state.token, state.filterRole, null, null);
+        let result = await apiMethod.getUserList(state.token, state.filterRole, state.takeValue, state.skip);
         if(result){
             commit('userListMutation', result);
         }
+    },
+
+    resetUserList({commit}){
+        commit('resetUserListMutation');
     },
 
     changeSelectedUser({commit, state}, {user}){
@@ -47,11 +51,25 @@ const mutations={
          state.selectedUser= data;
     },
     userListMutation(state, data){
-      state.total = data.total;
-      state.userList = data.result;
-      state.current = data.result.length;
+          state.total = data.total;
+          let target = state.userList.concat(data.result);
+          state.userList = [];
+          let pushed = {};
+          for(let r of target) {
+                if (!(r.id in pushed)){
+                    state.userList.push(r);
+                    pushed[r.id] = 1
+                }
+          }
+          if(state.skip>=state.total) {
+                state.skip = state.total - state.takeValue;
+          }
+          state.skip+=state.takeValue;
     },
-
+    resetUserListMutation(state){
+        state.userList = [];
+        state.skip = 0;
+    },
     changeUserMutation(state, data){
         //console.log(data);
         state.currentUser = data;
