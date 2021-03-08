@@ -13,10 +13,10 @@ const actions={
         commit('createEventMutation', result);
         return true;
     },
-    async getListOfEvents({commit, state},{time, orgId}){
+    async getListOfEvents({commit, state},{time, orgId}) {
         let token = localStorage.getItem('token');
         let result;
-        if(time && orgId)
+        if (time && orgId)
             result = await apiMethods.getEventsListByOrgIdAndTime(token, state.takeValue, state.skip, orgId, time);
         else if (time)
             result = await apiMethods.getEventsListByTime(token, state.takeValue, state.skip, time);
@@ -26,7 +26,7 @@ const actions={
             result = await apiMethods.getEventsList(token, state.takeValue, state.skip);
         state.selectedTime = time;
         state.selectedOrg = orgId;
-        if(result===null)
+        if (result === null)
             return false;
         commit('getListEventsMutation', result);
     },

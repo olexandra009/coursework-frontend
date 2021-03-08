@@ -465,7 +465,7 @@ export default {
     async getListOfPetitionByStatus(token, status, take, skip){
         let link = baseUrl+`/filter_by_status?sortProp=id&sortOrder=desc&Take=${take}&Skip=${skip}`;
         if(status.timeStatus) link+="&timeStatus="+status.timeStatus;
-        if(status.votesStatus) link+="&voteStatus="+status.votesStatus;
+        if(status.votesStatus) link+="&votesStatus="+status.votesStatus;
         let options = {headers: headers(token)};
         try{
             let response = await Vue.http.get(link, options);
@@ -481,7 +481,7 @@ export default {
     async getListOfPetitionByStatusAndAuthor(token, userId, status, take, skip){
         let link = baseUrl+`/filter_author_status?sortProp=id&sortOrder=desc&Take=${take}&Skip=${skip}&userId=${userId}`;
         if(status.timeStatus) link+="&timeStatus="+status.timeStatus;
-        if(status.votesStatus) link+="&voteStatus="+status.votesStatus;
+        if(status.votesStatus) link+="&votesStatus="+status.votesStatus;
         let options = {headers: headers(token)};
         try{
             let response = await Vue.http.get(link, options);
@@ -659,9 +659,7 @@ export default {
         }
     },
     async getListOfApplication(token, skip, take){
-        let link = baseUrl+'/api/Application?SortProp=id&SortOrder=desc';
-        if(skip) link+='&Skip='+skip;
-        if(take) link+='&Take='+take;
+        let link = baseUrl+`/api/Application?SortProp=id&SortOrder=desc&Skip=${skip}&Take=${take}`;
         let options = {headers: headers(token)};
         try{
             let response = await Vue.http.get(link, options);
@@ -673,6 +671,53 @@ export default {
             return null;
         }
     },
+    async getListOfApplicationByStatus(token, skip, take, status){
+        if(!status||status>3) status=0;
+        let link = baseUrl+`/getListFilteredByStatus?SortProp=id&SortOrder=desc&Skip=${skip}&Take=${take}&status=${status}`;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+
+    async getListOfApplicationByAuthor(token, skip, take, status, author){
+        let link = baseUrl+`/getListFilteredByAuthor?SortProp=id&SortOrder=desc&Skip=${skip}&Take=${take}`;
+        if(!status||status>3) status=0;
+        link+=`&status=${status}&authorId=${author}`;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+
+    async getListOfApplicationByAnswerer(token, skip, take, status, answerer){
+        let link = baseUrl+`/getListFilteredByAnswerer?SortProp=id&SortOrder=desc&Skip=${skip}&Take=${take}`;
+        if(!status||status>3) status=0;
+        link+=`&status=${status}&answererId=${answerer}`;
+        let options = {headers: headers(token)};
+        try{
+            let response = await Vue.http.get(link, options);
+            console.log(response);
+            console.log(response.body);
+            return response.body;
+        } catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+
     async getApplicationItem(token, id){
         let link = baseUrl+'/api/Application/'+id;
         let options = {headers: headers(token)};

@@ -37,6 +37,8 @@
 
             </b-card>
         </b-row>
+        <application-loader/>
+       <div class="min-vh-5"/>
 
    </div>
 </template>
@@ -46,18 +48,13 @@
     import {getIconApplicationStatus, getStatusApplicationLine} from "../../../js/utility";
     import FormApplicationFilter from "../inner-components/filtered-form/FormApplicationFilter.vue";
     import Vuex from "vuex";
+    import ApplicationLoader from "../loading-components/ApplicationLoader.vue";
     export default {
         name: "ApplicationList",
-        components: {FormApplicationFilter, FormApplicationCreated},
+        components: {ApplicationLoader, FormApplicationFilter, FormApplicationCreated},
         computed: Vuex.mapState({
             applications: state=>state.application.all,
         }),
-        mounted:  function(){
-            console.log("HERE");
-            this.$store.dispatch('application/getListOFApplication');
-            console.log(this.applications);
-            console.log("HERE");
-        },
         methods:{
             ...Vuex.mapActions(['getListOFApplication']),
             getDate(time){return new Date(time).toLocaleString()},
