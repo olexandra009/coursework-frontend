@@ -29,10 +29,14 @@ import UserItem from "../vue/components/main-components-item/UserItem.vue";
 import ApplicationItem from "../vue/components/main-components-item/ApplicationItem.vue";
 import PetitionItemText from "../vue/components/inner-components/PetitionItemText.vue";
 import PetitionItemVotes from "../vue/components/inner-components/PetitionItemVotes.vue";
+import VueMeta from "vue-meta";
+import ReSendEmail from "../vue/components/pages/ReSendEmail.vue";
+
 Vue.use(BootstrapVue);
 Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(IconsPlugin);
+Vue.use(VueMeta);
 
 const router = new VueRouter( {
     routes: [
@@ -60,7 +64,8 @@ const router = new VueRouter( {
             ]},
         {path: '/singup', component: SingUpDisplay},
         {path: '/login', component: LoginDisplay},
-        {path: '/confirm/:id/:token', component: ConfirmEmailDisplay},
+        {path: '/confirm/:id/:token', component: ConfirmEmailDisplay, meta:{title: "Підтвердження акаунта"}},
+        {path: '/email', component: ReSendEmail, meta:{title: "Підтвердження акаунта"}},
         {path: '/info', component: InfoDisplay}
     ]
 });

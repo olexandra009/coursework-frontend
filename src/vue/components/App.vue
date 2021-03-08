@@ -13,13 +13,14 @@
     import InfoDisplay from "./pages/InfoDisplay.vue";
     import LoginDisplay from "./pages/LoginDisplay.vue";
     import ConfirmEmailDisplay from "./pages/ConfirmEmailDisplay.vue"
+    import ReSendEmail from "./pages/ReSendEmail.vue"
     import  apiMethod from '/src/api/api-methods';
     import Vuex from "vuex";
 
     export default {
         name: "App",
         components: {NavigationHeader, MainDisplay, SingUpDisplay,
-                    InfoDisplay, LoginDisplay, ConfirmEmailDisplay},
+                    InfoDisplay, LoginDisplay, ConfirmEmailDisplay, ReSendEmail},
         methods: {
             ...Vuex.mapActions(['inputFromLocale']),
         },
