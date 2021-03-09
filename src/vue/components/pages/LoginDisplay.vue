@@ -34,6 +34,7 @@
                     </div>
                     <div class="pt-3 text-center text-dark">
                         <router-link to="/singup">Немає аккаунту? Створити новий</router-link>
+                        <a class="">Немає аккаунту? Створити новий</a>
                     </div>
                 </div>
             </b-form>

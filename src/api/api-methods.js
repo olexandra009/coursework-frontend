@@ -67,6 +67,17 @@ export default {
             return true;
         }
     },
+    async isEmailExists(email){
+        let link = baseUrl+"/emailExists?email="+email;
+        try {
+            let response = await Vue.http.post(link);
+            console.log(response);
+            return false;
+        }catch(error){
+            console.log(error);
+            return true;
+        }
+    },
 //-----------------------------------------------------------------------//
 //--------------------------Registration---------------------------------//
     async registration(user){

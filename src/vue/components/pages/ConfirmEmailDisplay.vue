@@ -38,20 +38,52 @@
                         <b-col sm="10" md="8" lg="6">
                             <p>Під час підтвердження сталася помилка.</p>
                             <p>Перевірте правильність посилання</p>
-                            <p>Або натисніть <router-link to="/email">тут</router-link>, щоб отримати код ще раз</p>
+                            <p>Або натисніть <a @click="$bvModal.show('inputEmail')">тут</a>, щоб отримати код ще раз</p>
                         </b-col>
                         <b-col sm="1" md="2" lg="3"/>
                     </b-row>
                 </b-container>
             </div>
+            <b-modal id="inputEmail" hide-footer>
+                <template #modal-title>
+                    Введіть емейл
+                </template>
+                <b-form v-on:submit.prevent="resendEmail" v-if="showModule">
+                <b-input v-model="email" required/>
+                <div class="d-flex justify-content-end">
+                    <b-button variant="outline-info" type="submit" class="mr-1">Підтвердити</b-button>
+                    <b-button variant="outline-info" @click="$bvModal.hide('inputEmail')">Скасувати</b-button>
+                </div>
+                </b-form>
+                <div v-else>
+                    <p>На вашу адресу {{email}} було надіслено підтвердження.</p>
+                </div>
+            </b-modal>
+
     </div>
 </template>
 
 <script>
     export default {
         name: "ConfirmEmailDisplay",
+
+        methods:{
+          resendEmail(){
+              if(this.email.length ===0 )return;
+
+              this.showModule = false;
+
+          }
+        },
         metaInfo: {
-            title: 'Підтвердження акаунта'
+            title: 'Підтвердження акаунта',
+
+        },
+        data(){
+            return{
+                email: '',
+                showModule: true,
+            }
         }
     }
 </script>

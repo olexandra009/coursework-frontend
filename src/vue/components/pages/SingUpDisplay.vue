@@ -39,11 +39,14 @@
                         <b-form-input
                                 type="email"
                                 v-model="email"
-                                :state="null"
+                                :state="emailState"
                                 aria-describedby="input-live-help input-live-feedback"
                                 placeholder="Enter your name"
                                 trim
                         />
+                        <b-form-invalid-feedback id="input-live-feedback-3">
+                            Така пошта вже існує
+                        </b-form-invalid-feedback>
                     </div>
                     <div class="pt-2">
                         <label>Логін:</label>
@@ -77,9 +80,13 @@
                             <b-button type="submit" class="btn-info">Зареєструватись</b-button>
                             <b-button type="reset">Відхилити</b-button>
                         </div>
+                        <div class="pt-3 text-center text-dark">
+                            <router-link to="/login">Вже є акаунт? Вхід</router-link>
+                        </div>
                     </div>
                 </b-form>
         </b-card>
+        <div class="min-vh-5"/>
     </b-row>
 </template>
 
@@ -119,12 +126,16 @@
             },
             async registerUser(){
                 //todo show loader
+                let email = await apiMethods.isEmailExists(this.email);
+                this.emailState = email === true;
+                if(!email)  return;
                 let exist = await apiMethods.isLoginExists(this.login);
                 if(!exist) {
                     this.loginCheck = false;
                     return;
                 }
                 this.loginCheck = true;
+
                 let user= {
                     "firstName": this.firstName,
                     "lastName": this.lastName,
@@ -159,6 +170,7 @@
         data() {
             return {
                 loginCheck: null,
+                emailState: null,
                 login: '',
                 firstName: '',
                 lastName: '',
