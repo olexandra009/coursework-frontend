@@ -193,7 +193,7 @@
             </template>
             <p>Ви дійсно бажаєте видалити аккаунт?</p>
             <div class="d-flex justify-content-end">
-                <b-button variant="outline-danger" class="mr-1" @click="$bvModal.hide('delete')">Підтвердити</b-button>
+                <b-button variant="outline-danger" class="mr-1" @click="deleteThisAccount">Підтвердити</b-button>
                 <b-button variant="outline-info" @click="$bvModal.hide('delete')">Скасувати</b-button>
             </div>
         </b-modal>
@@ -239,9 +239,19 @@
         },
 
         methods: {
-            ...Vuex.mapActions(['changeUser']),
+            ...Vuex.mapActions(['changeUser','logout']),
             edit(v) {
                 return !v
+            },
+            async deleteThisAccount(){
+                console.log("HERE");
+                let token = localStorage.getItem('token');
+                let user = (JSON.parse(localStorage.getItem('user'))).id;
+                let result = await apiMethods.deleteUserAccount(user, token);
+                if(result)
+                   await this.$store.dispatch('user/logout');
+                this.$router.push('/');
+                this.$bvModal.hide('delete');
             },
             async changeEmail(){
                 this.showEmailSpinner = true;

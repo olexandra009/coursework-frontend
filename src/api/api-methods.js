@@ -28,6 +28,19 @@ export default {
         }
     },
 
+    async deleteUserAccount(userId, token){
+        let link = baseUrl+"/api/User/"+userId;
+        try {
+            let options = {headers: headers(token) };
+            let response = await Vue.http.delete(link, options);
+            console.log(response);
+            return true;
+        }catch(error){
+            console.log(error);
+            return false;
+        }
+    },
+
     async changePassword(userId, password, token){
         let link = baseUrl +"/change_password?userId="+userId;
         try {
