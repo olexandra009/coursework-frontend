@@ -91,6 +91,19 @@ export default {
         }
     },
 //-----------------------------------------------------------------------//
+//----------------------------Forgot password----------------------------//
+
+    async forgotPassword(email){
+        let link = baseUrl+"/forgot_password?email="+email;
+        try {
+            await Vue.http.post(link);
+            return true;
+        }catch(error){
+            return null;
+        }
+    },
+
+//-----------------------------------------------------------------------//
 //--------------------------Log in user Api-------------------------------//
     async check(token){
         let link = baseUrl+"/user/check";
