@@ -72,9 +72,11 @@
         </b-collapse>
 
         <b-button class="mt-3 ml-1 btn-block"  v-b-toggle.change-organization variant="outline-info">Змінити організацію</b-button>
-        <b-collapse id="change-organization" class="mt-2">
-            <change-user-organization :user_id="user.id"/>
-        </b-collapse>
+        <b-container>
+            <b-collapse id="change-organization" class="mt-2">
+                <change-user-organization :user_id="user.id"/>
+            </b-collapse>
+        </b-container>
         <div class="min-vh-20"/>
 
     </div>
@@ -95,7 +97,8 @@
             token: state=>state.user.token,
         }),
         created: async function() {
-            if(!this.isUserHasRight())
+            let currentUser = JSON.parse(localStorage.getItem('user'));
+            if(!this.isUserHasRight(currentUser))
                 this.$router.push('/news');
             let userId = this.$route.params.id;
             let _user = await apiMethods.getUserItem(this.token, userId);
@@ -103,8 +106,10 @@
         },
         methods: {
             ...Vuex.mapState(['changeSelectedUser']),
-            isUserHasRight(){
-                return this.currentUserRoles.includes('UserManger');
+            isUserHasRight(currentUser){
+                if(!currentUser) return false;
+                let roles = currentUser.role.split(', ');
+                return roles.includes('UserManger');
             },
         },
         data(){

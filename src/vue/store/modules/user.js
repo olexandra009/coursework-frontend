@@ -22,6 +22,16 @@ const actions={
         commit('changeSelectedUserMutation', user);
     },
 
+    async changeOrganization({commit, state}, {userId, orgId, orgName}){
+        let token = localStorage.getItem('token');
+        if(orgId===null) return null;
+        let user = await apiMethod.changeUserOrganizationItem(token, userId, orgId);
+        console.log(user);
+        if(user === null) return false;
+        user.userOrganizationName = orgName;
+        commit('changeSelectedUserMutation', user);
+        return true;
+    },
     changeUser({commit, state}, {user}){
         console.log(user);
         commit('changeUserMutation', user);

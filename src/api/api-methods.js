@@ -272,10 +272,10 @@ export default {
         try{
             let response = await Vue.http.put(link, options);
             console.log(response);
-            return true;
+            return response.body;
         } catch(error){
             console.log(error);
-            return false;
+            return null;
         }
     },
 
