@@ -31,8 +31,8 @@ export default {
     async changePassword(userId, password, token){
         let link = baseUrl +"/change_password?userId="+userId;
         try {
-            let message = {'password': password};
-            let options = { emulateJSON: true, headers: headers(token) };
+            let message = {'id': userId, 'password': password};
+            let options = { headers: headers(token) };
             let response = await Vue.http.put(link, message, options);
             console.log(response);
             return true;

@@ -32,6 +32,7 @@ import PetitionItemVotes from "../vue/components/inner-components/PetitionItemVo
 import VueMeta from "vue-meta";
 import ReSendEmail from "../vue/components/pages/ReSendEmail.vue";
 import ForgotPassword from "../vue/components/pages/ForgotPassword.vue";
+import ResetPassword from "../vue/components/pages/ResetPassword.vue";
 
 Vue.use(BootstrapVue);
 Vue.use(Vuex);
@@ -68,7 +69,8 @@ const router = new VueRouter( {
         {path: '/confirm/:id/:token', component: ConfirmEmailDisplay, meta:{title: "Підтвердження акаунта"}},
         {path: '/email', component: ReSendEmail, meta:{title: "Підтвердження акаунта"}},
         {path: '/info', component: InfoDisplay},
-        {path:'/forgot_password', component: ForgotPassword}
+        {path:'/forgot_password', component: ForgotPassword},
+        {path:'/reset_password/:id/:token', component: ResetPassword}
     ]
 });
 
