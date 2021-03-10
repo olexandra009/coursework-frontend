@@ -89,13 +89,21 @@
         <b-button v-if="adminEdit" class="mt-3 ml-1 btn-block"  v-b-modal.delete-organization variant="outline-danger">Видалити організацію</b-button>
 
         <b-modal id="delete-organization" hide-footer>
-            <template #modal-title>
+            <template v-if="canBeDeleted" #modal-title>
                 Підтвердіть дію
             </template>
-            <p>Ви дійсно бажаєте видалити організацію?</p>
-            <div class="d-flex justify-content-end">
-                <b-button variant="outline-danger" class="mr-1" @click="deleteOrganization()">Підтвердити</b-button>
-                <b-button variant="outline-info" @click="$bvModal.hide('delete-organization')">Скасувати</b-button>
+            <template v-else #modal-title>
+                Видалення не можливе
+            </template>
+            <div v-if="canBeDeleted">
+                <p>Ви дійсно бажаєте видалити організацію?</p>
+                <div class="d-flex justify-content-end">
+                    <b-button variant="outline-danger" class="mr-1" @click="deleteOrganization()">Підтвердити</b-button>
+                    <b-button variant="outline-info" @click="$bvModal.hide('delete-organization')">Скасувати</b-button>
+                </div>
+            </div>
+            <div v-else>
+                <p>Неможливо видалити організацію в якій є користувачі</p>
             </div>
         </b-modal>
 
@@ -104,9 +112,9 @@
             <template #modal-title>
                 Підтвердіть дію
             </template>
-            <p>Ви дійсно бажаєте видалити користувача з організації? {{modalUserId}}</p>
+            <p>Ви дійсно бажаєте видалити користувача з організації?</p>
             <div class="d-flex justify-content-end">
-                <b-button variant="outline-danger" class="mr-1" @click="$bvModal.hide('delete-user-from-organization')">Підтвердити</b-button>
+                <b-button variant="outline-danger" class="mr-1" @click="deleteUserFromOrganization">Підтвердити</b-button>
                 <b-button variant="outline-info" @click="$bvModal.hide('delete-user-from-organization')">Скасувати</b-button>
             </div>
         </b-modal>
@@ -122,10 +130,31 @@
         name: "OrganizationItem",
         computed: Vuex.mapState({
             organization: state=>state.organization.selectedOrganization,
+            canBeDeleted(){return this.organization.users.length === 0},
             stateName: null,
         }),
         methods:{
-          ...Vuex.mapActions(['getOrganizationItem', 'deleteOrganizationItem', 'updateOrganizationItem']),
+            ...Vuex.mapActions(['getOrganizationItem', 'deleteOrganizationItem', 'deleteUserFromOrganizationItem', 'updateOrganizationItem']),
+            sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            },
+            async deleteUserFromOrganization(){
+                let i = await this.$store.dispatch('organization/deleteUserFromOrganizationItem',
+                                                    {'userId': this.modalUserId});
+                this.$bvModal.hide('delete-user-from-organization');
+                if(i)
+                    this.$bvToast.toast('Зміни збережено', {
+                        variant: 'success',
+                        solid: true
+                    });
+                else
+                    this.$bvToast.toast('Помилка', {
+                        title: `При видаленні сталась помилка`,
+                        variant: 'danger',
+                        solid: true
+                    });
+
+            },
             async editOrganization(click){
                 let organizationUpdate = this.organization;
                 if(click===1){
@@ -154,23 +183,27 @@
                 this.modelName = ''; this.modelPhone='';this.modelAddress = '';
 
             },
-            deleteOrganization(){
+            async deleteOrganization(){
                 this.$bvModal.hide('delete-organization');
                 let orgId = this.$route.params.id;
-                let i = this.$store.dispatch('organization/deleteOrganizationItem', {'orgId': orgId});
+                let i = await this.$store.dispatch('organization/deleteOrganizationItem', {'orgId': orgId});
                 if(i)
+                {
                     this.$bvToast.toast('Успішне видалення', {
                         title: `Ви видалили організацію`,
                         variant: 'success',
                         solid: true
                     });
+                    await this.sleep(3000);
+                    history.back();
+                }
                 else
                     this.$bvToast.toast('Помилка', {
                         title: `При видаленні сталась помилка`,
                         variant: 'danger',
                         solid: true
                     });
-                history.back();
+
             }
         },
         created:  function() {

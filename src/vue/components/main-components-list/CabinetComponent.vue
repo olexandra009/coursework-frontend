@@ -88,9 +88,10 @@
             </b-col>
             <b-col sm="9" v-else>
                 <b-input-group >
-                    <b-form-input v-model="modelEmail" :disabled="!editEmail"/>
+                    <b-form-input v-model="modelEmail"  :state="emailStateMethod()" :disabled="!editEmail"/>
                     <b-input-group-append>
-                        <b-button variant="outline-success" @click="updateEmail"> <b-icon icon="check2"/> </b-button>
+                        <b-button variant="outline-success"@click="changeEmail" v-if="!showEmailSpinner"> <b-icon icon="check2"/> </b-button>
+                        <b-spinner v-else/>
                         <b-button variant="outline-info" @click="editEmail=edit(editEmail)"> <b-icon icon="x"/> </b-button>
                     </b-input-group-append>
                 </b-input-group>
@@ -218,7 +219,9 @@
         data(){
             return{
                 loginState: null,
+                emailState: null,
                 showSpinner: false,
+                showEmailSpinner: false,
                 modelRight:'',
                 modelPassword:'',
                 modelLogin: '',
@@ -232,24 +235,48 @@
                 editEmail: false,
                 editSecond: false,
                 editPhone: false,
-            }
+               }
         },
+
         methods: {
             ...Vuex.mapActions(['changeUser']),
-            edit(v){return !v},
-
-           async savePassword(){
-                if(this.passwordState()){
+            edit(v) {
+                return !v
+            },
+            async changeEmail(){
+                this.showEmailSpinner = true;
+                let result = await apiMethods.isEmailExists(this.modelEmail);
+                if (result) {
+                    let change = await apiMethods.changeEmail(this.user.id, this.modelEmail, this.token);
+                    this.showEmailSpinner = false;
+                    if (change) {
+                        this.$bvToast.toast('Логін змінено', {
+                            variant: 'success',
+                            solid: true
+                        });
+                        await this.$store.dispatch("user/changeUser", {'user': change});
+                    } else {
+                        this.$bvToast.toast('Логін не змінено', {
+                            title: "Помилка",
+                            variant: 'danger',
+                            solid: true
+                        });
+                    }
+                }
+                this.showEmailSpinner = false;
+            },
+            async savePassword() {
+                if (this.passwordState()) {
                     let change = await apiMethods.changePassword(this.user.id, this.modelPassword, this.token);
-                    if(change)
+                    if (change)
                         this.$bvToast.toast('Пароль змінено!', {
-                            title:"Ваш пароль було змінено!",
+                            title: "Ваш пароль було змінено!",
                             variant: 'success',
                             solid: true
                         });
                     else
                         this.$bvToast.toast('Сталася помилка', {
-                            title:"Помилка",
+                            title: "Помилка",
                             variant: 'danger',
                             solid: true
                         });
@@ -257,33 +284,37 @@
                 }
             },
 
-           async updateUser(click){
-               let userUp = this.user;
-               if(click===1)
-                   userUp.lastName = this.modelSurname;
-               else if (click=== 2)
-                   userUp.firstName = this.modelName;
-               else if (click===3)
-                   userUp.secondName = this.modelSecond;
-               else if (click===4)
-                   userUp.phoneNumber = this.modelPhone;
+            async updateUser(click) {
+                let userUp = this.user;
+                if (click === 1)
+                    userUp.lastName = this.modelSurname;
+                else if (click === 2)
+                    userUp.firstName = this.modelName;
+                else if (click === 3)
+                    userUp.secondName = this.modelSecond;
+                else if (click === 4)
+                    userUp.phoneNumber = this.modelPhone;
 
                 let response = await apiMethods.updateUser(userUp.id, userUp, this.token);
-                if(response==null)
+                if (response == null)
                     this.$bvToast.toast('Сталася помилка', {
-                        title:"Помилка",
+                        title: "Помилка",
                         variant: 'danger',
                         solid: true
                     });
-                else
-                {
+                else {
                     await this.$store.dispatch("user/changeUser", {'user': response.body});
-                    this.modelName = '';  this.modelSecond = '';
-                    this.modelSurname = ''; this.modelPhone = '';
-                    this.editName = false;  this.editSecond = false;
-                    this.editSurname = false; this.editPhone = false;
+                    this.modelName = '';
+                    this.modelSecond = '';
+                    this.modelSurname = '';
+                    this.modelPhone = '';
+                    this.editName = false;
+                    this.editSecond = false;
+                    this.editSurname = false;
+                    this.editPhone = false;
                 }
             },
+
             passwordState() {
                 let lowerCaseLetters = /[a-z]/g;
                 let upperCaseLetters = /[A-Z]/g;
@@ -298,27 +329,33 @@
                 else return this.modelPassword.length >= 8;
             },
 
-            async changeLogin(){
+            emailStateMethod() {
+                let reg=  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/;
+                if (!this.modelEmail) return null;
+                return (this.modelEmail === "") ? null : (reg.test(this.modelEmail))
+            },
+
+            async changeLogin() {
                 this.showSpinner = true;
                 let result = await apiMethods.isLoginExists(this.modelLogin);
                 this.showSpinner = false;
-                this.loginState= result;
-                if(result)
-                {
+                this.loginState = result;
+                if (result) {
                     let change = await apiMethods.changeLogin(this.user.id, this.modelLogin, this.token);
-                    if(change)
+                    if (change) {
                         this.$bvToast.toast('Логін змінено', {
                             variant: 'success',
                             solid: true
                         });
-                    else
+                    } else {
                         this.$bvToast.toast('Логін не змінено', {
-                            title:"Помилка",
+                            title: "Помилка",
                             variant: 'danger',
                             solid: true
                         });
+                    }
                 }
-            }
+            },
         }
     }
 </script>

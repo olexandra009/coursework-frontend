@@ -30,7 +30,6 @@ import ApplicationItem from "../vue/components/main-components-item/ApplicationI
 import PetitionItemText from "../vue/components/inner-components/PetitionItemText.vue";
 import PetitionItemVotes from "../vue/components/inner-components/PetitionItemVotes.vue";
 import VueMeta from "vue-meta";
-import ReSendEmail from "../vue/components/pages/ReSendEmail.vue";
 import ForgotPassword from "../vue/components/pages/ForgotPassword.vue";
 import ResetPassword from "../vue/components/pages/ResetPassword.vue";
 
@@ -67,7 +66,6 @@ const router = new VueRouter( {
         {path: '/singup', component: SingUpDisplay},
         {path: '/login', component: LoginDisplay},
         {path: '/confirm/:id/:token', component: ConfirmEmailDisplay, meta:{title: "Підтвердження акаунта"}},
-        {path: '/email', component: ReSendEmail, meta:{title: "Підтвердження акаунта"}},
         {path: '/info', component: InfoDisplay},
         {path:'/forgot_password', component: ForgotPassword},
         {path:'/reset_password/:id/:token', component: ResetPassword}

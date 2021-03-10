@@ -45,8 +45,8 @@ export default {
     async changeLogin(userId, login, token){
         let link = baseUrl+"/change_login?userId="+userId;
         try {
-            let message = {'login': login};
-            let options = { emulateJSON: true, headers: headers(token) };
+            let message = {'login': login, 'id': userId};
+            let options = { headers: headers(token) };
             let response = await Vue.http.put(link, message, options);
             console.log(response);
             return true;
@@ -56,6 +56,19 @@ export default {
         }
     },
 
+    async changeEmail(userId, email, token){
+        let link = baseUrl+"/update_email?userId="+userId;
+        try {
+            let message = {'email': email, 'id': userId};
+            let options = { headers: headers(token) };
+            let response = await Vue.http.put(link, message, options);
+            console.log(response);
+            return response.body;
+        }catch(error){
+            console.log(error);
+            return false;
+        }
+    },
     async isLoginExists(login){
         let link = baseUrl+"/loginExists?login="+login;
         try {
@@ -176,12 +189,13 @@ export default {
         }
     },
 
-    async changeUserRight(token, role, userId){
-        let link = baseUrl +'/change_role?userId='+userId+'&role='+role;
+    async changeUserRight(token, role,  userId){
+        let link = baseUrl +'/change_role?userId='+userId;
+        let user = {'role':role, 'id': userId};
         let options = {headers: headers(token) };
 
         try {
-            let response = await Vue.http.put(link, options);
+            let response = await Vue.http.put(link, user, options);
             return response.body;
         } catch (e) {
             console.log(e);
@@ -243,6 +257,20 @@ export default {
         let options = {headers: headers(token)};
         try{
             let response = await Vue.http.delete(link, options);
+            console.log(response);
+            return true;
+        } catch(error){
+            console.log(error);
+            return false;
+        }
+    },
+    async changeUserOrganizationItem(token, userId, orgId){
+        let link = baseUrl+`/updateOrganization?userId=${userId}&organization=${orgId}`;
+
+        let options = { headers: headers(token)};
+
+        try{
+            let response = await Vue.http.put(link, options);
             console.log(response);
             return true;
         } catch(error){

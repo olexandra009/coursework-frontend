@@ -46,6 +46,16 @@ const actions={
          let response = await apiMethod.getOrganizationList(token, null, null);
          if(response!=null)
              commit('getListOfOrganizationMutation', response);
+    },
+
+    async deleteUserFromOrganizationItem({commit, state}, {userId}){
+        let token = localStorage.getItem('token');
+        let response = await apiMethod.changeUserOrganizationItem(token, userId, 0);
+        if(response===null) return false;
+
+        commit('updateListOfUsersOrganizationMutation', userId);
+        return true;
+
     }
 };
 const mutations={
@@ -68,6 +78,10 @@ const mutations={
     getListOfOrganizationMutation(state, data){
         state.organizationList= data.result;
         state.total = data.total;
+    },
+    updateListOfUsersOrganizationMutation(state, data){
+        let i = state.selectedOrganization.users.findIndex(us=>us.id==data);
+        state.selectedOrganization.users.splice(i, 1);
     }
 };
 
