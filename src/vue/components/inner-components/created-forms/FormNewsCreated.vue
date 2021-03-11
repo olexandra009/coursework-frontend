@@ -78,7 +78,8 @@
                 let authorId = author.id;
                 let multimedias = [];
                 this.imageDataArray.forEach(image => {
-                    multimedias.unshift({'url': image.image, "isImage": true})
+                    let arrayImage = image.image.split(',');
+                    multimedias.unshift({'url': arrayImage[1], "isImage": true})
                 });
                 let header = this.newsHeader;
                 let text = editHtmText(this.newsText);

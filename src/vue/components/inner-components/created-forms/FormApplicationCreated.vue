@@ -66,13 +66,18 @@
                 let author = JSON.parse(localStorage.getItem('user'));
                 let subject = editHtmText(this.applicationSubject);
                 let text = editHtmText(this.applicationText);
+                let multimedias = [];
+                this.imageDataArray.forEach(image => {
+                    let arrayImage = image.image.split(',');
+                    multimedias.unshift({'url': arrayImage[1], "isImage": true})
+                });
                 let application= {
                     'authorId': author.id,
                     'subject': subject,
                     'text': text,
                     'status': 1,
                     'openDate': new Date().toISOString(),
-                    'multimedias':this.imageDataArray,
+                    'multimedias':multimedias,
                 };
                 let result = this.$store.dispatch('application/createApplicationItem', {'application':application});
                 if (result)
