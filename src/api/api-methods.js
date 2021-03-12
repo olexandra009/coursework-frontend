@@ -55,6 +55,20 @@ export default {
         }
     },
 
+    async changeToSuperUser(userId, token, line, isIpn){
+        let link = baseUrl +"/extendRole?userId="+userId;
+        try {
+            let message = {'inpOrPass': line, 'isIpn': isIpn};
+            let options = {  emulateJSON: true, headers: headers(token) };
+            let response = await Vue.http.post(link, message, options);
+            console.log(response);
+            return response;
+        }catch(error){
+            console.log(error);
+            return null;
+        }
+    },
+
     async changeLogin(userId, login, token){
         let link = baseUrl+"/change_login?userId="+userId;
         try {

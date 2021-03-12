@@ -54,6 +54,12 @@ const actions={
             else
                 return {error: true, errorText: 'Невідома помиилка'};
         }
+    },
+    changeCurrentUserRules({commit, state}){
+        let user = JSON.parse(localStorage.getItem('user'));
+        user.role +=", SuperUser";
+        localStorage.setItem('user',JSON.stringify(user));
+        commit('fromLocale', {t: state.token, u: user});
     }
 };
 const mutations={

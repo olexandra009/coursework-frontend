@@ -120,19 +120,23 @@
                 </b-input-group>
             </b-col>
         </b-row>
-        <b-button class="mt-3 ml-1 btn-block"  v-b-toggle.change-right-collapse variant="outline-info">Розширити права</b-button>
-        <b-collapse id="change-right-collapse" class="mt-2">
+        <b-button class="mt-3 ml-1 btn-block"  v-b-toggle.change-right-collapse variant="outline-info" v-if="notSuper">Розширити права</b-button>
+        <b-collapse id="change-right-collapse" class="mt-2" v-if="notSuper">
             <div>
                 <label>Підтвердіть свою особистість:</label>
                 <b-form-input
                         class="ml-1"
-                        v-model="modelRight"
-                        aria-describedby="input-live-help input-live-feedback"
+                        v-model="modelRightInp"
                         placeholder="Введіть ІНП:"
                         trim/>
-                <b-form-invalid-feedback class="text-center" id="input-live-feedback">Такий логін вже зайнято</b-form-invalid-feedback>
+                <div class="text-secondary text-center smallText">або</div>
+                <b-form-input
+                        class="ml-1"
+                        v-model="modelRight"
+                        placeholder="Введіть номер паспорта:"
+                        trim/>
                 <div class="mt-1 d-flex justify-content-center">
-                    <b-button class="mr-1 w-25" variant="info">Зберегти</b-button>
+                    <b-button class="mr-1 w-25" variant="info" @click="changeRights">Зберегти</b-button>
                     <b-button class="w-25"  v-b-toggle.change-right-collapse variant="info">Скасувати</b-button>
                 </div>
             </div>
@@ -153,7 +157,7 @@
                          <b-form-invalid-feedback class="text-center" id="input-live-feedback">Такий логін вже зайнято</b-form-invalid-feedback>
                    </b-input-group>
                     <div class="mt-1 d-flex justify-content-center">
-                         <b-button class="mr-1 w-25" variant="info" @click="changeLogin">Зберегти</b-button>
+                         <b-button class="mr-1 w-25"  variant="info" @click="changeLogin">Зберегти</b-button>
                          <b-button class="w-25"  v-b-toggle.change-login-collapse variant="info">Скасувати</b-button>
                      </div>
                 </div>
@@ -214,6 +218,11 @@
             loginCheck: function(){
                  if(this.user == null)
                  this.$router.push('/login');
+            },
+            notSuper(){
+                let rules= this.user.role.split(', ');
+                console.log(rules);
+                return !rules.includes('SuperUser');
             }
         }),
         data(){
@@ -223,6 +232,7 @@
                 showSpinner: false,
                 showEmailSpinner: false,
                 modelRight:'',
+                modelRightInp:'',
                 modelPassword:'',
                 modelLogin: '',
                 modelName: '',
@@ -239,12 +249,55 @@
         },
 
         methods: {
-            ...Vuex.mapActions(['changeUser','logout']),
+            ...Vuex.mapActions(['changeUser','logout','changeCurrentUserRules']),
             edit(v) {
                 return !v
             },
+            async changeRights(){
+                  if(this.modelRight.trim().length===0&&this.modelRightInp.trim().length===0)
+                        return;
+
+                  let inp = this.modelRightInp.trim();
+                  let pass = this.modelRight.trim();
+                  let userId = this.user.id;
+                  let token = this.token;
+                  let response;
+                  if(inp)
+                     response = await apiMethods.changeToSuperUser(userId, token, inp, true);
+                  else
+                      response = await apiMethods.changeToSuperUser(userId, token, pass, false);
+                  if(response===null)
+                  {
+                      this.$bvToast.toast('Права не змінено. Сталась помилка, спробуйте пізніше', {
+                          title: "Зміна не відбулась",
+                          variant: 'danger',
+                          solid: true
+                      });
+                      return;
+                  }
+                  let updatedUser = response.body;
+                  let oldRules = this.user.role.split(', ');
+                  let newRules = updatedUser.role.split(', ');
+                  if(oldRules.length===newRules.length)
+                      this.$bvToast.toast('Права не змінено. Особа з наданими даними відсутня в системі', {
+                          title: "Зміна не відбулась",
+                          variant: 'danger',
+                          solid: true
+                      });
+                  else {
+                      await this.$store.dispatch('user/changeCurrentUserRules');
+                      this.$
+                      this.$bvToast.toast('Права успішно змінено', {
+                          title: "Зміна прав",
+                          variant: 'success',
+                          solid: true
+                      });
+                  }
+
+
+            },
+
             async deleteThisAccount(){
-                console.log("HERE");
                 let token = localStorage.getItem('token');
                 let user = (JSON.parse(localStorage.getItem('user'))).id;
                 let result = await apiMethods.deleteUserAccount(user, token);
