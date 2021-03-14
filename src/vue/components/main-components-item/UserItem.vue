@@ -50,7 +50,6 @@
         <b-row class="mt-3 ml-1">
             <b-col sm="4">Організація:</b-col>
             <b-col sm="8">
-                <!--todo: add check on undefined-->
                 <b-row @click="$router.push(`/organization/${user.userOrganizationId}`)">
                     <b-col sm="12">{{user.userOrganizationName}}</b-col>
                 </b-row>
@@ -98,11 +97,6 @@
         }),
         created: async function() {
             let currentUser = JSON.parse(localStorage.getItem('user'));
-            // let roles = currentUser.role.split(', ');
-            // let w = roles.includes('UserManager');
-            // console.log(w);
-            // let u = this.isUserHasRight(currentUser);
-            // console.log(u);
             if(!this.isUserHasRight(currentUser))
                this.$router.push('/news');
             let userId = this.$route.params.id;

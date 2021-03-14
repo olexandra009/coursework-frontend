@@ -19,7 +19,8 @@
                 <b-input-group >
                     <b-form-input v-model="modelSurname" :disabled="!editSurname"/>
                     <b-input-group-append>
-                        <b-button variant="outline-success" @click="updateUser(1)"> <b-icon icon="check2"/> </b-button>
+                        <b-button variant="outline-success" @click="updateUser(1)" v-if="!showSurnameSpinner"> <b-icon icon="check2"/> </b-button>
+                        <b-spinner v-else/>
                         <b-button variant="outline-info" @click="editSurname=edit(editSurname)"> <b-icon icon="x"/> </b-button>
                     </b-input-group-append>
                 </b-input-group>
@@ -42,7 +43,8 @@
                 <b-input-group >
                     <b-form-input v-model="modelName" :disabled="!editName" />
                     <b-input-group-append>
-                        <b-button variant="outline-success"  @click="updateUser(2)"> <b-icon icon="check2"/> </b-button>
+                        <b-button variant="outline-success"  @click="updateUser(2)" v-if="!showNameSpinner"> <b-icon icon="check2"/> </b-button>
+                        <b-spinner v-else/>
                         <b-button variant="outline-info" @click="editName=edit(editName)"> <b-icon icon="x"/> </b-button>
                     </b-input-group-append>
                 </b-input-group>
@@ -66,7 +68,8 @@
                 <b-input-group >
                     <b-form-input v-model="modelSecond" :disabled="!editSecond"/>
                     <b-input-group-append>
-                        <b-button variant="outline-success"  @click="updateUser(3)"> <b-icon icon="check2"/> </b-button>
+                        <b-button variant="outline-success"  @click="updateUser(3)" v-if="!showSecondSpinner"> <b-icon icon="check2"/> </b-button>
+                        <b-spinner v-else/>
                         <b-button variant="outline-info" @click="editSecond=edit(editSecond)"> <b-icon icon="x"/> </b-button>
                     </b-input-group-append>
                 </b-input-group>
@@ -90,7 +93,7 @@
                 <b-input-group >
                     <b-form-input v-model="modelEmail"  :state="emailStateMethod()" :disabled="!editEmail"/>
                     <b-input-group-append>
-                        <b-button variant="outline-success"@click="changeEmail" v-if="!showEmailSpinner"> <b-icon icon="check2"/> </b-button>
+                        <b-button variant="outline-success" @click="changeEmail" v-if="!showEmailSpinner"> <b-icon icon="check2"/> </b-button>
                         <b-spinner v-else/>
                         <b-button variant="outline-info" @click="editEmail=edit(editEmail)"> <b-icon icon="x"/> </b-button>
                     </b-input-group-append>
@@ -114,7 +117,8 @@
                 <b-input-group >
                     <b-form-input v-model="modelPhone" :disabled="!editPhone"/>
                     <b-input-group-append>
-                        <b-button variant="outline-success" @click="updateUser(4)"> <b-icon icon="check2"/> </b-button>
+                        <b-button variant="outline-success" @click="updateUser(4)" v-if="!showPhoneSpinner"> <b-icon icon="check2"/> </b-button>
+                        <b-spinner v-else/>
                         <b-button variant="outline-info" @click="editPhone=edit(editPhone)"> <b-icon icon="x"/> </b-button>
                     </b-input-group-append>
                 </b-input-group>
@@ -227,23 +231,34 @@
         }),
         data(){
             return{
-                loginState: null,
-                emailState: null,
-                showSpinner: false,
-                showEmailSpinner: false,
+                //Rights
                 modelRight:'',
                 modelRightInp:'',
                 modelPassword:'',
+                //Login
+                loginState: null,
                 modelLogin: '',
+                showSpinner: false,
+                //Name
                 modelName: '',
-                modelSurname: '',
-                modelEmail: '',
-                modelSecond: '',
-                modelPhone: '',
+                showNameSpinner: false,
                 editName: false,
+                //Surname
                 editSurname: false,
+                modelSurname: '',
+                showSurnameSpinner: false,
+                //Email
+                emailState: null,
+                modelEmail: '',
+                showEmailSpinner: false,
                 editEmail: false,
+                //Second
+                modelSecond: '',
+                showSecondSpinner: false,
                 editSecond: false,
+                //Phone
+                modelPhone: '',
+                showPhoneSpinner: false,
                 editPhone: false,
                }
         },
@@ -286,7 +301,6 @@
                       });
                   else {
                       await this.$store.dispatch('user/changeCurrentUserRules');
-                      this.$
                       this.$bvToast.toast('Права успішно змінено', {
                           title: "Зміна прав",
                           variant: 'success',
@@ -313,18 +327,26 @@
                     let change = await apiMethods.changeEmail(this.user.id, this.modelEmail, this.token);
                     this.showEmailSpinner = false;
                     if (change) {
-                        this.$bvToast.toast('Логін змінено', {
+                        this.$bvToast.toast('Електронну пошту змінено. Лист підтвердження надіслено на вказану адресу', {
+                            title: 'Зміни збережено',
                             variant: 'success',
                             solid: true
                         });
                         await this.$store.dispatch("user/changeUser", {'user': change});
+                        this.editEmail = false;
                     } else {
-                        this.$bvToast.toast('Логін не змінено', {
-                            title: "Помилка",
+                        this.$bvToast.toast('Електронну пошту не змінено', {
+                            title: "Зміни не збережено",
                             variant: 'danger',
                             solid: true
                         });
                     }
+                } else {
+                    this.$bvToast.toast('Вибрана вами електронна пошта вже зареєстрована', {
+                        title: "Зміни не збережено",
+                        variant: 'danger',
+                        solid: true
+                    });
                 }
                 this.showEmailSpinner = false;
             },

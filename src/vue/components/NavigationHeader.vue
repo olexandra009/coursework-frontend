@@ -42,7 +42,16 @@
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
                 this.$store.dispatch('user/logout');
-                this.$router.push('/news');
+                let path = this.$route.fullPath;
+                let start = path.split('/')[0];
+                if(start==='application'||start==='cabinet'||start==='users'||start==='organization')
+                {
+                    this.$router.push('/news');
+                    location.reload();
+
+                }
+
+                location.reload();
             }
         }
     }
