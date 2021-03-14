@@ -2,13 +2,12 @@
     <b-navbar toggleable="lg" type="dark" variant="info" :class="fixed">
        <b-container :class="`pl-2 pr-2`">
         <b-navbar-brand href="#">NavBar</b-navbar-brand>
-
-        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
+        <b-navbar-toggle target="nav-collapse"/>
         <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav>
                 <b-nav-item to="/">Головна</b-nav-item>
                 <b-nav-item to="/info">Інформація</b-nav-item>
+                <navigation-small-tab/>
             </b-navbar-nav>
 
             <!-- Right aligned nav items -->
@@ -30,7 +29,9 @@
 
 <script>
     import Vuex from 'vuex'
+    import NavigationSmallTab from "./inner-components/NavigationSmallTab.vue";
     export default {
+        components: {NavigationSmallTab},
         props: ['fixed'],
         name: "NavigationHeader",
         computed: Vuex.mapState({
@@ -42,15 +43,6 @@
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
                 this.$store.dispatch('user/logout');
-                let path = this.$route.fullPath;
-                let start = path.split('/')[0];
-                if(start==='application'||start==='cabinet'||start==='users'||start==='organization')
-                {
-                    this.$router.push('/news');
-                    location.reload();
-
-                }
-
                 location.reload();
             }
         }

@@ -26,7 +26,15 @@
         created: async function () {
            let token =  localStorage.getItem('token');
            let user = localStorage.getItem('user');
-
+           let path = this.$route.fullPath;
+           let start = path.split('/')[1];
+           if(user == null || token == null)
+           {
+               if(start==='application'||start==='cabinet'||start==='users'||start==='organization')
+                   this.$router.push('/news');
+               await this.$store.dispatch('organization/getListOfOrganization');
+               return;
+           }
            let u = await apiMethod.check(token);
            if(u) {
                user = JSON.parse(user);
@@ -36,7 +44,6 @@
                localStorage.removeItem('user');
            }
             await this.$store.dispatch('organization/getListOfOrganization');
-
         },
     }
 </script>

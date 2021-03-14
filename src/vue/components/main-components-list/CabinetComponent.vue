@@ -140,7 +140,7 @@
                         placeholder="Введіть номер паспорта:"
                         trim/>
                 <div class="mt-1 d-flex justify-content-center">
-                    <b-button class="mr-1 w-25" variant="info" @click="changeRights">Зберегти</b-button>
+                    <b-button class="mr-1 w-25" variant="info" :disabled="showRightsSpinner" @click="changeRights">Зберегти <b-spinner v-if="showRightsSpinner"/></b-button>
                     <b-button class="w-25"  v-b-toggle.change-right-collapse variant="info">Скасувати</b-button>
                 </div>
             </div>
@@ -161,7 +161,7 @@
                          <b-form-invalid-feedback class="text-center" id="input-live-feedback">Такий логін вже зайнято</b-form-invalid-feedback>
                    </b-input-group>
                     <div class="mt-1 d-flex justify-content-center">
-                         <b-button class="mr-1 w-25"  variant="info" @click="changeLogin">Зберегти</b-button>
+                         <b-button class="mr-1 w-25"  variant="info" :disabled="showSpinner" @click="changeLogin">Зберегти</b-button>
                          <b-button class="w-25"  v-b-toggle.change-login-collapse variant="info">Скасувати</b-button>
                      </div>
                 </div>
@@ -179,13 +179,14 @@
                                 aria-describedby="input-live-help input-live-feedback"
                                 placeholder="Введіть новий пароль:"
                                 trim/>
+                        <b-input-group-append v-if="showPasswordSpinner"><b-spinner/></b-input-group-append>
                         <b-form-invalid-feedback class="text-center" id="input-live-feedback">
                             Пароль повинен складатись з щонайменше 8 символів та містити в собі хоча б 1 велику літеру, 1 маленьку та 1 цифру
                         </b-form-invalid-feedback>
                     </b-input-group>
 
                     <div class="mt-1 d-flex justify-content-center">
-                        <b-button class="mr-1 w-25" @click="savePassword" variant="info">Зберегти</b-button>
+                        <b-button class="mr-1 w-25" @click="savePassword" :disabled="showPasswordSpinner" variant="info">Зберегти</b-button>
                         <b-button class="w-25"  v-b-toggle.chanhe-password-collapse variant="info">Скасувати</b-button>
                     </div>
                 </div>
@@ -234,7 +235,10 @@
                 //Rights
                 modelRight:'',
                 modelRightInp:'',
+                showRightsSpinner: false,
+                //Password
                 modelPassword:'',
+                showPasswordSpinner: false,
                 //Login
                 loginState: null,
                 modelLogin: '',
@@ -271,7 +275,7 @@
             async changeRights(){
                   if(this.modelRight.trim().length===0&&this.modelRightInp.trim().length===0)
                         return;
-
+                  this.showRightsSpinner = true;
                   let inp = this.modelRightInp.trim();
                   let pass = this.modelRight.trim();
                   let userId = this.user.id;
@@ -288,6 +292,7 @@
                           variant: 'danger',
                           solid: true
                       });
+                      this.showRightsSpinner = false;
                       return;
                   }
                   let updatedUser = response.body;
@@ -307,10 +312,8 @@
                           solid: true
                       });
                   }
-
-
+                  this.showRightsSpinner = false;
             },
-
             async deleteThisAccount(){
                 let token = localStorage.getItem('token');
                 let user = (JSON.parse(localStorage.getItem('user'))).id;
@@ -352,6 +355,7 @@
             },
             async savePassword() {
                 if (this.passwordState()) {
+                    this.showPasswordSpinner = true;
                     let change = await apiMethods.changePassword(this.user.id, this.modelPassword, this.token);
                     if (change)
                         this.$bvToast.toast('Пароль змінено!', {
@@ -366,21 +370,35 @@
                             solid: true
                         });
                     this.modelPassword = '';
+                    this.showPasswordSpinner = false;
                 }
             },
 
             async updateUser(click) {
                 let userUp = this.user;
-                if (click === 1)
+                if (click === 1) {
                     userUp.lastName = this.modelSurname;
+                    this.showSurnameSpinner = true;
+                }
                 else if (click === 2)
+                {
                     userUp.firstName = this.modelName;
-                else if (click === 3)
+                    this.showNameSpinner = true;
+                }
+                else if (click === 3) {
                     userUp.secondName = this.modelSecond;
+                    this.showSecondSpinner = true;
+                }
                 else if (click === 4)
+                {
                     userUp.phoneNumber = this.modelPhone;
-
+                    this.showPhoneSpinner = true;
+                }
                 let response = await apiMethods.updateUser(userUp.id, userUp, this.token);
+                this.showPhoneSpinner = false;
+                this.showSecondSpinner = false;
+                this.showNameSpinner = false;
+                this.showSurnameSpinner = false;
                 if (response == null)
                     this.$bvToast.toast('Сталася помилка', {
                         title: "Помилка",
