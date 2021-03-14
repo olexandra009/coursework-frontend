@@ -46,7 +46,7 @@
         methods: {
             ...Vuex.mapState(['changeSelectedUser']),
             isUserHasRight(){
-                return this.currentUserRoles.includes('UserManger');
+                return this.currentUserRoles.includes('UserManager');
             },
             async saveRoles(){
                 let role = this.selected.join().replaceAll(',',', ');
@@ -76,7 +76,7 @@
                     {text:'Модератор новин та подій', value: 'Moderator'},
                     {text:'Створювати новини та події', value: 'NewsAndEvents'},
                     {text:'Обробка заяв та петицій', value: 'ApplicationAdmin'},
-                    {text:'Адміністрування користувачів', value: 'UserManger'},
+                    {text:'Адміністрування користувачів', value: 'UserManager'},
                 ]
             }
         }

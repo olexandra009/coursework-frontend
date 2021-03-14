@@ -98,8 +98,13 @@
         }),
         created: async function() {
             let currentUser = JSON.parse(localStorage.getItem('user'));
+            // let roles = currentUser.role.split(', ');
+            // let w = roles.includes('UserManager');
+            // console.log(w);
+            // let u = this.isUserHasRight(currentUser);
+            // console.log(u);
             if(!this.isUserHasRight(currentUser))
-                this.$router.push('/news');
+               this.$router.push('/news');
             let userId = this.$route.params.id;
             let _user = await apiMethods.getUserItem(this.token, userId);
             await this.$store.dispatch('user/changeSelectedUser', {'user':_user});
@@ -109,7 +114,7 @@
             isUserHasRight(currentUser){
                 if(!currentUser) return false;
                 let roles = currentUser.role.split(', ');
-                return roles.includes('UserManger');
+                return roles.includes('UserManager');
             },
         },
         data(){
