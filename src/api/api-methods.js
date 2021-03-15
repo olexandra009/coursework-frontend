@@ -144,6 +144,27 @@ export default {
     },
 
 //-----------------------------------------------------------------------//
+//----------------------Email Confirm User Api---------------------------/
+    async confirmEmail(code, id){
+        let link = baseUrl+"/confirm_email?code="+code+"&id="+id;
+        try {
+            await Vue.http.get(link);
+            return true;
+        }catch(error){
+            return false;
+        }
+    },
+
+    async resendConfirmEmail(email){
+        let link = baseUrl+"/emailConfirmResend?email="+email;
+        try {
+            await Vue.http.get(link);
+            return true;
+        }catch(error){
+            return false;
+        }
+    },
+//-----------------------------------------------------------------------//
 //--------------------------Log in user Api-------------------------------//
     async check(token){
         let link = baseUrl+"/user/check";

@@ -65,7 +65,7 @@ const router = new VueRouter( {
             ]},
         {path: '/singup', component: SingUpDisplay},
         {path: '/login', component: LoginDisplay},
-        {path: '/confirm/:id/:token', component: ConfirmEmailDisplay, meta:{title: "Підтвердження акаунта"}},
+        {path: '/confirm/:id/:token', component: ConfirmEmailDisplay},
         {path: '/info', component: InfoDisplay},
         {path:'/forgot_password', component: ForgotPassword},
         {path:'/reset_password/:id/:token', component: ResetPassword}

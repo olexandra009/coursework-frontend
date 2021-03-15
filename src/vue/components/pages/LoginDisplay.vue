@@ -34,6 +34,8 @@
                     </div>
                     <div class="pt-3 text-center text-dark">
                         <router-link to="/singup">Немає аккаунту? Створити новий</router-link>
+                    </div>
+                    <div class="text-center text-dark">
                         <router-link to="/forgot_password">Забули пароль?</router-link>
                     </div>
                 </div>
