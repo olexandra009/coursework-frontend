@@ -17,8 +17,11 @@
                     <div v-else>
                         <router-link  :to="`${petition.id}/votes/${petition.id}`">Зібрані підписи</router-link>
                     </div>
-                    <b-button style="width: 165px" variant="info" v-if="endDate(petition.finishDate)">Підписати петицію</b-button>
-                    <b-button style="width: 165px" variant="info" disabled v-else>Збір завершено</b-button>
+                    <div v-if="haveRights">
+                        <b-button style="width: 165px" variant="info" v-if="canVotedPetition()">Підписати петицію</b-button>
+                        <b-button style="width: 165px" variant="info" disabled v-else-if="votedStopped()">Збір завершено</b-button>
+                        <b-button style="width: 165px" variant="info" @click="deleteVotePetition" v-else>Забрати голос</b-button>
+                    </div>
                 </div>
             </div>
             <div class="d-none d-sm-none d-md-block" style="position: fixed; width: 160px;">
@@ -48,9 +51,11 @@
                     <span>{{lastDate(petition.finishDate)}}</span>
                 </div>
                 <div class="mt-1 text-center">
-                    <b-button style="width: 165px" variant="info" @click="votePetition" v-if="canVotedPetition()">Підписати петицію</b-button>
-                    <b-button style="width: 165px" variant="info" disabled v-else-if="votedStopped()">Збір завершено</b-button>
-                    <b-button style="width: 165px" variant="info" @click="deleteVotePetition" v-else>Забрати голос</b-button>
+                    <div v-if="haveRights">
+                        <b-button style="width: 165px" variant="info" @click="votePetition" v-if="canVotedPetition()">Підписати петицію</b-button>
+                        <b-button style="width: 165px" variant="info" disabled v-else-if="votedStopped()">Збір завершено</b-button>
+                        <b-button style="width: 165px" variant="info" @click="deleteVotePetition" v-else>Забрати голос</b-button>
+                    </div>
                     <div v-if="$route.path===`/petition/${petition.id}/votes/${petition.id}`">
                         <router-link  :to="`/petition/${petition.id}`">Назад до тексту</router-link>
                     </div>
@@ -64,7 +69,7 @@
                     </span>
                 </div>
                 <div class="mt-1 text-center">
-                   <b-button style="width: 165px" v-b-modal.answer-add variant="info">Додати відповідь</b-button>
+                   <b-button style="width: 165px" v-b-modal.answer-add variant="info" v-if="admin">Додати відповідь</b-button>
                 </div>
 
             </div>
@@ -80,7 +85,7 @@
                     v-model="answerModel"
                     required/>
                 <div class="d-flex justify-content-end">
-                    <b-button variant="outline-danger" type="submit" class="mr-1">Підтвердити</b-button>
+                    <b-button variant="outline-info" type="submit" class="mr-1">Підтвердити</b-button>
                     <b-button variant="outline-info" type="reset">Скасувати</b-button>
                 </div>
             </b-form>
@@ -107,7 +112,26 @@
         components: {
             VueCircle, PetitionItemText, PetitionItemVotes,
         },
-
+        created() {
+            let u = localStorage.user;
+            if(u === undefined) {
+                this.haveRights = false;
+                this.admin = false;
+                return;
+            }
+            let user = JSON.parse(u);
+            if(user==null) {
+                this.haveRights = false;
+                this.admin = false;
+                return;
+            }
+            let roles = user.role.split(', ');
+            this.haveRights = !!roles.includes('SuperUser');
+            this.admin = roles.includes('ApplicationAdmin');
+            if(user.id == this.news.authorId){
+                this.haveRights = true;
+            }
+        },
         computed: Vuex.mapState({
             petition: state=> state.petition.selectedPetition,
             minVotes: state=>state.petition.minVotes,
@@ -115,7 +139,6 @@
         mounted: async function(){
              let id =this.$route.params.id;
              await this.$store.dispatch('petition/getPetitionItem', {'petitionId':id});
-
              console.log(this.petition);
              console.log(this.petition.userVotes);
         },
@@ -123,6 +146,8 @@
             return{
                 fill : { color: "#2bbcfa" },
                 answerModel: '',
+                haveRights: true,
+                admin: false,
             }
         },
         methods: {
@@ -132,7 +157,11 @@
             },
             canVotedPetition(){
               if(this.votedStopped()) return false;
-              let userId = (JSON.parse(localStorage.getItem('user'))).id;
+              let u = localStorage.getItem('user');
+              if(u===undefined||u===null)return false;
+              let user = JSON.parse(u);
+              if(user===undefined||user===null)return false;
+              let userId = user.id;
               let userVote = this.petition.userVotes.find(vote=>vote.userId===userId);
               console.log(userVote);
               if(userVote) return false;
@@ -142,11 +171,10 @@
             async votePetition(){
                 let id =this.$route.params.id;
                 let i = await this.$store.dispatch('petition/vote', {'id':id});
-                location.reload();
+
             },
             async deleteVotePetition(){
                 let i = await this.$store.dispatch('petition/deleteVote');
-                location.reload();
             },
 
             async addAnswer(){

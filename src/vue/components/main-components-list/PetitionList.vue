@@ -1,8 +1,8 @@
 <template>
     <div class="w-100 min-vh-100 mt-1">
 
-        <b-button class="mt-3 btn-block"  v-b-toggle.create-petition-collapse variant="outline-info">Створити нову петицію</b-button>
-        <b-collapse id="create-petition-collapse" class="mt-2">
+        <b-button class="mt-3 btn-block"  v-b-toggle.create-petition-collapse variant="outline-info" v-if="haveRights">Створити нову петицію</b-button>
+        <b-collapse id="create-petition-collapse" class="mt-2" v-if="haveRights">
             <form-petition-created/>
         </b-collapse>
 
@@ -47,10 +47,24 @@
             petition: state=>state.petition.all,
             minVotes: state=>state.petition.minVotes,
         }),
-
+        created() {
+            let u = localStorage.user;
+            if(u === undefined) {
+                this.haveRights = false;
+                return;
+            }
+            let user = JSON.parse(u);
+            if(user == null) {
+                this.haveRights = false;
+                return;
+            }
+            let roles = user.role.split(', ');
+            this.haveRights = !!roles.includes('SuperUser');
+        },
         data(){
             return {
                 dateNow: new Date(),
+                haveRights: true,
             }
         },
         methods: {

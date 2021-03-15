@@ -21,7 +21,7 @@
                     </b-form-group>
                 </div>
                 <div class="d-flex justify-content-around">
-                    <b-button type="submit" variant="info">Cтворити</b-button>
+                    <b-button type="submit"  :disabled="creating" variant="info">Cтворити<b-spinner small v-if="creating"/></b-button>
                     <b-button type="reset" variant="info">Скасувати</b-button>
                 </div>
             </b-form>
@@ -50,7 +50,9 @@
                     "starDate": startDate.toISOString(),
                     "finishDate": finishDate.toISOString()
                 };
+                this.creating=true;
                 let y = await this.$store.dispatch('petition/addPetitionItem', {'petition':petition});
+                this.creating=false;
                 console.log(y);
                 this.resetPetition();
              },
@@ -58,6 +60,7 @@
         },
         data(){
             return{
+                creating: false,
                 showCreatedForm: false,
                 petitionHeader: "",
                 petitionText: ""
