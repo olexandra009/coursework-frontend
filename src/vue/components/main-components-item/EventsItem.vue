@@ -58,6 +58,9 @@
 
     export default {
         name: "EventsItem",
+        metaInfo: {
+            title: 'Події',
+        },
         components: {PhotoTab},
         computed: Vuex.mapState({
             events: state=>state.events.selectedEvent,

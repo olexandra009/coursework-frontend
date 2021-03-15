@@ -38,6 +38,9 @@
     export default {
         name: "NewsItem",
         components: {PhotoTab},
+        metaInfo: {
+            title: 'Новини',
+        },
         computed: Vuex.mapState({
              news: state=>state.news.selectedNews,
         }),

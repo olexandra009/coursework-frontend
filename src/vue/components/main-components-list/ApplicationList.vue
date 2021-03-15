@@ -51,6 +51,9 @@
     import ApplicationLoader from "../loading-components/ApplicationLoader.vue";
     export default {
         name: "ApplicationList",
+        metaInfo: {
+            title: 'Звернення',
+        },
         components: {ApplicationLoader, FormApplicationFilter, FormApplicationCreated},
         computed: Vuex.mapState({
             applications: state=>state.application.all,

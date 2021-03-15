@@ -88,6 +88,9 @@
     import ChangeUserRole from "../inner-components/change-forms/ChangeUserRole.vue";
     export default {
         name: "UserItem",
+        metaInfo: {
+            title: 'Інформація про користувача',
+        },
         components: {ChangeUserRole, ChangeUserOrganization},
         computed: Vuex.mapState({
             currentUser: state=>state.user.currentUser,

@@ -50,6 +50,9 @@
 
     export default {
         name: "LoginDisplay",
+        metaInfo: {
+            title: 'Вхід',
+        },
         computed: Vuex.mapState({
             users: state => state.user.currentUser,
 

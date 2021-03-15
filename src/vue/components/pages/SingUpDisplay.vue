@@ -96,6 +96,9 @@
 
     export default {
         name: "SingUpDisplay",
+        metaInfo: {
+            title: 'Реєстрація',
+        },
         computed: {
             passwordState(){
                 let lowerCaseLetters = /[a-z]/g;

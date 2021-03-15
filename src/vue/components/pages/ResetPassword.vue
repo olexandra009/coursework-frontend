@@ -41,6 +41,9 @@
 
     export default {
         name: "ResetPassword",
+        metaInfo: {
+            title: 'Відновлення пароля',
+        },
         methods:{
             async sendPassword(){
                 if(this.passwordState()){

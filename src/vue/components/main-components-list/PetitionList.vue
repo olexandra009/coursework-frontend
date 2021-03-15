@@ -42,6 +42,9 @@
     import PetitionLoader from "../loading-components/PetitionLoader.vue";
     export default {
         name: "PetitionList",
+        metaInfo: {
+            title: 'Петиції',
+        },
         components: {PetitionLoader, FormPetitionFilter, FormPetitionCreated},
         computed: Vuex.mapState({
             petition: state=>state.petition.all,

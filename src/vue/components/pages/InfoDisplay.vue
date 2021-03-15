@@ -4,8 +4,12 @@
 
 <script>
     export default {
-        name: "InfoDisplay"
+        name: "InfoDisplay",
+        metaInfo: {
+            title: 'Інформація',
+        },
     }
+
 </script>
 
 <style scoped>

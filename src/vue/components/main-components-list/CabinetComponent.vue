@@ -217,6 +217,9 @@
 
     export default {
         name: "CabinetComponent",
+        metaInfo: {
+            title: 'Кабінет',
+        },
         computed:Vuex.mapState({
             user: state=> state.user.currentUser,
             token: state=> state.user.token,

@@ -109,6 +109,9 @@
     import petition from "../../store/modules/petition";
     export default {
         name: "PetitionItem",
+        metaInfo: {
+            title: 'Петиції',
+        },
         components: {
             VueCircle, PetitionItemText, PetitionItemVotes,
         },

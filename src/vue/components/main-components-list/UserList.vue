@@ -35,6 +35,9 @@
     import UserLoader from "../loading-components/UserLoader.vue";
     export default {
         name: "UserList",
+        metaInfo: {
+            title: 'Користувачі',
+        },
         computed: Vuex.mapState({
             users: (state)=>state.user.userList,
             selectedRole: (state)=>state.user.filterRole,

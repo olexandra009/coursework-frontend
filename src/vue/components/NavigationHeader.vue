@@ -1,7 +1,7 @@
 <template>
     <b-navbar toggleable="lg" type="dark" variant="info" :class="fixed">
        <b-container :class="`pl-2 pr-2`">
-        <b-navbar-brand href="#">NavBar</b-navbar-brand>
+        <b-navbar-brand href="#">Platform</b-navbar-brand>
         <b-navbar-toggle target="nav-collapse"/>
         <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav>

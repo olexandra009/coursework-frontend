@@ -36,8 +36,10 @@
     import NewsLoader from "../loading-components/NewsLoader.vue";
 
     export default {
-
         name: "NewsList",
+        metaInfo: {
+            title: 'Новини',
+        },
         components: {NewsLoader, FormNewsFilter, FormNewsCreated, PhotoTab, CutTextComponent},
         computed:Vuex.mapState({
             news: state=>state.news.all,

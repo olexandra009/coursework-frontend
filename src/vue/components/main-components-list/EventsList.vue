@@ -39,6 +39,9 @@
     import EventLoader from "../loading-components/EventLoader.vue";
     export default {
         name: "EventsList",
+        metaInfo: {
+            title: 'Події',
+        },
         components: {EventLoader, FormEventFilter, FormEventCreated, CutTextComponent, PhotoTab},
         computed: Vuex.mapState({
             events: state=>state.events.all,

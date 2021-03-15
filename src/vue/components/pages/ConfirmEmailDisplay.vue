@@ -97,7 +97,6 @@
         },
         metaInfo: {
             title: 'Підтвердження акаунта',
-
         },
         data(){
             return{

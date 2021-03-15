@@ -33,6 +33,9 @@
     import FormOrganizationCreated from "../inner-components/created-forms/FormOrganizationCreated.vue";
     export default {
         name: "OrganizationList",
+        metaInfo: {
+            title: 'Організації',
+        },
         components: {FormOrganizationCreated},
         computed: Vuex.mapState({
                 organizationList: state=>state.organization.organizationList,

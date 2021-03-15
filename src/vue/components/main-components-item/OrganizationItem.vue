@@ -128,6 +128,9 @@
     import organization from "../../store/modules/organization";
     export default {
         name: "OrganizationItem",
+        metaInfo: {
+            title: 'Організація',
+        },
         computed: Vuex.mapState({
             organization: state=>state.organization.selectedOrganization,
             canBeDeleted(){return this.organization.users.length === 0},

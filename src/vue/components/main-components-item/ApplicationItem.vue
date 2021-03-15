@@ -56,6 +56,9 @@
     import PhotoTab from "../inner-components/PhotoTab.vue";
     export default {
         name: "ApplicationItem",
+        metaInfo: {
+            title: 'Зверенення',
+        },
         components: {PhotoTab, FormApplicationAnswerCreated},
         computed: Vuex.mapState({
             application: state=>state.application.selectedApplication,
