@@ -47,9 +47,10 @@
                     </b-row>
             </b-row>
             <div class="d-flex justify-content-around mt-4">
-                <b-button type="submit" variant="info">Cтворити</b-button>
+                <b-button type="submit" :disabled="creating" variant="info">Cтворити<b-spinner small v-if="creating"/></b-button>
                 <b-button type="reset" variant="info">Скасувати</b-button>
             </div>
+            <div class="text-secondary smallerText">Увага! Після створення ви не зможете внести зміни до звернення</div>
         </b-form>
     </div>
 </template>
@@ -79,7 +80,9 @@
                     'openDate': new Date().toISOString(),
                     'multimedias':multimedias,
                 };
+                this.creating = true;
                 let result = this.$store.dispatch('application/createApplicationItem', {'application':application});
+                this.creating = false;
                 if (result)
                     this.$bvToast.toast('Звернення успішно додане', {
                         title: `Успіх`,
@@ -92,9 +95,9 @@
                         variant: 'danger',
                         solid: true
                     });
-
-                this.resetApplication();
                 location.reload();
+                this.resetApplication();
+
             },
             resetApplication(){
                 this.imageDataId= 0;
@@ -114,7 +117,11 @@
             previewImages: function (event) {
                 if(this.imageDataArray.length >= 5)
                 {
-                    //todo alert or toast
+                    this.$bvToast.toast('Дозволяється завантажувати не більше 5 зображень', {
+                        title: `Увага`,
+                        variant: 'warning',
+                        solid: true
+                    });
                     return;
                 }
                 let fileList = event.target.files;
@@ -123,7 +130,11 @@
                     let count = fileList.length;
                     if(this.imageDataArray.length + count>= 5){
                         count = 5-this.imageDataArray.length;
-                        //todo alert or toast
+                        this.$bvToast.toast('Дозволяється завантажувати не більше 5 зображень', {
+                            title: `Увага`,
+                            variant: 'warning',
+                            solid: true
+                        });
                     }
                     for(let i = 0; i<count; i++ ) {
                         if (fileList[i]) {
@@ -145,6 +156,7 @@
                 files: [],
                 applicationSubject: "",
                 applicationText: "",
+                creating: false,
             }
         }
     }

@@ -62,9 +62,6 @@
             let user = JSON.parse(u);
             if(user===undefined||user===null)
                 this.router.push('/');
-            let roles = user.role.split(', ');
-            if(!roles.includes("ApplicationAdmin"))
-                this.adminEdit = false;
         },
         methods:{
             ...Vuex.mapActions(['getListOFApplication']),
