@@ -11,6 +11,7 @@
     export default {
         name: "PetitionLoader",
         computed:Vuex.mapState({
+            mine: state=>state.petition.mine,
             status: state=> state.petition.status,
             total: state=>state.petition.totalItem,
             skip: state=>state.petition.skip,
@@ -31,9 +32,9 @@
                 const isBottomOfScreen = el.scrollTop + window.innerHeight > el.offsetHeight - 10;
                 if (isBottomOfScreen && this.canLoad&&this.total>this.skip) {
                     this.canLoad = false;
-                    let mine = false;
+                    let mine = this.mine;
                     this.loading = true;
-                    if(this.$route.path === '/petition/my') mine = true;
+                  //  if(this.$route.path === '/petition/my') mine = true;
                     await this.$store.dispatch("petition/getPetitionList", {'status': this.status, 'mine': mine});
                     this.loading = false;
                     this.showEnd =  this.total <= this.skip;
@@ -42,9 +43,9 @@
             }
         },
         created: async function() {
-            let mine = false;
+            let mine = this.mine;
             console.log(this.$router.fullPath);
-            if(this.$route.fullPath === '/petition/my') mine = true;
+           // if(this.$route.fullPath === '/petition/my') mine = true;
             await this.$store.dispatch("petition/getPetitionList", {'status': this.status, 'mine': mine});
             this.showEnd =  this.total <= this.skip;
             this.loading = false;

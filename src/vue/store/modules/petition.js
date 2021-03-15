@@ -1,6 +1,6 @@
 import apiMethods from '/src/api/api-methods';
 
-const state = () => ({all: [], selectedPetition: null, status: null, minVotes: 100, skip:0, takeValue: 4, totalItem: 0});
+const state = () => ({all: [], selectedPetition: null, mine: false, status: null, minVotes: 100, skip:0, takeValue: 4, totalItem: 0});
 const getters={};
 const actions={
     resetFilter({commit}){
@@ -10,8 +10,11 @@ const actions={
         let token = localStorage.getItem('token');
         let result;
         let userId;
-        if(mine)
+        if(mine){
             userId = (JSON.parse(localStorage.getItem('user'))).id;
+
+        }
+
 
         console.log("IN PETITION: "+mine);
         if(mine&&status)
@@ -24,6 +27,7 @@ const actions={
             result = await apiMethods.getListOfPetition(token, state.takeValue, state.skip);
 
         state.status = status;
+        state.mine = mine;
 
         if(result == null) return;
         for (const r of result.result) {
