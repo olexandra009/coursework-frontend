@@ -17,9 +17,9 @@
                 <b-nav-item to="/petition/my" exact exact-active-class="active">Мої петиції</b-nav-item>
                 <!--<b-nav-item to="/petition/voted" exact exact-active-class="active">Проголосовані</b-nav-item>-->
             </b-collapse>
-            <b-nav-item to="/application" exact exact-active-class="active">Звернення</b-nav-item>
+            <b-nav-item to="/application" exact exact-active-class="active" v-if="login">Звернення</b-nav-item>
             <b-nav-item to="/organization" exact exact-active-class="active">Організації</b-nav-item>
-            <b-nav-item to="/users" exact exact-active-class="active">Користувачі</b-nav-item>
+            <b-nav-item to="/users" exact exact-active-class="active" v-if="admin">Користувачі</b-nav-item>
         </b-nav>
     </b-col>
 </template>
@@ -32,13 +32,21 @@
         computed: Vuex.mapState({
             login: state => (state.user.currentUser !== null),
             user: state=>(state.user.currentUser),
+            admin: state=>{
+                console.log("HERE")
+                if(state.user.currentUser === null)
+                    return false;
+                let user = state.user.currentUser;
+                let rules = user.role.split(', ');
+                return rules.includes('UserManager');
+            }
         }),
         methods:{
 
         },
         data(){
             return{
-                admin: true,
+
             }
         }
     }
