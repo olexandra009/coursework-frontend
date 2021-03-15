@@ -1,6 +1,7 @@
 <template>
     <div class="w-100 min-vh-100 mt-1">
         <b-button class="mt-3 btn-block"  v-if="adminEdit" v-b-toggle.create-news-collapse variant="outline-info">Додати новину</b-button>
+
         <b-collapse id="create-news-collapse" class="mt-2">
             <form-news-created/>
         </b-collapse>
@@ -51,6 +52,20 @@
             getAuthorName(author){
                 return author.firstName+' '+author.lastName;
             },
+        },
+        created() {
+            let u = localStorage.user;
+            if(u === undefined) {
+                this.adminEdit = false;
+                return;
+            }
+            let user = JSON.parse(u);
+            if(user == null) {
+                this.adminEdit = false;
+                return;
+            }
+            let roles = user.role.split(', ');
+            this.adminEdit = !!roles.includes('NewsAndEvents');
         },
 
         data(){
