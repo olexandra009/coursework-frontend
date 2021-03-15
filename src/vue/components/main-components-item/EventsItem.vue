@@ -43,7 +43,7 @@
             <b-form-textarea class="min-vh-60" v-model="descriptionModel"  v-else/>
         </div>
         <div class="d-flex justify-content-around mt-4" v-if="editEvents">
-            <b-button type="submit" @click="saveEdition" variant="info">Зберегти</b-button>
+            <b-button type="submit" @click="saveEdition" :disabled="editing" variant="info">Зберегти <b-spinner class="smallText" v-if="editing"/> </b-button>
             <b-button type="reset"  @click="cancelEdition" variant="info">Скасувати</b-button>
         </div>
         <photo-tab :multimedia="events.multimedias"/>
@@ -72,6 +72,22 @@
             this.timeEndModel = this.getTimeFromISOString(this.events.endDate);
             this.nameModel = this.events.name;
             this.descriptionModel = this.events.description;
+            let u = localStorage.user;
+            if(u === undefined) {
+                this.adminEdit = false;
+                return;
+            }
+            let user = JSON.parse(u);
+            if(user==null) {
+                this.adminEdit = false;
+                return;
+            }
+            if(user.id == this.news.authorId){
+                this.adminEdit = true;
+                return;
+            }
+            let roles = user.role.split(', ');
+            this.adminEdit = !!roles.includes('Moderator');
         },
 
         methods:{
@@ -138,8 +154,9 @@
                     "authorId": this.events.authorId,
                     "multimedias": this.events.multimedias,
                 };
-
+                this.editing= true;
                 let i = await this.$store.dispatch('events/updateEventItem', {'id': id, 'events': updatedEvents});
+                this.editing = false;
                 if(i)
                     this.$bvToast.toast('Подію успішно змінено', {
                         title: `Успіх`,
@@ -166,6 +183,7 @@
         },
         data() {
             return {
+                editing: false,
                 adminEdit: true,
                 editEvents: false,
                 dateModel: '',

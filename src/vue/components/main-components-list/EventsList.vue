@@ -5,7 +5,7 @@
             <form-event-created/>
         </b-collapse>
 
-        <b-button class="mt-3 btn-block"  v-if="adminEdit" v-b-toggle.filter-collapse variant="outline-info">Фільтрація подій</b-button>
+        <b-button class="mt-3 btn-block"  v-b-toggle.filter-collapse variant="outline-info">Фільтрація подій</b-button>
         <b-collapse id="filter-collapse" class="mt-2">
             <form-event-filter/>
         </b-collapse>
@@ -45,6 +45,20 @@
             selOrg: state=> state.events.selectedOrg,
             selTime:state=> state.events.selectedTime,
         }),
+        created() {
+            let u = localStorage.user;
+            if(u === undefined) {
+                this.adminEdit = false;
+                return;
+            }
+            let user = JSON.parse(u);
+            if(user == null) {
+                this.adminEdit = false;
+                return;
+            }
+            let roles = user.role.split(', ');
+            this.adminEdit = !!roles.includes('NewsAndEvents');
+        },
         methods:{
           ...Vuex.mapActions(['getListOfEvents']),
           getDateTime(str){

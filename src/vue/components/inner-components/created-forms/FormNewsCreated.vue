@@ -74,16 +74,16 @@
             ...Vuex.mapActions(['addNewNews']),
             async submitNews() {
                 let dateCreation = new Date().toISOString();
-                let author = JSON.parse(localStorage.getItem('user'));
-                if(author===null)
+                let a = localStorage.getItem('user');
+                if(a===undefined||a===null)
                 {
-                    if (result)
-                        this.$bvToast.toast('Для додадання новини увійдіть в систему, будь-ласка', {
-                            title: `Функція недоступна`,
-                            variant: 'warning',
-                            solid: true
-                        });
+                    this.$bvToast.toast('Для додадання новини увійдіть в систему, будь-ласка', {
+                        title: `Функція недоступна`,
+                        variant: 'warning',
+                        solid: true
+                    });
                 }
+                let author = JSON.parse(a);
                 let authorId = author.id;
                 let multimedias = [];
                 this.imageDataArray.forEach(image => {

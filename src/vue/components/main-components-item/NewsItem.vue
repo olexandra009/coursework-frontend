@@ -18,7 +18,7 @@
                 <b-form-textarea class="min-vh-60" v-model="newsText"  v-if="editNews"/>
             </div>
             <div class="d-flex justify-content-around mt-4" v-if="editNews">
-                <b-button type="submit" @click="saveEdition" variant="info">Зберегти</b-button>
+                <b-button type="submit" @click="saveEdition" :disabled="editing" variant="info">Зберегти <b-spinner class="smallText" v-if="editing"/> </b-button>
                 <b-button type="reset"  @click="cancelEdition" variant="info">Скасувати</b-button>
             </div>
             <photo-tab :multimedia="news.multimedias"/>
@@ -70,16 +70,14 @@
             ...Vuex.mapActions(['getNewsItem', 'updateNewsItem', 'deleteNewsItem']),
             newLinedText: (t)=> editHtmText(t),
             getDateTime(str){
-                console.log('NEWS');
-                console.log(str);
                 let date = new Date(str);
-                console.log(date);
                 return date.toLocaleString();
             },
             getAuthorName(author){
                 return author.firstName+' '+author.lastName;
             },
             async saveEdition(){
+
                 if(this.newsHeader.trim().length === 0||this.newsText.trim().length === 0) {
                     this.editNews=!this.editNews;
                     return;
@@ -94,7 +92,9 @@
                 text: this.newLinedText(this.newsText),
                     multimedias: this.news.multimedias,
                  };
+                this.editing = true;
                 let i = await this.$store.dispatch('news/updateNewsItem', {'id': id, 'news': updateNews});
+                this.editing = false;
                 if(i)
                     this.$bvToast.toast('Новину успішно змінено', {
                         title: `Успіх`,
@@ -134,6 +134,7 @@
         },
         data(){
             return{
+                editing: false,
                 loaderItem: true,
                 adminEdit: true,
                 editNews: false,
