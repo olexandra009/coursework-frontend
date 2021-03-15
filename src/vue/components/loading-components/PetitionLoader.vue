@@ -1,7 +1,7 @@
 <template>
     <div class="w-100 mt-3">
         <div class="text-secondary text-center"><b-spinner class="ml-auto" v-if="loading"/></div>
-        <div v-if="showEnd" class="text-secondary smallerText text-center">Ви переглянули всі події</div>
+        <div v-if="showEnd" class="text-secondary smallerText text-center">Ви переглянули всі петиції</div>
     </div>
 </template>
 
