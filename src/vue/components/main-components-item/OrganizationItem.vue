@@ -209,6 +209,18 @@
         created:  function() {
             let orgId = this.$route.params.id;
             this.$store.dispatch('organization/getOrganizationItem', {'orgId': orgId})
+            let u = localStorage.user;
+            if(u === undefined) {
+                this.adminEdit = false;
+                return;
+            }
+            let user = JSON.parse(u);
+            if(user == null) {
+                this.adminEdit = false;
+                return;
+            }
+            let roles = user.role.split(', ');
+            this.adminEdit = !!roles.includes('UserManager');
         },
         data(){
             return {
