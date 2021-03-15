@@ -68,7 +68,7 @@
             }
         },
         methods: {
-            ...Vuex.mapActions(['getPetitionList']),
+            ...Vuex.mapActions(['getPetitionList', 'resetFilter']),
             calculateDate: (finishDate) => {
                 return endPetitionDate(new Date(finishDate).toLocaleString())
             },

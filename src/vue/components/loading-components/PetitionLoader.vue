@@ -43,7 +43,8 @@
         },
         created: async function() {
             let mine = false;
-            if(this.$router.fullPath === '/petition/my') mine = true;
+            console.log(this.$router.fullPath);
+            if(this.$route.fullPath === '/petition/my') mine = true;
             await this.$store.dispatch("petition/getPetitionList", {'status': this.status, 'mine': mine});
             this.showEnd =  this.total <= this.skip;
             this.loading = false;

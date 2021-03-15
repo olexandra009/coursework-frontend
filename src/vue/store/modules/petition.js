@@ -13,6 +13,7 @@ const actions={
         if(mine)
             userId = (JSON.parse(localStorage.getItem('user'))).id;
 
+        console.log("IN PETITION: "+mine);
         if(mine&&status)
             result = await apiMethods.getListOfPetitionByStatusAndAuthor(token, userId, status, state.takeValue, state.skip);
         else if (status)
