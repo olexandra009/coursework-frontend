@@ -55,6 +55,17 @@
         computed: Vuex.mapState({
             applications: state=>state.application.all,
         }),
+        created() {
+            let u = localStorage.user;
+            if(u===undefined)
+                this.router.push('/');
+            let user = JSON.parse(u);
+            if(user===undefined||user===null)
+                this.router.push('/');
+            let roles = user.role.split(', ');
+            if(!roles.includes("ApplicationAdmin"))
+                this.adminEdit = false;
+        },
         methods:{
             ...Vuex.mapActions(['getListOFApplication']),
             getDate(time){return new Date(time).toLocaleString()},

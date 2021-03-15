@@ -42,8 +42,13 @@
             }
         },
         async created() {
+            let user = JSON.parse(localStorage.user);
+            let roles = user.role.split(', ');
+            let author = this.author;
+            if(!roles.includes("ApplicationAdmin"))
+                author = user.id;
             await this.$store.dispatch("application/getListOFApplication",
-                    {'status': this.status, 'answerer': this.answerer, 'author':this.author});
+                    {'status': this.status, 'answerer': this.answerer, 'author':author});
             this.showEnd =  this.total <= this.skip;
             this.loading = false;
         },

@@ -35,6 +35,18 @@
 
             }
         },
+        created() {
+            let user = JSON.parse(localStorage.user);
+            let roles = user.role.split(', ');
+            if(!roles.includes('ApplicationAdmin'))
+            {
+                console.log("HEre");
+                this.type.shift();
+                console.log("HEre");
+                this.type.shift();
+                this.selectedType = 2;
+            }
+        },
         data(){
             return {
                 selectedType: (this.author)?2:((this.answerer)?1:null),

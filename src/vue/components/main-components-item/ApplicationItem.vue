@@ -38,7 +38,7 @@
                 </b-row>
             </div>
         </div>
-        <div class="mt-3 mb-3" v-if="application.status===1">
+        <div class="mt-3 mb-3" v-if="application.status===1 && adminRight">
             <b-row>
                 <b-col>
                      <b-button class="btn-block" variant="info" @click="addAnswerer">Взяти в розробку</b-button>
@@ -60,6 +60,18 @@
         computed: Vuex.mapState({
             application: state=>state.application.selectedApplication,
         }),
+        created() {
+            let u = localStorage.user;
+            if(u===undefined)
+                this.router.push('/');
+            let user = JSON.parse(u);
+            if(user===undefined||user===null)
+                this.router.push('/');
+            let roles = user.role.split(', ');
+            if(!roles.includes("ApplicationAdmin"))
+                this.adminRight = false;
+        },
+
         mounted: async function(){
             let id = this.$route.params.id;
             await this.$store.dispatch('application/getApplicationItem', {'id':id});
@@ -77,7 +89,11 @@
                 location.reload();
             },
         },
-
+        data(){
+            return{
+                adminRight: true,
+            }
+        }
     }
 </script>
 
