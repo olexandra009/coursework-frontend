@@ -19,7 +19,7 @@
             <b-button type="submit" @click="saveEdition" variant="info">Зберегти</b-button>
             <b-button type="reset"  @click="cancelEdition" variant="info">Скасувати</b-button>
         </div>
-        <photo-tab/>
+        <photo-tab :multimedia="news.multimedias"/>
         <div class="text-secondary text-right" v-if="news.edited">Редаговано</div>
 
     </b-card>
@@ -31,6 +31,7 @@
     import PhotoTab from "../inner-components/PhotoTab.vue";
     import {editHtmText} from "../../../js/utility";
     import Vuex from "vuex";
+    import news from "../../store/modules/news";
 
     export default {
         name: "NewsItem",
@@ -71,6 +72,7 @@
                 dateTimeCreation: this.news.dateTimeCreation,
                 header: this.newLinedText(this.newsHeader),
                 text: this.newLinedText(this.newsText),
+                    multimedias: this.news.multimedias,
                  };
                 let i = await this.$store.dispatch('news/updateNewsItem', {'id': id, 'news': updateNews});
                 if(i)
@@ -89,8 +91,8 @@
             },
             cancelEdition(){
                 this.editNews=!this.editNews;
-                this.newsHeader = '';
-                this.newsText= '';
+                this.newsHeader = this.news.header;
+                this.newsText= this.news.text;
             },
             async deleteItem(){
                 let id = this.$route.params.id;

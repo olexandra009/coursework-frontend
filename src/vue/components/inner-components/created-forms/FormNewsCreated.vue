@@ -57,7 +57,7 @@
                 </b-row>
             </b-row>
             <div class="d-flex justify-content-around mt-4">
-                <b-button type="submit" variant="info">Cтворити</b-button>
+                <b-button type="submit" :disabled="loadingCreated" variant="info">Cтворити<b-spinner v-if="loadingCreated"/></b-button>
                 <b-button type="reset" variant="info">Скасувати</b-button>
             </div>
         </b-form>
@@ -75,6 +75,15 @@
             async submitNews() {
                 let dateCreation = new Date().toISOString();
                 let author = JSON.parse(localStorage.getItem('user'));
+                if(author===null)
+                {
+                    if (result)
+                        this.$bvToast.toast('Для додадання новини увійдіть в систему, будь-ласка', {
+                            title: `Функція недоступна`,
+                            variant: 'warning',
+                            solid: true
+                        });
+                }
                 let authorId = author.id;
                 let multimedias = [];
                 this.imageDataArray.forEach(image => {
@@ -92,7 +101,9 @@
                     "authorId": authorId,
                     "multimedias": multimedias
                 };
-                let result = await this.$store.dispatch('news/addNewNews', {'news': newNews})
+                this.loadingCreated = true;
+                let result = await this.$store.dispatch('news/addNewNews', {'news': newNews});
+                this.loadingCreated = false;
                 if (result)
                     this.$bvToast.toast('Новина успішно додана', {
                         title: `Успіх`,
@@ -130,7 +141,11 @@
             previewImages: function (event) {
                 if(this.imageDataArray.length >= 5)
                 {
-                    //todo alert or toast
+                    this.$bvToast.toast('Дозволяється завантажувати не більше 5 зображень', {
+                        title: `Увага`,
+                        variant: 'warning',
+                        solid: true
+                    });
                     return;
                 }
                 let fileList = event.target.files;
@@ -139,7 +154,11 @@
                     let count = fileList.length;
                     if(this.imageDataArray.length + count>= 5){
                         count = 5-this.imageDataArray.length;
-                        //todo alert or toast
+                        this.$bvToast.toast('Дозволяється завантажувати не більше 5 зображень', {
+                            title: `Увага`,
+                            variant: 'warning',
+                            solid: true
+                        });
                     }
                     for(let i = 0; i<count; i++ ) {
                         if (fileList[i]) {
@@ -156,6 +175,7 @@
         },
         data(){
             return{
+                loadingCreated: false,
                 showAuthor: true,
                 imageDataId: 0,
                 imageDataArray: [],

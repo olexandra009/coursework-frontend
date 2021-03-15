@@ -28,6 +28,19 @@
   padding-top: 0.1rem !important;
 }
 
+.image-div-tab {
+  height: 180px;
+}
+
+.image-image-tab {
+  height: 100%;
+}
+
+.photo-div {
+  display: flex;
+  margin: auto;
+}
+
 .switch-col {
   text-align: end;
 }

@@ -22,7 +22,7 @@
                 <b-row class="mt-2">
                     <b-col sm="12" v-html="formatText(application.text)"/>
                 </b-row>
-                <!--TODO: MULTIMEDIA-->
+                <photo-tab :multimedia="application.multimedias"/>
             </div>
             <div class="mt-4" v-if="application.status==3">
                 <b-row>
@@ -53,9 +53,10 @@
     import {editHtmText, getIconApplicationStatus, getStatusApplicationLine} from "../../../js/utility";
     import FormApplicationAnswerCreated from "../inner-components/created-forms/FormApplicationAnswerCreated.vue";
     import Vuex from "vuex";
+    import PhotoTab from "../inner-components/PhotoTab.vue";
     export default {
         name: "ApplicationItem",
-        components: {FormApplicationAnswerCreated},
+        components: {PhotoTab, FormApplicationAnswerCreated},
         computed: Vuex.mapState({
             application: state=>state.application.selectedApplication,
         }),

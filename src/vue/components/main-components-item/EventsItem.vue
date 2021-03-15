@@ -46,7 +46,7 @@
             <b-button type="submit" @click="saveEdition" variant="info">Зберегти</b-button>
             <b-button type="reset"  @click="cancelEdition" variant="info">Скасувати</b-button>
         </div>
-        <photo-tab/>
+        <photo-tab :multimedia="events.multimedias"/>
         <div class="text-secondary text-right" v-if="events.edited">Редаговано</div>
     </b-card>
 </template>
