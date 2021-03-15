@@ -6,7 +6,6 @@
         </b-collapse>
 
         <form-news-filter/>
-
         <b-row v-for="item in news" :key="item.id">
             <b-card class="mt-2 w-100 bg-light">
                 <router-link  v-bind:to="`/news/${item.id}`"><h5>{{item.header}}</h5></router-link>
@@ -57,6 +56,7 @@
         data(){
             return {
                 adminEdit: true,
+
             }
         }
 

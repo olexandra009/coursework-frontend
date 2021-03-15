@@ -1,5 +1,6 @@
 <template>
     <div class="w-100 mt-3">
+        <div class="text-secondary text-center"><b-spinner class="ml-auto" v-if="loading"/></div>
         <div v-if="showEnd" class="text-secondary smallerText text-center">Ви переглянули всі звернення</div>
     </div>
 </template>
@@ -14,7 +15,6 @@
             status: state=>state.application.status,
             total: state=>state.application.totalItem,
             skip: state=>state.application.skip,
-            showEnd(){return this.total <= this.skip;}
         }),
         methods:{
             ...Vuex.mapActions(['getListOFApplication']),
@@ -22,6 +22,8 @@
         data(){
             return{
                 canLoad: true,
+                loading: true,
+                showEnd: false,
             }
         },
         mounted: function(){
@@ -30,15 +32,20 @@
                 const isBottomOfScreen = el.scrollTop + window.innerHeight > el.offsetHeight - 10;
                 if (isBottomOfScreen && this.canLoad&&this.total>this.skip) {
                     this.canLoad = false;
+                    this.loading = true;
                     await this.$store.dispatch("application/getListOFApplication",
                             {'status': this.status, 'answerer': this.answerer, 'author':this.author});
+                    this.loading = false;
+                    this.showEnd =  this.total <= this.skip;
                     this.canLoad = true;
                 }
             }
         },
-        created() {
-            this.$store.dispatch("application/getListOFApplication",
+        async created() {
+            await this.$store.dispatch("application/getListOFApplication",
                     {'status': this.status, 'answerer': this.answerer, 'author':this.author});
+            this.showEnd =  this.total <= this.skip;
+            this.loading = false;
         },
         beforeDestroy() {
             window.onscroll = null
