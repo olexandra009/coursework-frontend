@@ -323,6 +323,15 @@
                 let result = await apiMethods.deleteUserAccount(user, token);
                 if(result)
                    await this.$store.dispatch('user/logout');
+                else {
+                    this.$bvToast.toast('Під час видалення сталась помилка. Можливо ви створювали петиції, звернення, події або новини, в такому випадку видалення заборонене', {
+                        title: 'Акаунт не видалено',
+                        variant: 'warning',
+                        solid: true
+                    });
+                    this.$bvModal.hide('delete');
+                    return;
+                }
                 this.$router.push('/');
                 this.$bvModal.hide('delete');
             },

@@ -15,7 +15,7 @@
                 <b-nav-item-dropdown right v-if="login">
                     <!-- Using 'button-content' slot -->
                     <template #button-content>
-                        <em>Користувач</em>
+                        <em>{{user.login}}</em>
                     </template>
                     <b-dropdown-item to="/cabinet">Кабінет</b-dropdown-item>
                     <b-dropdown-item href="#" @click="logout">Вихід</b-dropdown-item>
@@ -36,6 +36,7 @@
         name: "NavigationHeader",
         computed: Vuex.mapState({
             login: state => (state.user.currentUser !== null),
+            user: state=>state.user.currentUser,
         }),
         methods:{
             ...Vuex.mapActions(['logout']),
