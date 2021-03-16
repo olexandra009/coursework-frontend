@@ -146,7 +146,8 @@ export default {
 //-----------------------------------------------------------------------//
 //----------------------Email Confirm User Api---------------------------/
     async confirmEmail(code, id){
-        let link = baseUrl+"/confirm_email?code="+code+"&id="+id;
+        let codeUri = encodeURI(code);
+        let link = baseUrl+"/confirm_email?code="+codeUri+"&id="+id;
         try {
             await Vue.http.get(link);
             return true;
