@@ -1,5 +1,5 @@
 <template>
-    <b-container>
+    <b-container class="mt-4">
         <h4 class="text-center">Сторінку не знайдено</h4>
         <b-row>
             <b-col sm="3"/>
