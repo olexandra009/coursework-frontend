@@ -13,12 +13,13 @@
     import InfoDisplay from "./pages/InfoDisplay.vue";
     import LoginDisplay from "./pages/LoginDisplay.vue";
     import ConfirmEmailDisplay from "./pages/ConfirmEmailDisplay.vue"
+    import SingResultDisplay from "./pages/SingResultDisplay.vue";
     import  apiMethod from '/src/api/api-methods';
     import Vuex from "vuex";
 
     export default {
         name: "App",
-        components: {NavigationHeader, MainDisplay, SingUpDisplay,
+        components: {NavigationHeader, MainDisplay, SingUpDisplay,SingResultDisplay,
                     InfoDisplay, LoginDisplay, ConfirmEmailDisplay},
         methods: {
             ...Vuex.mapActions(['inputFromLocale']),

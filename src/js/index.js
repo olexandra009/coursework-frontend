@@ -33,7 +33,7 @@ import VueMeta from "vue-meta";
 import ForgotPassword from "../vue/components/pages/ForgotPassword.vue";
 import ResetPassword from "../vue/components/pages/ResetPassword.vue";
 import NotFound from "../vue/components/pages/NotFound.vue";
-
+import SingResultDisplay from "../vue/components/pages/SingResultDisplay.vue";
 
 Vue.use(BootstrapVue);
 Vue.use(Vuex);
@@ -66,6 +66,7 @@ const router = new VueRouter( {
                 {path: 'application/:id', component: ApplicationItem}
             ]},
         {path: '/singup', component: SingUpDisplay},
+        {path: '/singup/result', component:SingResultDisplay},
         {path: '/login', component: LoginDisplay},
         {path: '/confirm/:id/:token', component: ConfirmEmailDisplay},
         {path: '/info', component: InfoDisplay},

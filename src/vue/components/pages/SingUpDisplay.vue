@@ -8,6 +8,7 @@
                     <div class="pt-2">
                         <label>Ім'я:</label>
                         <b-form-input
+                                required
                                 v-model="firstName"
                                 :state="null"
                                 aria-describedby="input-live-help input-live-feedback"
@@ -27,6 +28,7 @@
                     <div class="pt-2">
                         <label>Прізвище:</label>
                         <b-form-input
+                                required
                                 v-model="lastName"
                                 :state="null"
                                 aria-describedby="input-live-help input-live-feedback"
@@ -37,20 +39,23 @@
                     <div class="pt-2">
                         <label>E-mail:</label>
                         <b-form-input
+                                required
                                 type="email"
                                 v-model="email"
-                                :state="emailState"
+                                :state="emailStateMethod()"
                                 aria-describedby="input-live-help input-live-feedback"
                                 placeholder="Enter your name"
                                 trim
                         />
                         <b-form-invalid-feedback id="input-live-feedback-3">
-                            Така пошта вже існує
+                           <span v-if="emailState === false">Така пошта вже існує</span>
+                            <span v-else>Некоректна адреса електронної пошти</span>
                         </b-form-invalid-feedback>
                     </div>
                     <div class="pt-2">
                         <label>Логін:</label>
                         <b-form-input
+                                required
                                 v-model="login"
                                 :state="loginCheck"
                                 aria-describedby="input-live-help input-live-feedback-3"
@@ -64,6 +69,7 @@
                     <div class="pt-2">
                         <label>Пароль:</label>
                         <b-form-input
+                                required
                                 v-model="password"
                                 type="password"
                                 :state="passwordState"
@@ -100,6 +106,7 @@
             title: 'Реєстрація',
         },
         computed: {
+
             passwordState(){
                 let lowerCaseLetters = /[a-z]/g;
                 let upperCaseLetters = /[A-Z]/g;
@@ -115,6 +122,12 @@
             },
         },
         methods: {
+            emailStateMethod() {
+                if(this.emailState===false) return false;
+                let reg=  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/;
+                if (!this.email) return null;
+                return (this.email === "") ? null : (reg.test(this.email))
+            },
             resetRegister(){
                 this.loginCheck= null;
                 this.login= '';
@@ -131,7 +144,11 @@
                 //todo show loader
                 let email = await apiMethods.isEmailExists(this.email);
                 this.emailState = email === true;
-                if(!email)  return;
+                if(!email)
+                    return;
+                if(!this.emailStateMethod()){
+                    return;
+                }
                 let exist = await apiMethods.isLoginExists(this.login);
                 if(!exist) {
                     this.loginCheck = false;
@@ -159,19 +176,15 @@
                     });
                 } else {
                     this.resetRegister();
-                    this.$bvToast.toast("Ви успішно зареєструвались, перевірте пошту (лист може потрапити у спам) для підтвердження", {
-                        title: `Успіх`,
-                        variant: 'success',
-                        solid: true
-                    });
-                    await this.sleep(3000);
-                    this.$router.push('/');
+
+                    this.$router.push('/singup/result');
                 }
 
             },
         },
         data() {
             return {
+                message: "",
                 loginCheck: null,
                 emailState: null,
                 login: '',
