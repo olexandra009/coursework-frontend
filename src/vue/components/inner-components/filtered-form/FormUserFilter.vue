@@ -17,6 +17,7 @@
         methods:{
             ...Vuex.mapActions(['getListOfUsers','resetUserList']),
             updateUsers(){
+
                 this.$store.dispatch("user/resetUserList");
                 this.$store.dispatch("user/getListOfUsers", {'role': this.selected});
             }

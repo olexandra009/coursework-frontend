@@ -6,8 +6,7 @@ const getters={};
 const actions={
 
     async getListOfUsers({commit, state}, {role}){
-        if(role)
-            state.filterRole = role;
+        state.filterRole = role;
         let result = await apiMethod.getUserList(state.token, state.filterRole, state.takeValue, state.skip);
         if(result){
             commit('userListMutation', result);

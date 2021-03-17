@@ -204,9 +204,7 @@ export default {
         let link = baseUrl + '/api/User';
         if(role!=null) link = baseUrl + '/filtered_by_role';
         let options = {headers: headers(token)};
-        if(take!=null||skip!=null||role!=null){
-            link+='?'
-        }
+        link+="?SortProp=id&SortOrder=asc&";
         if(take!=null)
             link+='Take='+take+'&';
         if(skip!=null)
