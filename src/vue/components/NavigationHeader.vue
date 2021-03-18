@@ -1,9 +1,9 @@
 <template>
     <b-navbar toggleable="lg" type="dark" variant="info" :class="fixed">
-       <b-container :class="`pl-2 pr-2`">
+       <b-container class="pl-2 pr-2">
         <b-navbar-brand href="#">Platform</b-navbar-brand>
-        <b-navbar-toggle target="nav-collapse"/>
-        <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-toggle target="nav-collapse" v-if="block"/>
+        <b-collapse id="nav-collapse" is-nav v-if="block">
             <b-navbar-nav>
                 <b-nav-item to="/">Головна</b-nav-item>
                 <b-nav-item to="/info">Інформація</b-nav-item>
@@ -11,7 +11,7 @@
             </b-navbar-nav>
 
             <!-- Right aligned nav items -->
-            <b-navbar-nav class="ml-auto">
+            <b-navbar-nav class="ml-auto" >
                 <b-nav-item-dropdown right v-if="login">
                     <!-- Using 'button-content' slot -->
                     <template #button-content>
@@ -32,7 +32,7 @@
     import NavigationSmallTab from "./inner-components/NavigationSmallTab.vue";
     export default {
         components: {NavigationSmallTab},
-        props: ['fixed'],
+        props: ['fixed', 'block'],
         name: "NavigationHeader",
         computed: Vuex.mapState({
             login: state => (state.user.currentUser !== null),
