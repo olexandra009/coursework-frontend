@@ -317,7 +317,7 @@ export default {
         let options = { headers: headers(token)};
 
         try{
-            let response = await Vue.http.put(link, options);
+            let response = await Vue.http.put(link, {}, options);
             console.log(response);
             return response.body;
         } catch(error){
