@@ -3,6 +3,39 @@
   position: fixed;
   width: 100%;
 }
+
+.m-p{
+  padding-left: 2%;
+}
+a{
+  color: #2498d2;
+}
+a:hover{
+  color: #094e6f;
+}
+.left-menu a.nav-link {
+  color: #2498d2;
+}
+
+.left-menu a.nav-link:hover{
+  color: #137689;
+  //color: #145e69;
+}
+
+.left-menu a.nav-link.active{
+  font-weight: 500;
+}
+.nav-item{
+  font-size: 12pt;
+}
+.navbar-brand span.nav-letter{
+  font-family: 'Abhaya Libre', serif;
+  font-size: 19pt;
+}
+.navbar-brand{
+  font-family: 'Abhaya Libre', serif;
+  font-size: 16pt;
+}
 .vertical{
   margin: auto;
 }
@@ -31,6 +64,7 @@
 }
 .photo-div {
   display: flex;
+  justify-content: center;
   margin: auto;
 }
 .switch-col{

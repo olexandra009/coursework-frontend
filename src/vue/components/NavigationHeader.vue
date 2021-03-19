@@ -1,7 +1,6 @@
 <template>
     <b-navbar toggleable="lg" type="dark" variant="info" :class="fixed">
-       <b-container class="pl-2 pr-2">
-        <b-navbar-brand href="#">Platform</b-navbar-brand>
+        <b-navbar-brand class="d-sm-block" href="#"><span class="nav-letter">C</span>ommunity <span class="nav-letter">P</span>latform</b-navbar-brand>
         <b-navbar-toggle target="nav-collapse" v-if="block"/>
         <b-collapse id="nav-collapse" is-nav v-if="block">
             <b-navbar-nav>
@@ -23,7 +22,6 @@
                 <b-nav-item to="/login" v-else> Вхід </b-nav-item>
             </b-navbar-nav>
         </b-collapse>
-       </b-container>
     </b-navbar>
 </template>
 
