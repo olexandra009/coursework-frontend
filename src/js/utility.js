@@ -36,7 +36,7 @@ function getStatusApplicationLine(st){
     switch (s) {
         case 1: return 'Очікується';
         case 2: return "В процесі";
-        case 3: return "Закрита";
+        case 3: return "Закрите";
     }
 }
 function getIconApplicationStatus(st){

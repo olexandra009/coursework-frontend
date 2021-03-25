@@ -103,7 +103,8 @@
             if(!this.isUserHasRight(currentUser))
                this.$router.push('/news');
             let userId = this.$route.params.id;
-            let _user = await apiMethods.getUserItem(this.token, userId);
+            let token = localStorage.token;
+            let _user = await apiMethods.getUserItem(token, userId);
             await this.$store.dispatch('user/changeSelectedUser', {'user':_user});
         },
         methods: {
