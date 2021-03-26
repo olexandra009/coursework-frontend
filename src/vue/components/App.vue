@@ -31,7 +31,7 @@
            let start = path.split('/')[1];
            if(user == null || token == null)
            {
-               if(start==='application'||start==='cabinet'||start==='users'||start==='organization')
+               if(start==='application'||start==='cabinet'||start==='users')
                    this.$router.push('/news');
                await this.$store.dispatch('organization/getListOfOrganization');
                return;

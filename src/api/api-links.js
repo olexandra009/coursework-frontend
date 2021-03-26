@@ -1,5 +1,5 @@
-//export const baseUrl = "https://localhost:44336";
-export const baseUrl = "https://platform-utc-server.herokuapp.com";
+export const baseUrl = "https://localhost:44336";
+//export const baseUrl = "https://platform-utc-server.herokuapp.com";
 
 const application = {
     api: {

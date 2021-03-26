@@ -21,7 +21,7 @@
                 <p class="m-2">
                     <cut-text-component :text="item.description"/>
                 </p>
-                <photo-tab :multimedia="item.multimedias"/>
+                <photo-tab :multimedia="item.multimedias" :id_tab="item.id"/>
                 <div class="text-secondary text-right" v-if="item.edited">Редаговано</div>
             </b-card>
         </b-row>

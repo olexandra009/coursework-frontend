@@ -7,7 +7,7 @@
                 </div>
             </b-card>
         </b-row>
-        <b-modal id="image_preview" hide-footer>
+        <b-modal :id="`image_preview`+id_tab" hide-footer>
             <b-carousel
                     id="carousel-1"
                     v-model="slide"
@@ -29,7 +29,7 @@
 <script>
     export default {
         name: "PhotoTab",
-        props: ['multimedia'],
+        props: ['multimedia', 'id_tab'],
         data(){
             return{
                 slide: 0,
@@ -44,7 +44,7 @@
                     if(this.multimedia[i].id===inId)
                         break;
                 this.slide = i;
-                this.$bvModal.show('image_preview');
+                this.$bvModal.show('image_preview'+this.id_tab);
             }
         }
     }

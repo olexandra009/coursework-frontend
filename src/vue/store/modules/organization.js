@@ -36,7 +36,8 @@ const actions={
         let token = localStorage.getItem('token');
         let response= await apiMethod.getOrganizationItem(token, orgId);
         if(response== null) return ;
-        let users = await apiMethod.getOrganizationItemUsers(token, orgId);
+        let users = [];
+            users = await apiMethod.getOrganizationItemUsers(token, orgId);
         response.users = users;
         commit('getItemOrganizationMutation', response);
     },

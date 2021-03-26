@@ -22,7 +22,7 @@
                 <b-row class="mt-2">
                     <b-col sm="12" v-html="formatText(application.text)"/>
                 </b-row>
-                <photo-tab :multimedia="application.multimedias"/>
+                <photo-tab :multimedia="application.multimedias" :id_tab="application.id"/>
             </div>
             <div class="mt-4" v-if="application.status==3">
                 <b-row>

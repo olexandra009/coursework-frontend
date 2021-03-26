@@ -21,7 +21,7 @@
                 <b-button type="submit" @click="saveEdition" :disabled="editing" variant="info">Зберегти <b-spinner class="smallText" v-if="editing"/> </b-button>
                 <b-button type="reset"  @click="cancelEdition" variant="info">Скасувати</b-button>
             </div>
-            <photo-tab :multimedia="news.multimedias"/>
+            <photo-tab :multimedia="news.multimedias" :id_tab="news.id"/>
             <div class="text-secondary text-right" v-if="news.edited">Редаговано</div>
 
         </b-card>

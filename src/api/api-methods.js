@@ -296,6 +296,7 @@ export default {
             return response.body;
         } catch(error){
             console.log(error);
+            return [];
         }
     },
 
