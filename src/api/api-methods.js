@@ -558,7 +558,7 @@ export default {
 //-------------------------------------------------------------//
 //--------------------- Petition api -----------------------------//
     async getListOfPetition(token, take,skip){
-        let link = baseUrl+`/api/Petition?SortProp=id&SortOrder=desc&Take=${take}&Skip=${skip}`;
+        let link = baseUrl+`/api/Petition?SortProp=starDate&SortOrder=desc&Take=${take}&Skip=${skip}`;
         let options = {headers: headers(token)};
         try{
             let response = await Vue.http.get(link, options);
@@ -572,7 +572,7 @@ export default {
     },
 
     async getListOfPetitionByStatus(token, status, take, skip){
-        let link = baseUrl+`/filter_by_status?sortProp=id&sortOrder=desc&Take=${take}&Skip=${skip}`;
+        let link = baseUrl+`/filter_by_status?sortProp=starDate&sortOrder=desc&Take=${take}&Skip=${skip}`;
         if(status.timeStatus) link+="&timeStatus="+status.timeStatus;
         if(status.votesStatus) link+="&votesStatus="+status.votesStatus;
         let options = {headers: headers(token)};
@@ -588,7 +588,7 @@ export default {
     },
 
     async getListOfPetitionByStatusAndAuthor(token, userId, status, take, skip){
-        let link = baseUrl+`/filter_author_status?sortProp=id&sortOrder=desc&Take=${take}&Skip=${skip}&userId=${userId}`;
+        let link = baseUrl+`/filter_author_status?sortProp=starDate&sortOrder=desc&Take=${take}&Skip=${skip}&userId=${userId}`;
         if(status.timeStatus) link+="&timeStatus="+status.timeStatus;
         if(status.votesStatus) link+="&votesStatus="+status.votesStatus;
         let options = {headers: headers(token)};
@@ -604,7 +604,7 @@ export default {
     },
 
     async getListOfPetitionByAuthor(token, userId, take, skip){
-        let link = baseUrl+`/filter_by_author?sortProp=id&sortOrder=desc&Take=${take}&Skip=${skip}&userId=${userId}`;
+        let link = baseUrl+`/filter_by_author?sortProp=starDate&sortOrder=desc&Take=${take}&Skip=${skip}&userId=${userId}`;
         let options = {headers: headers(token)};
         try{
             let response = await Vue.http.get(link, options);
@@ -667,6 +667,16 @@ export default {
 
 //-------------------------------------------------------------//
 //--------------------- Votes api -----------------------------//
+    async getMinimumVote(){
+        let link = baseUrl+'/api/Petition/minimum';
+        try{
+            let response = await Vue.http.get(link);
+            return response.body;
+        }catch(error){
+            return 11;
+        }
+    },
+
     async getVotesCount(token, petitionId){
         let link = baseUrl+'/votes_number?petitionId='+petitionId;
         let options = {headers: headers(token)};

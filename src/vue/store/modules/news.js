@@ -13,6 +13,7 @@ const actions={
             if(result===null)
                 return false;
             commit('itemNewsMutation', result);
+            return true;
         },
         async getListOfNews({commit, state},{organization}){
             let token = localStorage.getItem('token');

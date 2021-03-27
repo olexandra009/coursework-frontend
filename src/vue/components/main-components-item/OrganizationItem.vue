@@ -211,7 +211,8 @@
         },
         created:  function() {
             let orgId = this.$route.params.id;
-            this.$store.dispatch('organization/getOrganizationItem', {'orgId': orgId})
+            let org = this.$store.dispatch('organization/getOrganizationItem', {'orgId': orgId});
+            if(!org) this.$router.push('/notfound');
             let u = localStorage.user;
             if(u === undefined) {
                 this.adminEdit = false;

@@ -45,6 +45,7 @@
                localStorage.removeItem('user');
            }
             await this.$store.dispatch('organization/getListOfOrganization');
+            await this.$store.dispatch('petition/getPetitionMinVoteCount');
         },
     }
 </script>

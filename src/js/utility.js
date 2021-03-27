@@ -104,6 +104,7 @@ function lastPetitionDate(finishDate) {
     let date = convertStringToDate(finishDate);
     let dateNow = new Date();
     let diff = Math.abs(date-dateNow);
+    if((date-dateNow)<0) return "Збір завершено";
     let days = parseInt(diff/1000/60/60/24);
     if( days === 0) return "Залишилось менше доби";
     let dS;

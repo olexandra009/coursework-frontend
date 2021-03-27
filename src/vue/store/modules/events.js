@@ -34,8 +34,9 @@ const actions={
         let token = localStorage.getItem('token');
         let result = await apiMethods.getEventsItem(token, id);
         if(result==null)
-            return;
+            return false;
         commit('itemEventMutation', result);
+        return true;
     },
     async updateEventItem({commit, state},{id, events}) {
         let token = localStorage.getItem('token');

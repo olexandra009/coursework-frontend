@@ -27,6 +27,7 @@ const actions={
         let result = await apiMethods.getApplicationItem(token, id);
         if(result===null) return false;
         commit('getItemApplicationMutation', result);
+        return true;
     },
     async deleteApplicationItem({commit, state},{id}){
         let token = localStorage.getItem('token');

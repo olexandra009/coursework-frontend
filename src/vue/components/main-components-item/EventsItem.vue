@@ -43,7 +43,7 @@
             <b-form-textarea class="min-vh-60" v-model="descriptionModel"  v-else/>
         </div>
         <div class="d-flex justify-content-around mt-4" v-if="editEvents">
-            <b-button type="submit" @click="saveEdition" :disabled="editing" variant="info">Зберегти <b-spinner class="smallText" v-if="editing"/> </b-button>
+            <b-button type="submit" @click="saveEdition" :disabled="editing" variant="info">Зберегти <b-spinner small v-if="editing"/> </b-button>
             <b-button type="reset"  @click="cancelEdition" variant="info">Скасувати</b-button>
         </div>
         <photo-tab :multimedia="events.multimedias" :id_tab="events.id"/>
@@ -68,7 +68,8 @@
 
         mounted: async function () {
             let id = this.$route.params.id;
-            await this.$store.dispatch('events/getEventItem', {'id': id});
+            let a = await this.$store.dispatch('events/getEventItem', {'id': id});
+            if(!a) this.$router.push('/notfound');
             this.dateModel = this.convertDateToForm(this.getDateFromISOString(this.events.startDate));
             this.timeModel = this.getTimeFromISOString(this.events.startDate);
             this.dateEndModel = this.convertDateToForm(this.getDateFromISOString(this.events.endDate));

@@ -8,7 +8,8 @@ const actions={
     },
 
     async getPetitionMinVoteCount({commit, state}){
-       let result = await apiMethods.getPetitionMinVote();
+        console.log("GET MIN VOTE");
+       let result = await apiMethods.getMinimumVote();
        if(result!=null)
            commit('petitionVoteCountCommit', result);
     },
@@ -45,8 +46,9 @@ const actions={
     async getPetitionItem({commit, state},{petitionId}){
         let token = localStorage.getItem('token');
         let result = await apiMethods.getPetitionItem(token, petitionId);
-        if(result == null) return;
+        if(result == null) return false;
         commit('itemPetitionMutation', result);
+        return true;
     },
 
     async addPetitionItem({commit, state},{petition}){
@@ -113,6 +115,7 @@ const mutations={
         state.total= 0;
     },
     votePetitionMutation(state, data){
+        data.user = JSON.parse(localStorage.user);
         state.selectedPetition.userVotes.unshift(data);
         state.selectedPetition.votesNumber+=1;
     },

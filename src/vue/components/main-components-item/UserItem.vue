@@ -105,6 +105,7 @@
             let userId = this.$route.params.id;
             let token = localStorage.token;
             let _user = await apiMethods.getUserItem(token, userId);
+            if(!_user) this.$router.push('/notfound');
             await this.$store.dispatch('user/changeSelectedUser', {'user':_user});
         },
         methods: {

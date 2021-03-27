@@ -75,7 +75,8 @@
                 this.adminRight = false;
 
             let id = this.$route.params.id;
-            await this.$store.dispatch('application/getApplicationItem', {'id':id});
+           let a = await this.$store.dispatch('application/getApplicationItem', {'id':id});
+            if(!a) this.$router.push('/notfound');
         },
 
         mounted: async function(){

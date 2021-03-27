@@ -30,7 +30,6 @@
         }),
         methods:{
           voteDate(date){
-
              return new Date(date).toLocaleString();
           },
           authorName(user){

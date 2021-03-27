@@ -18,7 +18,7 @@
                 <b-form-textarea class="min-vh-60" v-model="newsText"  v-if="editNews"/>
             </div>
             <div class="d-flex justify-content-around mt-4" v-if="editNews">
-                <b-button type="submit" @click="saveEdition" :disabled="editing" variant="info">Зберегти <b-spinner class="smallText" v-if="editing"/> </b-button>
+                <b-button type="submit" @click="saveEdition" :disabled="editing" variant="info">Зберегти <b-spinner small v-if="editing"/> </b-button>
                 <b-button type="reset"  @click="cancelEdition" variant="info">Скасувати</b-button>
             </div>
             <photo-tab :multimedia="news.multimedias" :id_tab="news.id"/>
@@ -48,7 +48,8 @@
         created: async function(){
             this.loaderItem= true;
             let id = this.$route.params.id;
-            await this.$store.dispatch('news/getNewsItem', {'id': id});
+            let a = await this.$store.dispatch('news/getNewsItem', {'id': id});
+            if(!a) this.$router.push('/notfound');
             this.loaderItem=false;
             this.newsHeader= this.news.header;
             this.newsText= this.news.text;

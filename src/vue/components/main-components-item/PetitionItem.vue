@@ -68,7 +68,7 @@
                         <b-icon :icon="statusIcon(petition.votesNumber, minVotes, petition.finishDate, petition.answer)"/> {{status(petition.votesNumber, minVotes, petition.finishDate, petition.answer)}}
                     </span>
                 </div>
-                <div class="mt-1 text-center">
+                <div class="mt-1 text-center" v-if="canAddAnswer(minVotes, petition.votesNumber, petition.answer)">
                    <b-button style="width: 165px" v-b-modal.answer-add variant="info" v-if="admin">Додати відповідь</b-button>
                 </div>
 
@@ -141,7 +141,8 @@
         }),
         mounted: async function(){
              let id =this.$route.params.id;
-             await this.$store.dispatch('petition/getPetitionItem', {'petitionId':id});
+             let u = await this.$store.dispatch('petition/getPetitionItem', {'petitionId':id});
+             if(!u) this.$router.push('/notfound');
         },
         data(){
             return{
@@ -166,6 +167,12 @@
               let userVote = this.petition.userVotes.find(vote=>vote.userId===userId);
               if(userVote) return false;
               return true;
+            },
+            canAddAnswer(minVotes, currentVotes, result){
+               if(minVotes<=currentVotes){
+                   return !(result && result.length > 0);
+               }
+               return false;
             },
 
             async votePetition(){
