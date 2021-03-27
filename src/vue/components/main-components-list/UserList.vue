@@ -20,7 +20,7 @@
                         <b-col sm="2" >{{item.login}}</b-col>
                         <b-col sm="2">{{item.email}}</b-col>
                         <b-col sm="1"> <b-form-checkbox disabled="disabled" :checked="item.emailConfirm"/></b-col>
-                        <b-col sm="3">{{isAdmin(item.role)}}</b-col>
+                        <b-col sm="3">{{isAdmin(item.id, item.role)}}</b-col>
                         <b-col sm="1" @click="$router.push({path: `/users/${item.id}`})"><b-icon icon="box-arrow-right"/></b-col>
                     </b-row>
                 </b-card>
@@ -45,7 +45,7 @@
         components: {UserLoader, FormUserFilter},
         methods: {
             ...Vuex.mapActions(['getListOfUsers']),
-              isAdmin(rights){
+              isAdmin(id, rights){
                   let simpleUser = "User";
                   let superUser = "SuperUser";
                   let applicationAdmin = "ApplicationAdmin";
@@ -54,7 +54,8 @@
                   let userManagerAdmin = "UserManager";
 
                   let rightsArray = rights.split(', ');
-
+                    console.log(id);
+                    console.log(rightsArray);
                   if(rightsArray.includes(applicationAdmin)||rightsArray.includes(moderatorAdmin)
                       ||rightsArray.includes(newsAndEventsAdmin)||rightsArray.includes(userManagerAdmin))
                       return "Адміністратор";
