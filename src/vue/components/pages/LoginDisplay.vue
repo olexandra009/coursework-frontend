@@ -4,7 +4,7 @@
             <div class="text-center">
              <h4>Вхід</h4>
             </div>
-            <b-form class="mt-2">
+            <b-form v-on:submit.prevent="loginInto" class="mt-2">
               <div class="pt-2">
                     <label>Логін:</label>
                     <b-form-input
@@ -29,7 +29,7 @@
                 </div>
                 <div class="pt-3">
                     <div class="d-flex justify-content-around">
-                        <b-button class="w-25 btn-info" @click="loginInto">Вхід</b-button>
+                        <b-button class="w-25 btn-info" type="submit" >Вхід</b-button>
                         <b-button @click="show">Відхилити</b-button>
                     </div>
                     <div class="pt-3 text-center text-dark">
@@ -62,6 +62,8 @@
             show(){
                 console.log(this.loginModel);
                 console.log(this.password);
+                this.loginModel = "";
+                this.password = "";
             },
             async loginInto(){
                 let result = await this.$store.dispatch("user/login", {'login': this.loginModel, 'password': this.password});

@@ -57,7 +57,7 @@
                 </b-row>
             </b-row>
             <div class="d-flex justify-content-around mt-4">
-                <b-button type="submit" :disabled="loadingCreated" variant="info">Cтворити<b-spinner v-if="loadingCreated"/></b-button>
+                <b-button type="submit" :disabled="loadingCreated" variant="info">Cтворити<b-spinner small v-if="loadingCreated"/></b-button>
                 <b-button type="reset" variant="info">Скасувати</b-button>
             </div>
         </b-form>

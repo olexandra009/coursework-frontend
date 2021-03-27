@@ -70,7 +70,7 @@
             ...Vuex.mapActions(['getListOFApplication']),
             getDate(time){return new Date(time).toLocaleString()},
             getAuthorName(user){
-                return user.lastName+' '+user.firstName+' '+(user.secondName)?user.secondName:''},
+                return user.lastName+' '+user.firstName+' '+ ((user.secondName)?user.secondName:'')},
             getStatusLine(st){return getStatusApplicationLine(st)},
             getIconStatus(st){return getIconApplicationStatus(st)}
         },

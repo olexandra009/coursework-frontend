@@ -86,7 +86,7 @@
             ...Vuex.mapActions(['getApplicationItem', 'updateAnswererApplicationItem']),
             formatText(text){return editHtmText(text)},
             getDate(time){return new Date(time).toLocaleString()},
-            getName(user){return user.lastName+' '+user.firstName+' '+user.secondName?user.secondName:''},
+            getName(user){return user.lastName+' '+user.firstName+' '+ ((user.secondName)?user.secondName:'')},
             getStatusLine(t){return getStatusApplicationLine(t)},
             getIconStatus(t){return getIconApplicationStatus(t)},
             async addAnswerer(){

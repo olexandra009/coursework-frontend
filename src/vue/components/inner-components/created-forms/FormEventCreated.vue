@@ -100,7 +100,7 @@
                 </b-row>
             </b-row>
             <div class="d-flex justify-content-around mt-4">
-                <b-button type="submit" :disabled="creating" variant="info">Cтворити<b-spinner class="smallText" v-if="creating"/> </b-button>
+                <b-button type="submit" :disabled="creating" variant="info">Cтворити<b-spinner small v-if="creating"/> </b-button>
                 <b-button type="reset" variant="info">Скасувати</b-button>
             </div>
         </b-form>
