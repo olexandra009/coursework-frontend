@@ -33,6 +33,9 @@
                 let answerer = this.selectedType === 1;
                 await this.$store.dispatch('application/getListOFApplication', {'status': this.selectedStatus, 'author': author, 'answerer': answerer});
 
+            },
+            async resetFilter(){
+                await this.$store.dispatch('application/getListOFApplication');
             }
         },
         created() {

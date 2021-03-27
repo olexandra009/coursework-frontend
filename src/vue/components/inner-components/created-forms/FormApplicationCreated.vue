@@ -95,7 +95,7 @@
                         variant: 'danger',
                         solid: true
                     });
-                location.reload();
+               // location.reload();
                 this.resetApplication();
 
             },

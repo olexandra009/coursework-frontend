@@ -37,7 +37,7 @@
                 console.log("I am here: "+ this.answer + " "+ this.appid);
               await this.$store.dispatch('application/updateResultApplicationItem', {'id': this.appid,'result': this.answerModel});
                 console.log("After await");
-               location.reload();
+              // location.reload();
             },
         },
         data(){

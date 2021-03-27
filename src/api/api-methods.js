@@ -720,7 +720,7 @@ export default {
         let link = baseUrl+`/changeStatus/${id}?statusDto=${status}`;
         let options = {headers: headers(token)};
         try{
-            let response = await Vue.http.put(link, options);
+            let response = await Vue.http.put(link, {}, options);
             return response.body;
         } catch(error){
             console.log(error);
@@ -731,7 +731,7 @@ export default {
         let link = baseUrl+`/changeAnswerer?applicationId=${id}&answererId=${userId}`;
         let options = {headers: headers(token)};
         try{
-            let response = await Vue.http.put(link, options);
+            let response = await Vue.http.put(link, {},  options);
             console.log(response);
             console.log(response.body);
             return response.body;

@@ -41,7 +41,7 @@ const actions={
         let response = await apiMethods.updateResultApplication(token, id, result);
         console.log("After response");
         if(response===null) return false;
-        commit('updateApplicationItemMutation');
+        commit('updateApplicationItemMutation', response);
     },
     async updateStatusApplicationItem({commit, state}, {id, status}){
         let token = localStorage.getItem('token');
@@ -54,13 +54,14 @@ const actions={
         let userId = JSON.parse(localStorage.getItem('user')).id;
         let result = await apiMethods.updateAnswerApplication(token, id, userId);
         if(result===null) return false;
-        commit('updateApplicationItemMutation');
+        commit('updateApplicationItemMutation', result);
     },
     async createApplicationItem({commit, state},{application}){
         let token = localStorage.getItem('token');
         let result = await apiMethods.createApplication(token, application);
+        console.log(result);
         if(result===null) return false;
-        commit('createApplicationItemMutation');
+        commit('createApplicationItemMutation', result);
 
     },
     resetApplicationStore({commit}){
@@ -99,10 +100,17 @@ const mutations={
         state.selectedApplication = null;
     },
     updateApplicationItemMutation(state, data){
-       state.selectedApplication = data;
+       state.selectedApplication.answerer = data.answerer;
+       state.selectedApplication.answererId = data.answererId;
+       state.selectedApplication.status = data.status;
+       state.selectedApplication.result = data.result;
+       state.selectedApplication.closeDate = data.closeDate;
+       let i = state.all.findIndex(app => app.id===data.id);
+       state.all[i] = state.selectedApplication;
     },
     createApplicationItemMutation(state, data){
         state.all.unshift(data);
+        state.skip+=1;
     },
 };
 

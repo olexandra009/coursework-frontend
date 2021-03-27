@@ -63,7 +63,7 @@
         computed: Vuex.mapState({
             application: state=>state.application.selectedApplication,
         }),
-        created() {
+        async created() {
             let u = localStorage.user;
             if(u===undefined)
                 this.router.push('/');
@@ -73,6 +73,9 @@
             let roles = user.role.split(', ');
             if(!roles.includes("ApplicationAdmin"))
                 this.adminRight = false;
+
+            let id = this.$route.params.id;
+            await this.$store.dispatch('application/getApplicationItem', {'id':id});
         },
 
         mounted: async function(){
@@ -89,7 +92,7 @@
             async addAnswerer(){
                 let id = this.$route.params.id;
                 await this.$store.dispatch('application/updateAnswererApplicationItem', {'id':id});
-                location.reload();
+                //location.reload();
             },
         },
         data(){
