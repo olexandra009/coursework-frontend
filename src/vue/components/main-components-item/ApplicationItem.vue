@@ -1,6 +1,6 @@
 <template>
     <div class="min-vh-100">
-        <h4 class="text-center mt-2">Інформація про заявку {{ $route.params.id }}</h4>
+        <h4 class="text-center mt-2">Інформація про звернення №{{ $route.params.id }}</h4>
         <div class="min-vh-60">
             <div>
                 <b-row>
