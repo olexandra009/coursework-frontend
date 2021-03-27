@@ -34,9 +34,7 @@
              return new Date(date).toLocaleString();
           },
           authorName(user){
-              console.log("IN METHOD");
-              console.log(user);
-            return user.lastName+' '+user.firstName+' '+user.secondName;
+            return user.lastName+' '+user.firstName+' '+(user.secondName?user.secondName:'');
           },
         },
     }

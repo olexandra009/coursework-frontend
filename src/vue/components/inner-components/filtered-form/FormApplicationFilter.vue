@@ -43,9 +43,7 @@
             let roles = user.role.split(', ');
             if(!roles.includes('ApplicationAdmin'))
             {
-                console.log("HEre");
                 this.type.shift();
-                console.log("HEre");
                 this.type.shift();
                 this.selectedType = 2;
             }
@@ -60,7 +58,7 @@
                 statusList: [{value: 0, text:'Оберіть статус'},
                          {value: 1, text:'Очікується'},
                          {value: 2, text:'В процесі'},
-                         {value: 3, text:'Закрита'}]
+                         {value: 3, text:'Закрите'}]
             }
         }
     }

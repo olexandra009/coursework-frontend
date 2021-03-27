@@ -23,8 +23,6 @@
         }),
         methods:{
             applyFilter(){
-                console.log('Here');
-                console.log(this.modelStatus);
                 let mine = false;
                 if(this.selectedType!=null) mine = true;
                 this.$store.dispatch('petition/resetFilter');

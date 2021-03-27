@@ -142,8 +142,6 @@
         mounted: async function(){
              let id =this.$route.params.id;
              await this.$store.dispatch('petition/getPetitionItem', {'petitionId':id});
-             console.log(this.petition);
-             console.log(this.petition.userVotes);
         },
         data(){
             return{
@@ -166,7 +164,6 @@
               if(user===undefined||user===null)return false;
               let userId = user.id;
               let userVote = this.petition.userVotes.find(vote=>vote.userId===userId);
-              console.log(userVote);
               if(userVote) return false;
               return true;
             },
@@ -198,10 +195,10 @@
             calculateVotesPercent: (current, min) => current * 100 / min,
 
             progress(event, progress, stepValue) {
-                console.log(stepValue);
+
             },
             progress_end(event) {
-                console.log("Circle progress end");
+
             },
 
             votesString: (numVote) => {

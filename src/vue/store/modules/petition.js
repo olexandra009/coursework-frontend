@@ -1,18 +1,24 @@
 import apiMethods from '/src/api/api-methods';
 
-const state = () => ({all: [], selectedPetition: null, mine: false, status: null, minVotes: 100, skip:0, takeValue: 4, totalItem: 0});
+const state = () => ({all: [], selectedPetition: null, mine: false, status: null, minVotes: 10, skip:0, takeValue: 4, totalItem: 0});
 const getters={};
 const actions={
     resetFilter({commit}){
       commit('resetFilterMutation');
     },
+
+    async getPetitionMinVoteCount({commit, state}){
+       let result = await apiMethods.getPetitionMinVote();
+       if(result!=null)
+           commit('petitionVoteCountCommit', result);
+    },
+
     async getPetitionList({commit, state}, {mine, status}){
         let token = localStorage.getItem('token');
         let result;
         let userId;
         if(mine){
             userId = (JSON.parse(localStorage.getItem('user'))).id;
-
         }
 
 
@@ -77,7 +83,6 @@ const actions={
 };
 const mutations={
     addItemPetitionMutation(state, data){
-        console.log(state.all);
         state.all.unshift(data);
     },
     itemPetitionMutation(state, data){
@@ -116,6 +121,10 @@ const mutations={
         let i = state.selectedPetition.userVotes.findIndex(v => v.id===id);
         state.selectedPetition.userVotes.splice(i, 1);
         state.selectedPetition.votesNumber-=1;
+    },
+    petitionVoteCountCommit(state, data){
+        let votes = parseInt(data);
+        state.minVotes = votes;
     }
 };
 

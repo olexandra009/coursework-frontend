@@ -42,10 +42,8 @@
                 }
             },
             async changeUserOrganization(){
-
                 let ind = this.organization.findIndex(x=>x.value===this.selectedOrganization);
                 let orgName = this.organization[ind];
-                console.log(orgName);
                 let i = await this.$store.dispatch('user/changeOrganization', {'userId': this.user_id,
                     'orgId': this.selectedOrganization, 'orgName': orgName.text});
                 if(i===null) return;

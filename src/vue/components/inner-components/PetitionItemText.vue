@@ -26,9 +26,7 @@
         props: ['petition_text','petition_header','petition_authorName','petition_startDate', 'petition_answer'],
         methods:  {
             getDateTime(str){
-                console.log(str);
                 let date = new Date(str);
-                console.log(date);
                 return date.toLocaleString();
             },
             newLinedText: (t)=>{
@@ -36,7 +34,7 @@
                 return editHtmText(t)
             },
             getAuthorName: (author)=>{
-                return author.lastName+' '+author.firstName+' '+author.secondName;
+                return author.lastName+' '+author.firstName+' '+(author.secondName?author.secondName:'');
             },
         },
         computed: Vuex.mapState({

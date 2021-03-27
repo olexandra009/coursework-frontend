@@ -39,9 +39,7 @@
         created: async function() {
             if(!this.isUserHasRight())
                 this.$router.push('/news');
-            console.log(this.selected);
             this.selected = this.selectedUser.role.split(', ');
-            console.log(this.selected);
         },
         methods: {
             ...Vuex.mapState(['changeSelectedUser']),

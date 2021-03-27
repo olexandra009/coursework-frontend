@@ -53,7 +53,6 @@
                 this.creating=true;
                 let y = await this.$store.dispatch('petition/addPetitionItem', {'petition':petition});
                 this.creating=false;
-                console.log(y);
                 this.resetPetition();
              },
             resetPetition(){this.petitionHeader=""; this.petitionText=""; this.showCreatedForm=false},

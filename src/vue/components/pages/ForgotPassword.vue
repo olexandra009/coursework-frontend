@@ -44,7 +44,6 @@
         name: "ForgotPassword",
         computed: {
             emailState(){
-                console.log("HERE");
                 if(!this.emailModel) return null;
                 return (this.emailModel === "")? null : (this.reg.test(this.emailModel))},
         },
@@ -53,8 +52,6 @@
         },
         methods:{
            async sendPassword(){
-               console.log(this.emailModel);
-
                let t =  await apiMethods.forgotPassword(this.emailModel);
 
                if(t){
